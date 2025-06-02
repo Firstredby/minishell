@@ -62,3 +62,4 @@ int		env_handle(char **env, t_env **env_head);
 int		env_strcmp(const char *s1, const char *s2);
 void	show_token(char *input);
 size_t	command_count(char *input);
+void	show_args(t_cmd *cmd);

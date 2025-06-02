@@ -5,16 +5,22 @@ void	show_args(t_cmd *cmd)
 	int l = 0;
 	while (cmd) //visualizer
 	{
+		printf("-------------------------------\n");
 		printf("(cmd): %s\n", cmd->cmd);
 		while (cmd->args[l])
 		{
 			printf("(arg[%d]): %s\n", l, cmd->args[l]);
 			l++;
 		}
-		printf("(envp pointer): %p\n", cmd->env->envp);
+		printf("(fd): %d\n", cmd->fd);
+		printf("(fd_in): %d\n", cmd->fd_in);
+		printf("(fd_out): %d\n", cmd->fd_out);
+		printf("(limiter): %s\n", cmd->limiter);
+		printf("(next pointer): %p\n", cmd->next);
 		l = 0;
 		cmd = cmd->next;
 	}
+	printf("----------end of list----------\n");
 }
 
 void	show_token(char *input)
