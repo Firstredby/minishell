@@ -12,20 +12,20 @@
 
 #include "../../includes/minishell.h"
 
-size_t	command_count(char *input)
-{
-	int		i;
-	size_t	result;
+// size_t	command_count(char *input)
+// {
+// 	int		i;
+// 	size_t	result;
 
-	result = 0;
-	i = 0;
-	while (input[i])
-		if (input[i++] == '|')
-			result++;
-	if (!result)
-		return (1);
-	return (result + 1);
-}
+// 	result = 0;
+// 	i = 0;
+// 	while (input[i])
+// 		if (input[i++] == '|')
+// 			result++;
+// 	if (!result)
+// 		return (1);
+// 	return (result + 1);
+// }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -40,7 +40,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = ft_strlen(s) - start;
 	substr = ft_calloc(len + 1, sizeof(char));
 	if (!substr)
-		return (NULL);
+		perror("malloc");//err;
 	i = 0;
 	while (i++ < (int)len)
 		substr[i - 1] = (char)s[i + start - 1];
@@ -82,7 +82,7 @@ t_token	*newtoken(char *token, t_token_type type)
 
 	new_token = (t_token *)malloc(sizeof(t_token));
 	if (!new_token)
-		return (NULL);
+		perror("malloc");//err
 	new_token->token = token;
 	new_token->type = type;
 	new_token->next = NULL;	
@@ -99,13 +99,13 @@ char	*redirs(char **input, char sign)
 		{
 			res = ft_substr(*input, 0, 2);
 			if (!res)
-				;//err
+				perror("malloc");//err
 			(*input) += 2;
 			return (res);
 		}
 		res = ft_substr(*input, 0, 1);
 		if (!res)
-			;//err
+			perror("malloc");//err
 		(*input)++;
 		return (res);
 	}
@@ -127,7 +127,7 @@ char	*dollar_token(char **input)
 	}
 	dollar_var = ft_substr(*input - i, 0, i);
 	if (!dollar_var)
-		;//err
+		perror("malloc");//err
 	return (dollar_var);
 }
 
@@ -145,7 +145,7 @@ char	*token(char **input)
 	{
 		token = ft_strdup("|");
 		if (!token)
-			;//error
+			perror("malloc");//err
 		(*input)++;
 		return (token);
 	}
@@ -156,7 +156,7 @@ char	*token(char **input)
 	}
 	token = ft_substr(*input - i, 0, i);
 	if (!token)
-		;//err
+		perror("malloc");//err
 	return (token);
 }
 
