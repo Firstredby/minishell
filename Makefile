@@ -25,7 +25,8 @@ SOURCES = src/main.c \
 		  src/environment/env_handle.c \
 		  src/utils/env_strcmp.c \
 		  src/parser/tokenizer.c \
-		  src/utils/debug_menu.c
+		  src/utils/debug_menu.c \
+		  src/parser/parserV3.c
 
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3
