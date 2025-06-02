@@ -25,6 +25,7 @@ bool	cmd_validator(char	*input, int	i)
 		return false;
 	return true;
 }
+
 int	arg_count(char **list, int pos)
 {
 	int	len;
