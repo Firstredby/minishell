@@ -42,7 +42,8 @@ typedef enum e_token_type {
     T_HEREDOC,
     T_EOF,
 	T_DOLLAR,
-	T_RED_TARGET
+	T_RED_TARGET,
+    T_QUOTE
 }   t_token_type;
 
 typedef struct s_token

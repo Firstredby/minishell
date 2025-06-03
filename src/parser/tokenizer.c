@@ -12,21 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-// size_t	command_count(char *input)
-// {
-// 	int		i;
-// 	size_t	result;
-
-// 	result = 0;
-// 	i = 0;
-// 	while (input[i])
-// 		if (input[i++] == '|')
-// 			result++;
-// 	if (!result)
-// 		return (1);
-// 	return (result + 1);
-// }
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	int		i;
@@ -118,6 +103,8 @@ char	*dollar_token(char **input)
 	char	*dollar_var;
 
 	i = 0;
+	if (**input != '$')
+		return (NULL);
 	(*input)++;
 	while (ft_isalpha(**input) || ft_isdigit(**input)
 		|| **input == '_' || **input == '"' || **input == '\'')
@@ -149,14 +136,30 @@ char	*token(char **input)
 		(*input)++;
 		return (token);
 	}
-	while (**input && !ft_ismetachr(**input))
-	{
+	while (*(*input + i) && !ft_ismetachr(*(*input + i)))
 		i++;
-		(*input)++;
-	}
-	token = ft_substr(*input - i, 0, i);
+	token = ft_substr(*input, 0, i);
 	if (!token)
 		perror("malloc");//err
+	return (token);
+}
+
+char	*quote_token(char **input)
+{
+	char	*token;
+	int		i;
+	char	quote;
+
+	i = 1;
+	if (**(input) && **input != '\'' && **input != '"')
+		return (NULL);
+	quote = **input;
+	while (*(*input + i) && *(*input + i) != quote)
+		i++;
+	if (!*(*input + i) && *(*input + i) != quote)
+		return (perror("no closing quote"), NULL);
+	token = ft_substr(*input, 0, i + 1);
+	*input += i + 1;
 	return (token);
 }
 
@@ -190,18 +193,18 @@ t_token	**tokenizerV3(char *input, size_t size)
 	{
 		while (*input && (*input == ' ' || *input == '\t'))
 			input++;
-		if (*input == '$')
-		{
-			tkn = dollar_token(&input);
+		tkn = dollar_token(&input);
+		if (tkn)
 			addtoken(&list[index], newtoken(tkn, T_DOLLAR));
-		}
-		else
+		tkn = quote_token(&input);
+		if (tkn)
 		{
-			tkn = token(&input);
-			addtoken(&list[index], newtoken(tkn, token_type(tkn)));
-			if (!ft_strcmp(tkn, "|"))
-				index++;
+			addtoken(&list[index], newtoken(tkn, T_QUOTE));
+			continue ;
 		}
+		addtoken(&list[index], newtoken(token(&input), token_type(tkn)));
+		if (tkn && !ft_strcmp(tkn, "|"))
+			index++;
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
 	return (list);
