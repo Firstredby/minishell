@@ -3,6 +3,7 @@
 void	show_args(t_cmd *cmd)
 {
 	int l = 0;
+	int	i = 0;
 	while (cmd) //visualizer
 	{
 		printf("-------------------------------\n");
@@ -15,9 +16,14 @@ void	show_args(t_cmd *cmd)
 		printf("(fd): %d\n", cmd->fd);
 		printf("(fd_in): %d\n", cmd->fd_in);
 		printf("(fd_out): %d\n", cmd->fd_out);
-		printf("(limiter): %s\n", cmd->limiter);
+		while (cmd->limiter && cmd->limiter[i])
+		{
+			printf("(limiter[%d]): %s\n", i, cmd->limiter[i]);
+			i++;
+		}
 		printf("(next pointer): %p\n", cmd->next);
 		l = 0;
+		i = 0;
 		cmd = cmd->next;
 	}
 	printf("----------end of list----------\n");
@@ -26,6 +32,8 @@ void	show_args(t_cmd *cmd)
 void	show_token(char *input)
 {
 	t_token **token = tokenizerV3(input, command_count(input));
+	if (!token)
+		return ;
 	for (int i = 0; *(token + i);)
 	{
 		t_token *curr = token[i];
