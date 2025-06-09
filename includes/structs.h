@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 18:43:20 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:46:16 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_cmd
     t_env			*env;//
     int             node_nbr;
     char            *filename;
-    t_env			*env;
     t_pipe          *pipe;
 	struct s_cmd	*next;
 }   t_cmd;
