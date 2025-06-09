@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/06 21:00:34 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:55:35 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,13 +239,11 @@ t_token	**tokenizerV3(char *input, size_t size)
 			break ;
 		dollar_token(&str, &list[index]);
 		if (quote_token(&str, &list[index]))
-		{
 			if (*str == '\'' || *str == '"')
 				return (TRASH_COLLECTOR_GOES_BRRRR(list), NULL);
-			if (*str && *(str - 1) == '|')
-				index++;
-		}
 		token(&str, &list[index]);
+		if (*str && *(str - 1) == '|')
+			index++;
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
 	return (list);
