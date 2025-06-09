@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/25 14:44:38 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/07 15:34:31 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ typedef struct s_cmd
 {
     char			*cmd;
     char			**args;
-    int				fd;
+    int				fd;//
     int				fd_in;
     int				fd_out;
-	char			*limiter;
-    t_env			*env;
+	char			**limiter;
+    t_env			*env;//
 	struct s_cmd	*next;
 }   t_cmd;
 
@@ -42,7 +42,9 @@ typedef enum e_token_type {
     T_HEREDOC,
     T_EOF,
 	T_DOLLAR,
-	T_RED_TARGET
+	T_RED_TARGET,
+    T_SQUOTE,
+	T_DQUOTE
 }   t_token_type;
 
 typedef struct s_token

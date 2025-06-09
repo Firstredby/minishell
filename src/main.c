@@ -96,13 +96,14 @@ int main(int argc, char **argv, char **envp)
             free(input);
             continue;
         }
-       t_env *env_head = NULL;
+        t_env *env_head = NULL;
         env_handle(envp, &env);
-       // env = env_head;
-		cmds = parserV3(input, env);
+        // env = env_head;
+        show_token(input);
+		//cmds = parserV3(input, env);
         //printf("test0\n");
 		//show_token(input);
-        show_args(cmds);
+        //show_args(cmds);
 		continue ;
 		////////////////////////////////////////////////////////////
         //cmds = parser(input, env);

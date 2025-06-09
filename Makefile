@@ -18,10 +18,8 @@ SOURCES = src/main.c \
 		  src/builtins/ft_unset.c \
 		  src/utils/ft_strdup.c \
 		  src/utils/ft_calloc.c \
-		  src/parser/parser.c \
 		  src/utils/ft_split.c \
 		  src/utils/ll_free.c \
-		  src/parser/heredoc_parse.c \
 		  src/environment/env_handle.c \
 		  src/utils/env_strcmp.c \
 		  src/parser/tokenizer.c \

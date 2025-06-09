@@ -6,26 +6,35 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/05/22 21:01:35 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/06 21:00:34 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// size_t	command_count(char *input)
-// {
-// 	int		i;
-// 	size_t	result;
+void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list)
+{
+	int i = 0;
+	t_token *current;
+	t_token *next;
 
-// 	result = 0;
-// 	i = 0;
-// 	while (input[i])
-// 		if (input[i++] == '|')
-// 			result++;
-// 	if (!result)
-// 		return (1);
-// 	return (result + 1);
-// }
+	if (!list)
+		return;
+
+	while (list[i])
+	{
+		current = list[i];
+		while (current)
+		{
+			next = current->next;
+			free(current->token);
+			free(current);
+			current = next;
+		}
+		i++;
+	}
+	free(list);
+}
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -55,8 +64,9 @@ int	ft_isalpha(int c)
 
 int	ft_ismetachr(int c)
 {
-	return (c == '\0' || c == ' ' || c == '\t' ||
-		c == '<' || c == '>' || c == '|' || c == '$');
+	return (c == '\0' || c == ' ' || c == '\t'
+		|| c == '<' || c == '>' || c == '|'
+		|| c == '$' || c == ',');
 }
 
 void	addtoken(t_token **list, t_token *new)
@@ -79,7 +89,7 @@ void	addtoken(t_token **list, t_token *new)
 t_token	*newtoken(char *token, t_token_type type)
 {
 	t_token	*new_token;
-
+	
 	new_token = (t_token *)malloc(sizeof(t_token));
 	if (!new_token)
 		perror("malloc");//err
@@ -87,6 +97,24 @@ t_token	*newtoken(char *token, t_token_type type)
 	new_token->type = type;
 	new_token->next = NULL;	
 	return (new_token);
+}
+
+t_token_type	token_type(char *type)
+{
+	if (type == NULL)
+		return (T_EOF);
+	if (!ft_strcmp(type, "|"))
+		return (T_PIPE);
+	if (!ft_strcmp(type, "<"))
+		return (T_RED_IN);
+	if (!ft_strcmp(type, ">"))
+		return (T_RED_OUT);
+	if (!ft_strcmp(type, "<<"))
+		return (T_HEREDOC);
+	if (!ft_strcmp(type, ">>"))
+		return (T_RED_APPEND);
+	else
+		return (T_WORD);
 }
 
 char	*redirs(char **input, char sign)
@@ -112,96 +140,112 @@ char	*redirs(char **input, char sign)
 	return (NULL);
 }
 
-char	*dollar_token(char **input)
+void	dollar_token(char **input, t_token **list)
 {
 	int		i;
 	char	*dollar_var;
 
 	i = 0;
+	if (**input != '$')
+		return ;
 	(*input)++;
-	while (ft_isalpha(**input) || ft_isdigit(**input)
-		|| **input == '_' || **input == '"' || **input == '\'')
+	while ((ft_isalpha(**input) || ft_isdigit(**input )
+		|| **input == '_') && **input != '"' && **input != '\'')
 	{
 		(*input)++;
 		i++;
 	}
+	if (!i)
+		return ((*input)++, addtoken(list, newtoken(ft_strdup("$"), T_WORD)));
 	dollar_var = ft_substr(*input - i, 0, i);
 	if (!dollar_var)
-		perror("malloc");//err
-	return (dollar_var);
+		return (perror("malloc"));//err
+	addtoken(list, newtoken(dollar_var, T_DOLLAR));
 }
 
-char	*token(char **input)
+int	token(char **input, t_token **list)
 {
 	char	*token;
 	int		i;
 
 	i = 0;
-	if (!*input || !**input)
-		return NULL;
+	if (!*input || !**input || **input == '\'' || **input == '"'
+		|| **input == '$' || **input == ' ')
+		return (0);
 	if (**input == '<' || **input == '>')
-		return (redirs(input, **input));
-	if (**input == '|')
+		return (token = redirs(input, **input), 
+			addtoken(list, newtoken(token, token_type(token))), 1);
+	else if (**input == '|')
 	{
 		token = ft_strdup("|");
 		if (!token)
 			perror("malloc");//err
 		(*input)++;
-		return (token);
+		return (addtoken(list, newtoken(token, token_type(token))), 1);
 	}
-	while (**input && !ft_ismetachr(**input))
-	{
+	while (*(*input + i) && !ft_ismetachr(*(*input + i))
+		&& *(*input + i) != '"' && *(*input + i) != '\'')
 		i++;
-		(*input)++;
-	}
-	token = ft_substr(*input - i, 0, i);
+	token = ft_substr(*input, 0, i);
 	if (!token)
 		perror("malloc");//err
-	return (token);
+	*input += i + 1;
+	addtoken(list, newtoken(token, token_type(token)));
+	return (1);
 }
 
-t_token_type	token_type(char *type)
+int	quote_token(char **input, t_token **list)
 {
-	if (type == NULL)
-		return (T_EOF);
-	if (!ft_strcmp(type, "|"))
-		return (T_PIPE);
-	if (!ft_strcmp(type, "<"))
-		return (T_RED_IN);
-	if (!ft_strcmp(type, ">"))
-		return (T_RED_OUT);
-	if (!ft_strcmp(type, "<<"))
-		return (T_HEREDOC);
-	if (!ft_strcmp(type, ">>"))
-		return (T_RED_APPEND);
+	char	*token;
+	int		i;
+	char	quote;
+
+	i = 1;
+	if (!**(input) || (**input != '\'' && **input != '"'))
+		return (0);
+	quote = **input;
+	while (*(*input + i) && *(*input + i) != quote)
+		i++;
+	if (!*(*input + i) || *(*input + i) != quote)
+		return (perror("minishell: no closing quote\n"), -1);
+	if (*(*input + i))
+		token = ft_substr(*input, 1, i - 1);
 	else
-		return (T_WORD);
+		token = ft_strdup("\"");
+	*input += i + 1;
+	if (i == 1)
+		addtoken(list, newtoken(token, T_WORD));
+	else if (quote == '\'')
+		addtoken(list, newtoken(token, T_SQUOTE));
+	else
+		addtoken(list, newtoken(token, T_DQUOTE));
+	return (1);
 }
 
 t_token	**tokenizerV3(char *input, size_t size)
 {
 	t_token	**list;
 	size_t	index;
-	char	*tkn;
+	char	*str;
 
 	list = (t_token **)ft_calloc(sizeof(t_token *), (size + 2));
 	index = 0;
-	while (*input)
+	str = input;
+	while (str && *str)
 	{
-		while (*input && (*input == ' ' || *input == '\t'))
-			input++;
-		if (*input == '$')
+		while (*str && (*str == ' ' || *str == '\t'))
+			str++;
+		if (!*str)
+			break ;
+		dollar_token(&str, &list[index]);
+		if (quote_token(&str, &list[index]))
 		{
-			tkn = dollar_token(&input);
-			addtoken(&list[index], newtoken(tkn, T_DOLLAR));
-		}
-		else
-		{
-			tkn = token(&input);
-			addtoken(&list[index], newtoken(tkn, token_type(tkn)));
-			if (!ft_strcmp(tkn, "|"))
+			if (*str == '\'' || *str == '"')
+				return (TRASH_COLLECTOR_GOES_BRRRR(list), NULL);
+			if (*str && *(str - 1) == '|')
 				index++;
 		}
+		token(&str, &list[index]);
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
 	return (list);

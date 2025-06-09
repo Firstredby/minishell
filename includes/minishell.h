@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/22 21:01:50 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:51:41 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	ll_free(t_cmd *cmd);
 t_cmd	*parser(char *input, t_env *env);
 t_cmd	*parserV3(char *input, t_env *env);
 t_token	**tokenizerV3(char *input, size_t size);
+//int	dollar_token(char **input, t_token **list);
+int		ft_ismetachr(int c);
 
 //utils
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -63,3 +65,4 @@ int		env_strcmp(const char *s1, const char *s2);
 void	show_token(char *input);
 size_t	command_count(char *input);
 void	show_args(t_cmd *cmd);
+void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list);
