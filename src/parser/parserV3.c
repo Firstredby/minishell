@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/07 17:48:04 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:43:45 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ t_cmd	*parserV3(char *input, t_env *env)
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			cmds = cmds->next;
 		}
+		//cmds->next = NULL;
 	}
 	TRASH_COLLECTOR_GOES_BRRRR(tokens);
 	return (head);

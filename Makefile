@@ -24,7 +24,10 @@ SOURCES = src/main.c \
 		  src/utils/env_strcmp.c \
 		  src/parser/tokenizer.c \
 		  src/utils/debug_menu.c \
-		  src/parser/parserV3.c
+		  src/parser/parserV3.c \
+		  src/redirection/handle_redirv2.c \
+		  src/utils/ft_itoa.c \
+		  src/utils/create_filename.c
 
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

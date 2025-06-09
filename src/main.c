@@ -102,9 +102,61 @@ int main(int argc, char **argv, char **envp)
         show_token(input);
 		//cmds = parserV3(input, env);
         //printf("test0\n");
-		//show_token(input);
-        //show_args(cmds);
-		continue ;
+		show_token(input);
+     
+        //char *str[] = {"cat", "-e", "a"};
+        
+        // pid_t pid;
+        // //char *str[] = {"cat", "-e", "a"};
+        // pid = fork();
+        // if (pid == 0)
+        // {
+        //     execvp(cmds->cmd, cmds->args);
+        //     exit(EXIT_FAILURE);
+        // }
+        // waitpid(pid, NULL, 0);
+        // execvp(cmds->cmd, cmds->args);
+        //exe_cmd(cmds);
+        // t_cmd *cmd_loops = cmds;
+        // // while (cmds)
+        // // {
+        // //     //printf("cmd:%s\n", cmds->cmd);
+        // //     cmds = cmds->next;
+        // //     printf("Original pointer:%p\n", cmds);
+        // // }
+        // while (cmd_loops)
+        // {
+        //     cmd_loops = cmd_loops->next;
+        //     printf("pointer:%p\n", cmd_loops);
+        // }
+        // continue;
+        exe_prep(cmds);
+        // int i_loop = 1;
+        
+        // while (cmd_loops)
+        // {
+        //     cmd_loops->node_nbr = i_loop;
+        //     cmd_loops->filename = create_filename("/tmp/heredoc",ft_itoa(cmd_loops->node_nbr), ".tmp");
+        //     // if (!cmd_loops->filename)
+        //     //     {
+        //     //         free()
+        //     //     }
+        //     handle_heredoc(cmd_loops);
+        //     i_loop++;
+        //     cmd_loops = cmd_loops->next;
+        // }
+        show_args(cmds);
+        if(!cmds->next)
+            exe_cmd(cmds);
+        else
+            execute_pipe2(cmds);
+        /*
+         Need a soultion for the fds. I need the correct order, or we have to execute heredoc in the parser part
+        somehow and then just pass me the last fd. Heredoc function itself must be executed before the pipe calling.
+        The redirection of it musst be done after calling the pipes so it can overwrite it if needed.
+        In commands like "> b cat -e < c << test | grep s > a" the "< c" is not noticed as a redirection because the fd_in is 0.
+		*/
+         continue ;
 		////////////////////////////////////////////////////////////
         //cmds = parser(input, env);
         //printf("test\n");

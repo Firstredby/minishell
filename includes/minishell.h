@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/04 17:51:41 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:42:12 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <readline/readline.h>
 
 t_cmd	*tokenizer(char *input, t_env *env);
 int ft_echo(t_cmd *cmd);
@@ -47,6 +48,11 @@ t_cmd	*parserV3(char *input, t_env *env);
 t_token	**tokenizerV3(char *input, size_t size);
 //int	dollar_token(char **input, t_token **list);
 int		ft_ismetachr(int c);
+void    handle_redirV2(t_cmd *cmd);
+void    handle_heredoc(t_cmd *cmd);
+void    handle_heredocv2(t_cmd *cmd);
+char    *create_filename(char *path, char *id, char *type);
+void    exe_prep(t_cmd *cmd);
 
 //utils
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -66,3 +72,4 @@ void	show_token(char *input);
 size_t	command_count(char *input);
 void	show_args(t_cmd *cmd);
 void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list);
+char	*ft_itoa(int n);
