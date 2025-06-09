@@ -80,6 +80,8 @@ int main(int argc, char **argv, char **envp)
             exe_cmd(cmds);
         else
             execute_pipe2(cmds);
+        show_args(cmds);
+        free(cmds);
 }
 	rl_clear_history();
     return (g_exit_status);

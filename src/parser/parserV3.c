@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/09 18:43:45 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:44:43 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,12 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir)
 		fd = cmd->fd_out;
 	if (redir == T_RED_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
-    else
+	else
 		flags = O_WRONLY | O_CREAT | O_APPEND;
     if (fd)
 		close(fd);
-    fd = open(token->next->token, flags, 0644);
-	if (fd == -1)
+    cmd->fd_out = open(token->next->token, flags, 0644);
+	if (cmd->fd_out == -1)
         perror("fd");//err
 }
 
@@ -119,17 +119,23 @@ void    redir(t_token *token, t_cmd *cmd)
 		{
 			if (!token->next || (token->next->type != T_WORD
 				&& token->next->type != T_DOLLAR))
+			{
                 return ; // err
+			}
 			if (token->type == T_HEREDOC)
             {
 				cmd->limiter[i++] = ft_strdup(token->next->token);
                 if (cmd->fd_in)
+				{
 					close(cmd->fd_in);
+				}
                 cmd->fd_in = 0;
 			}
-            else
+            else if(token->type != T_HEREDOC)
+			{
 				open_fd(token, cmd, token->type);
-            token->next->type = T_RED_TARGET;
+			}
+			token->next->type = T_RED_TARGET;
 		}
         token = token->next;
 	}

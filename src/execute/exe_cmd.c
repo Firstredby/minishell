@@ -6,11 +6,12 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/06 18:09:27 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/09 19:47:56 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <unistd.h>
 
 
 void    exe_prep(t_cmd *cmd)

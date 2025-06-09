@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 18:51:38 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/09 19:48:13 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,6 @@ void    handle_redirV2(t_cmd *cmd)
     {
         dup2(cmd->fd_in, STDIN_FILENO);
         close(cmd->fd_in);
-        close(cmd->fd);
+        //close(cmd->fd);
     }
 }
