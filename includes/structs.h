@@ -3,12 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/25 14:44:38 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/07 15:31:58 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <sys/types.h>
+
+typedef struct s_pipe
+{
+    int     cmd_count;
+    int     pipe_count;
+    int     **fds;
+    pid_t   *pid;
+}   t_pipe;
+
 
 typedef struct s_env
 {
@@ -29,7 +40,10 @@ typedef struct s_cmd
     int				fd_in;
     int				fd_out;
 	char			*limiter;
+    int             node_nbr;
+    char            *filename;
     t_env			*env;
+    t_pipe          *pipe;
 	struct s_cmd	*next;
 }   t_cmd;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/05/26 15:37:27 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:02:40 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ t_cmd	*parserV3(char *input, t_env *env)
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			cmds = cmds->next;
 		}
+		//cmds->next = NULL;
 	}
 	return (head);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/22 21:01:50 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:49:34 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <readline/readline.h>
 
 t_cmd	*tokenizer(char *input, t_env *env);
 int ft_echo(t_cmd *cmd);
@@ -45,6 +46,11 @@ void	ll_free(t_cmd *cmd);
 t_cmd	*parser(char *input, t_env *env);
 t_cmd	*parserV3(char *input, t_env *env);
 t_token	**tokenizerV3(char *input, size_t size);
+void    handle_redirV2(t_cmd *cmd);
+void    handle_heredoc(t_cmd *cmd);
+void    handle_heredocv2(t_cmd *cmd);
+char    *create_filename(char *path, char *id, char *type);
+void    exe_prep(t_cmd *cmd);
 
 //utils
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -63,3 +69,4 @@ int		env_strcmp(const char *s1, const char *s2);
 void	show_token(char *input);
 size_t	command_count(char *input);
 void	show_args(t_cmd *cmd);
+char	*ft_itoa(int n);
