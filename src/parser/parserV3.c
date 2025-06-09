@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/09 19:44:43 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/09 19:55:03 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,22 +119,16 @@ void    redir(t_token *token, t_cmd *cmd)
 		{
 			if (!token->next || (token->next->type != T_WORD
 				&& token->next->type != T_DOLLAR))
-			{
                 return ; // err
-			}
 			if (token->type == T_HEREDOC)
             {
 				cmd->limiter[i++] = ft_strdup(token->next->token);
                 if (cmd->fd_in)
-				{
 					close(cmd->fd_in);
-				}
                 cmd->fd_in = 0;
 			}
-            else if(token->type != T_HEREDOC)
-			{
+            else
 				open_fd(token, cmd, token->type);
-			}
 			token->next->type = T_RED_TARGET;
 		}
         token = token->next;

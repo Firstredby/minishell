@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/09 18:55:35 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:01:33 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ int	token(char **input, t_token **list)
 	token = ft_substr(*input, 0, i);
 	if (!token)
 		perror("malloc");//err
-	*input += i + 1;
+	*input += i;
 	addtoken(list, newtoken(token, token_type(token)));
 	return (1);
 }
