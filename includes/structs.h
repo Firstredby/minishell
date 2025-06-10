@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 18:46:16 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/10 19:28:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct s_pipe
     pid_t   *pid;
 }   t_pipe;
 
-
 typedef struct s_env
 {
     char    *key;
@@ -30,7 +29,6 @@ typedef struct s_env
     char    **envp;
     char    **exported_envs;
 }   t_env;
-
 
 typedef struct s_cmd
 {
@@ -63,7 +61,14 @@ typedef enum e_token_type {
 
 typedef struct s_token
 {
-	char			*token;
+    char			*token;
 	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_data
+{
+    t_env   *env;
+    t_cmd   *cmd;
+    t_token **token;
+}   t_data;
