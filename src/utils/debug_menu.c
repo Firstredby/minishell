@@ -29,11 +29,8 @@ void	show_args(t_cmd *cmd)
 	printf("----------end of list----------\n");
 }
 
-void	show_token(char *input)
+void	show_token(t_token **token)
 {
-	t_token **token = tokenizerV3(input, command_count(input));
-	if (!token)
-		return ;
 	for (int i = 0; *(token + i);)
 	{
 		t_token *curr = token[i];
