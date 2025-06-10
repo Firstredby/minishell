@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 19:47:56 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/10 18:09:24 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    exe_prep(t_cmd *cmd)
     while (cmd)
     {
         cmd->node_nbr = i_loop;
-        cmd->filename = create_filename("/tmp/heredoc",ft_itoa(cmd->node_nbr), ".tmp");
+        cmd->filename = create_filename("/tmp/heredoc", ft_itoa(cmd->node_nbr), ".tmp");
         // if (!cmd->filename)
         //     {
         //         free()
