@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:26:58 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/22 18:34:24 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:47:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@ size_t  ft_strlen(const char *s)
     i = 0;
 	if (!s || !*s)
 		return (0);
-	//printf("%c\n", *(s + i));
     while (*(s + i))
-	{
         i++;
-		
-	}
     return (i);
 }
