@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 18:42:12 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:10:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,29 @@
 #include <stdint.h>
 #include <readline/readline.h>
 
-t_cmd	*tokenizer(char *input, t_env *env);
+//tokenizer_utils
+int	            ft_ismetachr(int c);
+t_token_type	token_type(char *type);
+t_token	        *newtoken(char *token, t_token_type type);
+void	        addtoken(t_token **list, t_token *new);
+
+//tokenizer
+t_token	**tokenizerV3(char *input, size_t size);
+
+//parser_utils
+char	*replace_string(char *str, char *var, int i, int k);
+char    *env_from_list(t_env *env, char *key);
+void	open_fd(t_token *token, t_cmd *cmd, int redir);
+
+//parser
+t_cmd	*parserV3(t_token **tokens, t_env *env);
+
+//cleaner
+void    TRASH_COLLECTOR_GOES_BRRRR(t_token **list);
+void    cmd_cleaner(t_cmd *cmd);
+void    env_cleaner(t_env *env);
+void    free_all(t_cmd *cmd, t_env *env, t_token **token);
+
 int ft_echo(t_cmd *cmd);
 int ft_pwd(t_cmd *cmd);
 int ft_cd(t_cmd *cmd);
@@ -43,11 +65,6 @@ int ft_export(t_cmd *cmd);
 int    ft_unset(t_cmd *cmd);
 void    execute_pipe2(t_cmd *cmd);
 void	ll_free(t_cmd *cmd);
-t_cmd	*parser(char *input, t_env *env);
-t_cmd	*parserV3(char *input, t_env *env);
-t_token	**tokenizerV3(char *input, size_t size);
-//int	dollar_token(char **input, t_token **list);
-int		ft_ismetachr(int c);
 void    handle_redirV2(t_cmd *cmd);
 void    handle_heredoc(t_cmd *cmd);
 void    handle_heredocv2(t_cmd *cmd);
@@ -62,14 +79,17 @@ char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_memcpy(void *dest, const void *src, size_t n);
 long	ft_atoi(const char *str);
 int		ft_isdigit(int c);
+int     ft_isalpha(int c);
+int     ft_isalnum(int c);
 void	ft_putstr_fd(char *s, int fd);
 size_t	ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 char	**ft_split(char const *s, char c);
 int		env_handle(char **env, t_env **env_head);
 int		env_strcmp(const char *s1, const char *s2);
-void	show_token(char *input);
 size_t	command_count(char *input);
-void	show_args(t_cmd *cmd);
-void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list);
 char	*ft_itoa(int n);
+
+//debug panel
+void	show_args(t_cmd *cmd);
+void	show_token(t_token **token);
