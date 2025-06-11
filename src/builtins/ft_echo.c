@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:11:45 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/07 15:40:02 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/11 22:51:14 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int    ft_echo(t_cmd *cmd)
     while (cmd->args[i])
     {
         ft_putstr_fd(cmd->args[i], 1);
-        if (cmd->args[i + 1])
-            ft_putstr_fd(" ", 1);
+        // if (cmd->args[i + 1])
+        //     ft_putstr_fd(" ", 1);
         i++;
     }
     if (!n_flag)

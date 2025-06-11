@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/14 16:30:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/11 22:50:50 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 
 int     is_builtin(t_cmd *cmd)
 {
-    if (!ft_strcmp(cmd->cmd, "echo"))
+    if (!ft_strcmp(cmd->cmd, "echo") || !ft_strcmp(cmd->cmd, "echo "))
         return (1);
-    if (!ft_strcmp(cmd->cmd, "pwd"))
+    if (!ft_strcmp(cmd->cmd, "pwd") || !ft_strcmp(cmd->cmd, "pwd "))
         return (1);
-    if (!ft_strcmp(cmd->cmd, "cd"))
+    if (!ft_strcmp(cmd->cmd, "cd") || !ft_strcmp(cmd->cmd, "cd "))
         return (1);
-    if (!ft_strcmp(cmd->cmd, "env"))
+    if (!ft_strcmp(cmd->cmd, "env") || !ft_strcmp(cmd->cmd, "env "))
         return (1);
-    if (!ft_strcmp(cmd->cmd, "export"))
+    if (!ft_strcmp(cmd->cmd, "export") || !ft_strcmp(cmd->cmd, "export "))
         return (1);
-    if (!ft_strcmp(cmd->cmd, "exit"))
+    if (!ft_strcmp(cmd->cmd, "exit") || !ft_strcmp(cmd->cmd, "exit "))
         return (1);
     return (0);
 }
 
 void    run_builtin(t_cmd *cmd)
 {
-    if (!ft_strcmp(cmd->cmd, "echo"))
+    if (!ft_strcmp(cmd->cmd, "echo") || !ft_strcmp(cmd->cmd, "echo "))
         ft_echo(cmd);
-    if (!ft_strcmp(cmd->cmd, "pwd"))
+    if (!ft_strcmp(cmd->cmd, "pwd") || !ft_strcmp(cmd->cmd, "pwd "))
         ft_pwd(cmd);
-    if (!ft_strcmp(cmd->cmd, "cd"))
+    if (!ft_strcmp(cmd->cmd, "cd") || !ft_strcmp(cmd->cmd, "cd "))
         ft_cd(cmd);
-    if (!ft_strcmp(cmd->cmd, "env"))
+    if (!ft_strcmp(cmd->cmd, "env") || !ft_strcmp(cmd->cmd, "env "))
         ft_env(cmd);
-    if (!ft_strcmp(cmd->cmd, "export"))
+    if (!ft_strcmp(cmd->cmd, "export") || !ft_strcmp(cmd->cmd, "export "))
         ft_export(cmd);
     return;
     // if (!ft_strcmp(cmd->cmd, "exit"))
