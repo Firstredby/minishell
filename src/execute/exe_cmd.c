@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/11 19:43:14 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/11 22:37:49 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void    exe_cmd(t_cmd *cmd)
     else
     {
         waitpid(pid, NULL, 0);
-        //printf("Child process %d finished\n", pid);
+        printf("Child process %d finished\n", pid);
          if (cmd->fd_in > 2) close(cmd->fd_in);
          if (cmd->fd_out > 2) close(cmd->fd_out);
          if (cmd->fd > 2) close(cmd->fd_out);

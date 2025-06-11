@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/11 21:21:20 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/11 22:34:48 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ int	token(char **input, t_token **list)
 		(*input)++;
 		return (addtoken(list, newtoken(token, token_type(token))), 0);
 	}
-	while (!ft_ismetachr(*(*input + i)) && **input != '|')
-		i++;
+	while (!ft_ismetachr(*(*input + i)))
+		if (*(*input + i++) == ' ')
+			break ;
 	token = ft_substr(*input, 0, i);
 	if (!token)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
 	*input += i;
-	addtoken(list, newtoken(token, token_type(token)));
-	return (0);
+	return (addtoken(list, newtoken(token, token_type(token))), 0);
 }
 
 int	quote_token(char **input, t_token **list)
@@ -126,17 +126,18 @@ t_token	**tokenizerV3(char *input, size_t size)
 	str = input;
 	while (str && *str)
 	{
-		while (*str && (*str == ' ' || *str == '\t'))
+		while (*str && *str == ' ')
 			str++;
+		//printf("skip to %s\n", str);
+		if (token(&str, &list[index]))
+			return (NULL);
+		//printf("after token %s\n", str);
+		if (*str && *(str - 1) == '|')
+			index++;
 		if (dollar_token(&str, &list[index]))
 			return (NULL);
 		if (quote_token(&str, &list[index]))
 			return (NULL);
-		if (token(&str, &list[index]))
-			return (NULL);
-		if (*str && *(str - 1) == '|')
-			index++;
-		//printf("im stuck at %s\n", str);
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
 	return (list);

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/11 21:27:07 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/11 22:06:16 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char	*dquote_expansion(t_token *token, t_env *env)
 		if (token->token[i++] == '$')
 		{
 			while (!ft_ismetachr(token->token[i + k])
-				&& token->token[i + k] != '|')
+				&& token->token[i + k] != '|' && token->token[i + k] != ' ')
 				k++;
 			if (k == 0)
 				token->token = replace_string(token->token, NULL, i + 1, k);
