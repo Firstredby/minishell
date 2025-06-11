@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/10 18:12:16 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/11 21:14:39 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void    free2d(char **list)
 {
     int i;
 
-    if (!list)
+    if (!list || !*list)
         return ;
     i = 0;
     while (list[i])
