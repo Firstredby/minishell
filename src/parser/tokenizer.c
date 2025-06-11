@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/10 22:43:14 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/11 21:21:20 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,16 @@ int	dollar_token(char **input, t_token **list)
 	i = 1;
 	if (**input != '$')
 		return (0);
-	if (*(*input + i) == '"' || *(*input + i) == '\'')
-		while(*(*input + i) && *(*input + i) != **input)
-			i++;
-	else
-		while ((ft_isalnum(*(*input + i)) || *(*input + i) == '_'))
-			i++;
-	if ((*(*input + 1) == '"' || *(*input + 1) == '\'')
-		&& *(*input + i - 1) != *(*input + 1))
-		return (perror("minishell: no closing quote\n"),
-			TRASH_COLLECTOR_GOES_BRRRR(list), 1);
-	if (i == 1)
+	while ((ft_isalnum(*(*input + i)) || *(*input + i) == '_')
+		|| *(*input + i) == '?')
+		i++;
+	if (i == 1 && (*(*input + i) == '"' || *(*input + i) == '\''))
+		return ((*input)++, addtoken(list,
+			newtoken(ft_calloc(1, 1), T_WORD)), 0);
+	else if (i == 1)
 		return ((*input)++, addtoken(list,
 			newtoken(ft_strdup("$"), T_WORD)), 0);
-	dollar_var = ft_substr(*input, 1, i - 1);
+	dollar_var = ft_substr(*input, 1, i);
 	if (!dollar_var)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
@@ -69,7 +65,7 @@ int	token(char **input, t_token **list)
 	int		i;
 
 	i = 0;
-	if (!*input || ft_ismetachr(*(*input + i)))
+	if (!*input || ft_ismetachr(**input))
 		return (0);
 	if (**input == '<' || **input == '>')
 		return (token = redirs(input, **input), 
@@ -82,7 +78,7 @@ int	token(char **input, t_token **list)
 		(*input)++;
 		return (addtoken(list, newtoken(token, token_type(token))), 0);
 	}
-	while (!ft_ismetachr(*(*input + i)))
+	while (!ft_ismetachr(*(*input + i)) && **input != '|')
 		i++;
 	token = ft_substr(*input, 0, i);
 	if (!token)
@@ -140,7 +136,7 @@ t_token	**tokenizerV3(char *input, size_t size)
 			return (NULL);
 		if (*str && *(str - 1) == '|')
 			index++;
-		printf("im stuck at %s\n", str);
+		//printf("im stuck at %s\n", str);
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
 	return (list);

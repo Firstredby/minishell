@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/10 22:42:10 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/11 21:27:07 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,28 @@ size_t	command_count(char *input)
 	return (result + 1);
 }
 
-int	type_size(t_token *token, t_token_type type)
+int	cmd_size(t_token *token)
 {
 	int	size;
 
 	size = 0;
 	while (token && token->type != T_PIPE)
 	{
-		if (token->type == type)
+		if (token->type == T_WORD)
+			size++;
+		token = token->next;
+	}
+	return (size);
+}
+
+int	lim_size(t_token *token)
+{
+	int	size;
+
+	size = 0;
+	while (token && token->type != T_PIPE)
+	{
+		if (token->type == T_HEREDOC)
 			size++;
 		token = token->next;
 	}
@@ -46,7 +60,7 @@ void	command(t_token *token, t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	cmd->args = ft_calloc(sizeof(char *), type_size(token, token->type) + 1);
+	cmd->args = ft_calloc(sizeof(char *), cmd_size(token) + 1);
 	if (!cmd->args)
 		return (perror("malloc"));//err
 	while (token && token->type != T_PIPE && token->type != T_EOF)
@@ -72,7 +86,7 @@ void    redir(t_token *token, t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	cmd->limiter = ft_calloc(type_size(token, token->type) + 1, sizeof(char *));
+	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
     while (token && token->type != T_PIPE)
 	{
         if (token->type == T_RED_IN || token->type == T_HEREDOC
@@ -98,27 +112,11 @@ void    redir(t_token *token, t_cmd *cmd)
 
 void	expand_variables(t_token *token, t_env *env)
 {
-	char	*tmp;
-
 	while (token && token->type != T_PIPE)
 	{
 		if (token->type == T_DOLLAR)
 		{
-			tmp = ft_substr(token->token, 1, ft_strlen(token->token) - 2);
-			if (!tmp)
-				return ;
-			if (*token->token == '\'')
-			{
-				free(token->token);
-				token->token = tmp;
-			}
-			else if (*token->token == '"')
-			{
-				free(token->token);
-				token->token = env_from_list(env, tmp);
-			}
-			if (!token->token)
-				return (perror("malloc"));
+			token->token = env_from_list(env, token->token);
 			token->type = T_WORD;
 		}
 		token = token->next;
@@ -135,10 +133,14 @@ char	*dquote_expansion(t_token *token, t_env *env)
 	while (token->token[i])
 		if (token->token[i++] == '$')
 		{
-			while (!ft_ismetachr(token->token[i + k]))
+			while (!ft_ismetachr(token->token[i + k])
+				&& token->token[i + k] != '|')
 				k++;
-			token->token = replace_string(token->token, 
-				env_from_list(env, ft_substr(token->token, i, k)), i, k);
+			if (k == 0)
+				token->token = replace_string(token->token, NULL, i + 1, k);
+			else
+				token->token = replace_string(token->token,
+					env_from_list(env, ft_substr(token->token, i, k)), i, k);
 			if (!token->token)
 				return (NULL);
 			break ;
@@ -164,11 +166,12 @@ int	expand_quotes(t_token *token, t_env *env)
 		}
 		else if (token->type == T_SQUOTE)
 		{
-			tmp = ft_substr(token->token, 1, ft_strlen(token->token) - 1);
+			tmp = ft_substr(token->token, 0, ft_strlen(token->token));
 			if (!tmp)
 				return (1); //err
 			free(token->token);
 			token->token = tmp;
+			token->type = T_WORD;
 		}
 		token = token->next;
 	}
@@ -194,7 +197,6 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		redir(tokens[i], cmds);
 		//check for spaces to put them in
 		command(tokens[i], cmds);
-		//printf("i'm here\n");
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);

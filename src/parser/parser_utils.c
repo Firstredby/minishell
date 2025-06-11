@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:44:46 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/10 22:39:47 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/11 21:26:40 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*replace_string(char *str, char *var, int i, int k)
 		newstr[str_pos] = str[str_pos];
 		str_pos++;
 	}
-	while (var[var_pos])
+	while (var && var[var_pos])
 		newstr[str_pos++] = var[var_pos++];
 	while (str[i + k])
 		newstr[str_pos++] = str[i + k++];
@@ -45,22 +45,24 @@ char    *env_from_list(t_env *env, char *key)
 	t_env *head;
 
 	head = env;
+	if (!ft_strcmp(key, "?"))
+	{
+		free(key);
+		key = ft_itoa(0);
+		return (key);
+	}
 	while (head)
 	{
 		if (!ft_strcmp(head->key, key))
 		{
 			free(key);
 			key = ft_strdup(head->value);
-			if (!key)
-				return (NULL);//err
 			return (key);
 		}
 		head = head->next;
 	}
 	free(key);
 	key = ft_calloc(1, 1);
-	if (!key)
-		return (NULL);//err
 	return (key);
 }
 
