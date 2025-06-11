@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 13:19:28 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/11 19:46:28 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void execute_pipe(t_cmd *cmd1, t_cmd *cmd2)
     
     waitpid(pid1, &status, 0);
     waitpid(pid2, &status, 0);
-    printf("Pipe executed successfully\n");
+    //printf("Pipe executed successfully\n");
 }
 
 static void    alloc_pipe(t_cmd *cmd)
