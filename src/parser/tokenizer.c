@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/12 16:54:37 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:37:48 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	dollar_token(char **input, t_token **list)
 	i = 1;
 	if (**input != '$')
 		return (0);
-	while (((ft_isalnum(*(*input + i)) || *(*input + i) == '_')
-		|| *(*input + i) == '?') && !ft_ismetachr(*(*input + i + 1)))
+	while ((ft_isalnum(*(*input + i)) || *(*input + i) == '_')
+		|| (*(*input + i) == '?' || !ft_ismetachr(*(*input + i + 1))))
 		i++;
 	if (i == 1 && (*(*input + i) == '"' || *(*input + i) == '\''))
 		return ((*input)++, addtoken(list,
