@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/11 22:37:49 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:50:43 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void    exe_cmd(t_cmd *cmd)
         {
             execvp(cmd->cmd, cmd->args);
         }
-        printf("%d finished\n", pid);
+        //printf("%d finished\n", pid);
         exit(EXIT_FAILURE);
     }
     else
     {
         waitpid(pid, NULL, 0);
-        printf("Child process %d finished\n", pid);
+        //printf("Child process %d finished\n", pid);
          if (cmd->fd_in > 2) close(cmd->fd_in);
          if (cmd->fd_out > 2) close(cmd->fd_out);
          if (cmd->fd > 2) close(cmd->fd_out);
