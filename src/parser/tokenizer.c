@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/11 22:34:48 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:54:37 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	dollar_token(char **input, t_token **list)
 	i = 1;
 	if (**input != '$')
 		return (0);
-	while ((ft_isalnum(*(*input + i)) || *(*input + i) == '_')
-		|| *(*input + i) == '?')
+	while (((ft_isalnum(*(*input + i)) || *(*input + i) == '_')
+		|| *(*input + i) == '?') && !ft_ismetachr(*(*input + i + 1)))
 		i++;
 	if (i == 1 && (*(*input + i) == '"' || *(*input + i) == '\''))
 		return ((*input)++, addtoken(list,
@@ -56,7 +56,7 @@ int	dollar_token(char **input, t_token **list)
 	if (!dollar_var)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
-	return (*input += i, 0);
+	return (*input += i + 1, 0);
 }
 
 int	token(char **input, t_token **list)
@@ -128,10 +128,8 @@ t_token	**tokenizerV3(char *input, size_t size)
 	{
 		while (*str && *str == ' ')
 			str++;
-		//printf("skip to %s\n", str);
 		if (token(&str, &list[index]))
 			return (NULL);
-		//printf("after token %s\n", str);
 		if (*str && *(str - 1) == '|')
 			index++;
 		if (dollar_token(&str, &list[index]))
