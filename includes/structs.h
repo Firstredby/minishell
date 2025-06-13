@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/12 17:59:52 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:29:15 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_cmd
     int				fd_in;
     int				fd_out;
 	char			**limiter;
-    t_env			*env;//
     int             node_nbr;
     char            *filename;
     t_pipe          *pipe;
