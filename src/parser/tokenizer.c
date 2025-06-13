@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 20:55:18 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:30:34 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,20 @@ char	*redirs(char **input, char sign)
 	return (NULL);
 }
 
+void	set_space(char **input, t_token **list)
+{
+	char	*space;
+
+	if (*(*input) == ' ' || *(*input) == '\t')
+	{
+		space = ft_strdup(" ");
+		if (!space)
+			return (ft_putstr_fd("malloc error", 2));
+		*input += 1;
+		addtoken(list, newtoken(space, T_WORD));
+	}
+}
+
 int	dollar_token(char **input, t_token **list)
 {
 	int		i;
@@ -55,12 +69,9 @@ int	dollar_token(char **input, t_token **list)
 	if (!dollar_var)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
-	return (*input += i, 0);
-}
-
-void	set_space()
-{
-	
+	*input += i;
+	set_space(input, list);
+	return (0);
 }
 
 int	token(char **input, t_token **list)
@@ -87,10 +98,8 @@ int	token(char **input, t_token **list)
 	token = ft_substr(*input, 0, i);
 	if (!token)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
-	if (*(*input + i) == ' ')
-		return (addtoken(list, newtoken(ft_strdup(" "), token_type(token))), *input += ++i, 0);
-	else
-		return (*input += i, addtoken(list, newtoken(token, token_type(token))), 0);
+	*input += i;
+	return (addtoken(list, newtoken(token, token_type(token))), set_space(input, list), 0);
 }
 
 int	quote_token(char **input, t_token **list)
@@ -117,6 +126,7 @@ int	quote_token(char **input, t_token **list)
 	else
 		addtoken(list, newtoken(token, T_DQUOTE));
 	*input += i + 1;
+	set_space(input, list);
 	return (0);
 }
 

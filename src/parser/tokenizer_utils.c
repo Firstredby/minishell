@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/11 22:06:29 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:08:13 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ t_token_type	token_type(char *type)
 int	ft_ismetachr(int c)
 {
 	return (c == '\0' || c == '\t' || c == '$'
-		|| c == '"' || c == '\'');
+		|| c == '"' || c == '\'' || c == ' ');
 }
