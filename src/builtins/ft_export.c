@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/11 11:28:02 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/13 22:06:45 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
     if(cmd->args[0] && !cmd->args[1])
     {
         env->exported_envs = NULL;
-        printf("TEST\n");
+        //printf("TEST\n");
         count = 0;
         env_loop = env;
         while (env_loop)
@@ -96,7 +96,7 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
         while (env->exported_envs[i])
         {
             printf("declare -x %s\n", env->exported_envs[i]);
-            printf("INDEX:%d\n", i);
+            //printf("INDEX:%d\n", i);
             //free(env->exported_envs[i]);
             i++;
         }
@@ -104,7 +104,7 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
         //env->exported_envs = NULL;
     }
     else {
-        printf("WHAT\n");
+        //printf("WHAT\n");
         add_export(cmd, env);
     }
     return (0);

@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 21:08:13 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:58:42 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	addtoken(t_token **list, t_token *new)
+void	addtoken(t_token **list, t_token *node)
 {
 	t_token	*head;
 
-	if (!new)
+	if (!node)
 		return ;
 	if (!*list)
-		*list = new;
+		*list = node;
 	else
 	{
 		head = *list;
 		while (head->next)
 			head = head->next;
-		head->next = new;
+		head->next = node;
 	}
 }
 

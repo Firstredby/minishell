@@ -92,7 +92,7 @@ int main(int argc, char **argv, char **envp)
         if(!cmds->next)
             exe_cmd(cmds, env);
         else
-            execute_pipe2(cmds);
+            execute_pipe2(cmds, env);
         free(input);
         cmd_cleaner(cmds);
 }

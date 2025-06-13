@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 21:26:16 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:59:00 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,6 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 	head = cmds;
 	while (tokens && tokens[i]->type != T_EOF)
 	{
-		cmds->env = env;
 		expand_quotes(tokens[i], env);
 		expand_variables(tokens[i], env);
 		redir(tokens[i], cmds);
