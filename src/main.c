@@ -46,7 +46,8 @@ int main(int argc, char **argv, char **envp)
    // t_cmd *cmd2 = NULL;
     t_env *env = NULL;
     t_cmd *cmds = NULL;
-    
+    t_token **token = NULL;
+    t_data  data;
 
     (void)argc;
     (void)argv;
@@ -71,35 +72,31 @@ int main(int argc, char **argv, char **envp)
             continue;
         }
         if (!env)
-            env_handle(envp, &env);
-        //printf("envs%s");
-		cmds = parserV3(input, env);
-        //printf("test0\n");
-		show_token(input);
+        {
+            if (!env_handle(envp, &env))
+                exit(12);
+            data.env = env;
+        }
+        token = tokenizerV3(input, command_count(input));
+        if (!token)
+            (env_cleaner(env), exit(12));
+        data.token = token;
+		//show_token(token);
+        cmds = parserV3(token, env);
+        if (!cmds)
+            (free_all(NULL, env, token), exit(12));
+        data.cmd = cmds;
+        //show_args(cmds);
+        (void) data;
         exe_prep(cmds);
-        show_args(cmds);
         if(!cmds->next)
             exe_cmd(cmds, env);
         else
-            execute_pipe2(cmds, env);
-        //show_args(cmds);
-        // int i = 0;
-        // while (env->exported_envs[i])
-        // {
-        //     if(env->exported_envs[i])
-        //         free(env->exported_envs[i++]);
-        // }       
-        //free(env->exported_envs);
-        //env->exported_envs = NULL;
-        // t_env *env_l = env;
-        // while (env_l)
-        // {
-        //     printf("Test %s\n", env_l->both);
-        //     env_l = env_l->next;
-        // }
-        //free(cmds);
-
+            execute_pipe2(cmds);
+        free(input);
+        cmd_cleaner(cmds);
 }
+    free_all(NULL, env, NULL);
 	rl_clear_history();
     return (g_exit_status);
 }

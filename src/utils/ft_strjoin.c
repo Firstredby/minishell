@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/09 11:11:45 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/12 21:24:37 by ishchyro         ###   ########.fr       */
+/*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
+/*   Updated: 2025/06/12 21:17:33 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int    ft_echo(t_cmd *cmd)
+void	ft_strjoin_free(char **s1, char const *s2)
 {
-    int i;
-    int n_flag;
+	char	*newstring;
+	int		i;
+	int		j;
 
-    i = 1;
-    n_flag = 0;
-    if (cmd->args[i] && !ft_strcmp(cmd->args[i], "-n"))
-    {
-        n_flag = 1;
-        i++;
-    }
-    while (cmd->args[i])
-    {
-        ft_putstr_fd(cmd->args[i], 1);
-        if (cmd->args[i + 1])
-            ft_putstr_fd(" ", 1);
-        i++;
-    }
-    if (!n_flag)
-        ft_putstr_fd("\n", 1);
-    return (0);
+	if (!s1 || !*s1)
+	{
+		*s1 = ft_strdup(s2);
+		return ;
+	}
+	newstring = ft_calloc(ft_strlen(*s1) + ft_strlen(s2) + 1, sizeof(char));
+	i = 0;
+	j = 0;
+	while ((*s1)[j])
+		newstring[i++] = (*s1)[j++];
+	j = 0;
+	while (s2[j] && newstring)
+		newstring[i++] = s2[j++];
+	free(*s1);
+	*s1 = newstring;
 }

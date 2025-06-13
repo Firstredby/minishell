@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 21:26:38 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/13 21:54:26 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    exe_prep(t_cmd *cmd)
     while (cmd)
     {
         cmd->node_nbr = i_loop;
-        cmd->filename = create_filename("/tmp/heredoc",ft_itoa(cmd->node_nbr), ".tmp");
+        cmd->filename = create_filename("/tmp/heredoc", ft_itoa(cmd->node_nbr), ".tmp");
         // if (!cmd->filename)
         //     {
         //         free()
@@ -51,13 +51,13 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
             execvp(cmd->cmd, cmd->args);
             perror("Exevp failed");
         }
-        printf("%d finished\n", pid);
+        //printf("%d finished\n", pid);
         exit(EXIT_FAILURE);
     }
     else
     {
         waitpid(pid, NULL, 0);
-        printf("Child process %d finished\n", pid);
+        //printf("Child process %d finished\n", pid);
          if (cmd->fd_in > 2) close(cmd->fd_in);
          if (cmd->fd_out > 2) close(cmd->fd_out);
          if (cmd->fd > 2) close(cmd->fd_out);

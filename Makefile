@@ -6,7 +6,7 @@ SOURCES = src/main.c \
 		  src/builtins/ft_pwd.c \
 		  src/builtins/builtin.c \
 		  src/utils/ft_atoi.c \
-		  src/utils/ft_isdigit.c \
+		  src/utils/ft_isalnum.c \
 		  src/utils/ft_putstr_fd.c \
 		  src/utils/ft_strcmp.c \
 		  src/utils/ft_strlen.c \
@@ -27,7 +27,12 @@ SOURCES = src/main.c \
 		  src/parser/parserV3.c \
 		  src/redirection/handle_redirv2.c \
 		  src/utils/ft_itoa.c \
-		  src/utils/create_filename.c
+		  src/utils/create_filename.c \
+		  src/utils/ft_substr.c \
+		  src/parser/tokenizer_utils.c \
+		  src/utils/cleaner.c \
+		  src/parser/parser_utils.c \
+		  src/utils/ft_strjoin.c
 
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 18:46:16 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/13 21:29:15 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct s_pipe
     pid_t   *pid;
 }   t_pipe;
 
-
 typedef struct s_env
 {
     char    *key;
@@ -31,7 +30,6 @@ typedef struct s_env
     char    **exported_envs;
 }   t_env;
 
-
 typedef struct s_cmd
 {
     char			*cmd;
@@ -40,7 +38,6 @@ typedef struct s_cmd
     int				fd_in;
     int				fd_out;
 	char			**limiter;
-    t_env			*env;//
     int             node_nbr;
     char            *filename;
     t_pipe          *pipe;
@@ -48,22 +45,29 @@ typedef struct s_cmd
 }   t_cmd;
 
 typedef enum e_token_type {
-    T_WORD,
-    T_PIPE,
-    T_RED_IN,
-    T_RED_OUT,
-    T_RED_APPEND,
-    T_HEREDOC,
-    T_EOF,
-	T_DOLLAR,
-	T_RED_TARGET,
-    T_SQUOTE,
-	T_DQUOTE
+    T_WORD = 0,
+    T_PIPE = 1,
+    T_RED_IN = 2,
+    T_RED_OUT = 3,
+    T_RED_APPEND = 4,
+    T_HEREDOC = 5,
+    T_EOF = 6,
+	T_DOLLAR = 7,
+	T_RED_TARGET = 8,
+    T_SQUOTE = 9,
+	T_DQUOTE = 10
 }   t_token_type;
 
 typedef struct s_token
 {
-	char			*token;
+    char			*token;
 	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_data
+{
+    t_env   *env;
+    t_cmd   *cmd;
+    t_token **token;
+}   t_data;

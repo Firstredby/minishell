@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/11 12:04:14 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/13 21:54:08 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int     is_builtin(t_cmd *cmd)
 {
-    if (!ft_strcmp(cmd->cmd, "echo"))
+    if (!ft_strcmp(cmd->cmd, "echo") /* || !ft_strcmp(cmd->cmd, "echo ") */)
         return (1);
-    if (!ft_strcmp(cmd->cmd, "pwd"))
+    if (!ft_strcmp(cmd->cmd, "pwd") /* || !ft_strcmp(cmd->cmd, "pwd ") */)
         return (1);
-    if (!ft_strcmp(cmd->cmd, "cd"))
+    if (!ft_strcmp(cmd->cmd, "cd")/*  || !ft_strcmp(cmd->cmd, "cd ") */)
         return (1);
-    if (!ft_strcmp(cmd->cmd, "env"))
+    if (!ft_strcmp(cmd->cmd, "env") /* || !ft_strcmp(cmd->cmd, "env ") */)
         return (1);
-    if (!ft_strcmp(cmd->cmd, "export"))
+    if (!ft_strcmp(cmd->cmd, "export") /* || !ft_strcmp(cmd->cmd, "export ") */)
         return (1);
     if (!ft_strcmp(cmd->cmd, "exit"))
         return (1);
@@ -33,11 +33,11 @@ int     is_builtin(t_cmd *cmd)
 
 void    run_builtin(t_cmd *cmd, t_env *env)
 {
-    if (!ft_strcmp(cmd->cmd, "echo"))
+    if (!ft_strcmp(cmd->cmd, "echo")/*  || !ft_strcmp(cmd->cmd, "echo ") */)
         ft_echo(cmd);
-    if (!ft_strcmp(cmd->cmd, "pwd"))
+    if (!ft_strcmp(cmd->cmd, "pwd")/*  || !ft_strcmp(cmd->cmd, "pwd ") */)
         ft_pwd(cmd);
-    if (!ft_strcmp(cmd->cmd, "cd"))
+    if (!ft_strcmp(cmd->cmd, "cd")/*  || !ft_strcmp(cmd->cmd, "cd ") */)
         ft_cd(cmd);
     if (!ft_strcmp(cmd->cmd, "env"))
         ft_env(cmd, env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/22 15:54:58 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/10 18:02:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,15 @@ t_env *env_create(char *env)
     if (env_new == NULL)
         return (NULL);
     env_new->both = ft_strdup(env);
+    if (!env_new->both)
+        return (NULL);
     env_new->key = env_strdup(env, true);
+    if (!env_new->key)
+        return (free(env_new->both), NULL);
     env_new->value = env_strdup(env, false);
+    if (!env_new->value)
+        return (free(env_new->both),
+            free(env_new->key), NULL);
     env_new->next = NULL;
     return (env_new);
 }
@@ -87,7 +94,8 @@ int    env_handle(char **env, t_env **env_head)
     i = 0;
     while (env[i])
     {
-        env_add(env_head, env[i]);
+        if (!env_add(env_head, env[i]))
+            return (env_cleaner(*env_head), 0);
         i++;
     }
     return(1);
