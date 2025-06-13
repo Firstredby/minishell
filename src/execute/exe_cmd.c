@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 19:47:56 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/09 21:26:38 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    exe_prep(t_cmd *cmd)
     }
 }
 
-void    exe_cmd(t_cmd *cmd)
+void    exe_cmd(t_cmd *cmd, t_env *env)
 {
     pid_t pid;
     
@@ -43,12 +43,13 @@ void    exe_cmd(t_cmd *cmd)
         handle_redirV2(cmd);
         if (is_builtin(cmd))
         {
-            run_builtin(cmd);
+            run_builtin(cmd, env);
             exit(0);
         }
         else
         {
             execvp(cmd->cmd, cmd->args);
+            perror("Exevp failed");
         }
         printf("%d finished\n", pid);
         exit(EXIT_FAILURE);

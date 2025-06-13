@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:38:17 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 13:27:31 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/09 20:13:46 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,10 @@ static void    ft_strroids(char *tmp, char *path, char *id, char *type)
         i++;
     }
     while (id[j])
-    {
-
-        tmp[i] = id[j];
-        i++;
-        j++;
-    }
-        j = 0;
+        tmp[i++] = id[j++];
+    j = 0;
     while(type[j])
-    {
-        tmp[i] = type[j];
-        i++;
-        j++;
-    }
+        tmp[i++] = type[j++];
 }
 
 char    *create_filename(char *path, char *id, char *type)

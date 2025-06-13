@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/09 19:48:13 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/09 20:36:42 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void    heredoc_helper(t_cmd *cmd)
 {
-    if (cmd->fd_in == 0)
+    if (cmd->fd_in == 0 && *cmd->limiter)
     {
         cmd->fd_in = open(cmd->filename, O_RDONLY);
         if (cmd->fd_in == -1)

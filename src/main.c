@@ -70,18 +70,35 @@ int main(int argc, char **argv, char **envp)
             free(input);
             continue;
         }
-        env_handle(envp, &env);
+        if (!env)
+            env_handle(envp, &env);
+        //printf("envs%s");
 		cmds = parserV3(input, env);
         //printf("test0\n");
 		show_token(input);
         exe_prep(cmds);
         show_args(cmds);
         if(!cmds->next)
-            exe_cmd(cmds);
+            exe_cmd(cmds, env);
         else
-            execute_pipe2(cmds);
-        show_args(cmds);
-        free(cmds);
+            execute_pipe2(cmds, env);
+        //show_args(cmds);
+        // int i = 0;
+        // while (env->exported_envs[i])
+        // {
+        //     if(env->exported_envs[i])
+        //         free(env->exported_envs[i++]);
+        // }       
+        //free(env->exported_envs);
+        //env->exported_envs = NULL;
+        // t_env *env_l = env;
+        // while (env_l)
+        // {
+        //     printf("Test %s\n", env_l->both);
+        //     env_l = env_l->next;
+        // }
+        //free(cmds);
+
 }
 	rl_clear_history();
     return (g_exit_status);

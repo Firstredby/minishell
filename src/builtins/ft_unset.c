@@ -6,31 +6,42 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:01:35 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/14 19:12:06 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/11 12:39:16 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int ft_unset(t_cmd *cmd)
+int ft_unset(t_cmd *cmd, t_env *env)
 {
-    int i;
-    int j;
+   // t_env *env_test = env;
+    t_env *env_temp;
 
-    i = 0;
-    while (cmd->args[i])
+    env_temp = NULL;
+    //env = env;
+    while (env)
     {
-        j = 0;
-        while (cmd->env->envp[j])
+        printf("KEY: %s\n", env->next->key);
+        if (ft_strcmp(cmd->args[1], env->next->key) == 0)
         {
-            if (ft_strcmp(cmd->args[i], cmd->env->envp[j]) == 0)
-            {
-                free(cmd->env->envp[j]);
-                cmd->env->envp[j] = NULL;
-            }
-            j++;
+            printf("BOTH: %s\n KEY: %s\n VALUE: %s\n",env->next->both, env->next->key, env->next->value);
+            free(env->next->both);
+            free(env->next->key);
+            free(env->next->value);
+            env_temp = env->next;
+            env->next = env->next->next;
+            printf("BOTH: %s\n KEY: %s\n VALUE: %s\n",env->next->both, env->next->key, env->next->value);
+            free(env_temp);
+            env_temp = NULL;
+            //return(0);
         }
-        i++;
+        env = env->next;
     }
+    // while (env_test)
+    // {
+    //     printf("Test %s\n", env_test->both);
+    //     env_test = env_test->next;
+    // }
+    
     return (0);
 }
