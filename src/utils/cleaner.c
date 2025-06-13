@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/11 21:14:39 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/12 21:05:13 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void    free2d(char **list)
     i = 0;
     while (list[i])
         free(list[i++]);
-    free(list);
     list = NULL;
 }
 

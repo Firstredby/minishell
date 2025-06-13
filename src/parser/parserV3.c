@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/11 22:06:16 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:16:13 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,33 @@ void	command(t_token *token, t_cmd *cmd)
 	{
 		if (*token->token && token->type == T_WORD)
 		{
-			cmd->args[i] = ft_strdup(token->token);
-			if (!cmd->args[i++])
-				return (perror("malloc"));//free + err	
+			ft_strjoin_free(&cmd->args[i], token->token);
+			if (token->token[ft_strlen(token->token) - 1] == ' ')
+				i++;
 		}
 		token = token->next;
 	}
 	if (cmd->args && cmd->args[0])
 	{
-		cmd->cmd = ft_strdup(cmd->args[0]);
+		if (cmd->args[0][ft_strlen(cmd->args[0]) - 1] == ' ')
+			cmd->cmd = ft_substr(cmd->args[0], 0, ft_strlen(cmd->args[0]) - 1);
+		else
+			cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
 			return (perror("malloc"));// err
 	}
+}
+
+void	collect_limiter(t_token *token, t_cmd *cmd, int index)
+{
+	if (token->next->token[ft_strlen(token->next->token) - 1] == ' ')
+		cmd->limiter[index++] = ft_substr(token->next->token, 0,
+			ft_strlen(token->next->token) - 1);
+	else
+		cmd->limiter[index++] = ft_strdup(token->next->token);
+	if (cmd->fd_in)
+		close(cmd->fd_in);
+	cmd->fd_in = 0;
 }
 
 void    redir(t_token *token, t_cmd *cmd)
@@ -89,19 +104,12 @@ void    redir(t_token *token, t_cmd *cmd)
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
     while (token && token->type != T_PIPE)
 	{
-        if (token->type == T_RED_IN || token->type == T_HEREDOC
-			|| token->type == T_RED_APPEND || token->type == T_RED_OUT)
+        if (token->type >= 2 && token->type <= 5)
 		{
-			if (!token->next || (token->next->type != T_WORD
-				&& token->next->type != T_DOLLAR))
+			if (!token->next || (token->next->type != 0 && token->next->type != 7))
                 return (ft_putstr_fd("minishell: syntax error near unexpected token", 2)); // err
 			if (token->type == T_HEREDOC)
-            {
-				cmd->limiter[i++] = ft_strdup(token->next->token);
-                if (cmd->fd_in)
-					close(cmd->fd_in);
-                cmd->fd_in = 0;
-			}
+				collect_limiter(token, cmd, i++);
             else
 				open_fd(token, cmd, token->type);
 			token->next->type = T_RED_TARGET;
@@ -137,7 +145,7 @@ char	*dquote_expansion(t_token *token, t_env *env)
 				&& token->token[i + k] != '|' && token->token[i + k] != ' ')
 				k++;
 			if (k == 0)
-				token->token = replace_string(token->token, NULL, i + 1, k);
+				token->token = replace_string(token->token, NULL, i, k);
 			else
 				token->token = replace_string(token->token,
 					env_from_list(env, ft_substr(token->token, i, k)), i, k);

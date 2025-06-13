@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/12 17:37:48 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:15:22 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	dollar_token(char **input, t_token **list)
 	i = 1;
 	if (**input != '$')
 		return (0);
-	while ((ft_isalnum(*(*input + i)) || *(*input + i) == '_')
-		|| (*(*input + i) == '?' || !ft_ismetachr(*(*input + i + 1))))
+	while (*(*input + i) && !ft_ismetachr(*(*input + i)) && *(*input + i) != ' ')
 		i++;
 	if (i == 1 && (*(*input + i) == '"' || *(*input + i) == '\''))
 		return ((*input)++, addtoken(list,
@@ -52,11 +51,11 @@ int	dollar_token(char **input, t_token **list)
 	else if (i == 1)
 		return ((*input)++, addtoken(list,
 			newtoken(ft_strdup("$"), T_WORD)), 0);
-	dollar_var = ft_substr(*input, 1, i);
+	dollar_var = ft_substr(*input, 1, i - 1);
 	if (!dollar_var)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
-	return (*input += i + 1, 0);
+	return (*input += i, 0);
 }
 
 int	token(char **input, t_token **list)
@@ -99,7 +98,7 @@ int	quote_token(char **input, t_token **list)
 	while (*(*input + i) && *(*input + i) != **input)
 		i++;
 	if (!*(*input + i) || *(*input + i) != **input)
-		return (perror("minishell: no closing quote\n"),
+		return (ft_putstr_fd("minishell: no closing quote\n", 2),
 		TRASH_COLLECTOR_GOES_BRRRR(list), 1);
 	if (*(*input + i))
 		token = ft_substr(*input, 1, i - 1);
@@ -126,7 +125,7 @@ t_token	**tokenizerV3(char *input, size_t size)
 	str = input;
 	while (str && *str)
 	{
-		while (*str && *str == ' ')
+		while (*str && (*str == ' ' || *str == '\t'))
 			str++;
 		if (token(&str, &list[index]))
 			return (NULL);

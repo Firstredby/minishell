@@ -31,7 +31,8 @@ SOURCES = src/main.c \
 		  src/utils/ft_substr.c \
 		  src/parser/tokenizer_utils.c \
 		  src/utils/cleaner.c \
-		  src/parser/parser_utils.c
+		  src/parser/parser_utils.c \
+		  src/utils/ft_strjoin.c
 
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

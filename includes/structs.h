@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/10 19:28:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/12 17:59:52 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ typedef struct s_cmd
 }   t_cmd;
 
 typedef enum e_token_type {
-    T_WORD,
-    T_PIPE,
-    T_RED_IN,
-    T_RED_OUT,
-    T_RED_APPEND,
-    T_HEREDOC,
-    T_EOF,
-	T_DOLLAR,
-	T_RED_TARGET,
-    T_SQUOTE,
-	T_DQUOTE
+    T_WORD = 0,
+    T_PIPE = 1,
+    T_RED_IN = 2,
+    T_RED_OUT = 3,
+    T_RED_APPEND = 4,
+    T_HEREDOC = 5,
+    T_EOF = 6,
+	T_DOLLAR = 7,
+	T_RED_TARGET = 8,
+    T_SQUOTE = 9,
+	T_DQUOTE = 10
 }   t_token_type;
 
 typedef struct s_token

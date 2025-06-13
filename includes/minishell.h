@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/10 22:10:03 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/12 21:00:40 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void    exe_prep(t_cmd *cmd);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_memcpy(void *dest, const void *src, size_t n);
 long	ft_atoi(const char *str);
 int		ft_isdigit(int c);
@@ -88,6 +87,7 @@ char	**ft_split(char const *s, char c);
 int		env_handle(char **env, t_env **env_head);
 int		env_strcmp(const char *s1, const char *s2);
 size_t	command_count(char *input);
+void	ft_strjoin_free(char **s1, char const *s2);
 char	*ft_itoa(int n);
 
 //debug panel
