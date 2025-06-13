@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/12 21:00:40 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:54:43 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 int	            ft_ismetachr(int c);
 t_token_type	token_type(char *type);
 t_token	        *newtoken(char *token, t_token_type type);
-void	        addtoken(t_token **list, t_token *new);
+int	            addtoken(t_token **list, t_token *new);
 
 //tokenizer
 t_token	**tokenizerV3(char *input, size_t size);

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/12 22:15:22 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:55:18 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ int	dollar_token(char **input, t_token **list)
 	return (*input += i, 0);
 }
 
+void	set_space()
+{
+	
+}
+
 int	token(char **input, t_token **list)
 {
 	char	*token;
@@ -78,13 +83,14 @@ int	token(char **input, t_token **list)
 		return (addtoken(list, newtoken(token, token_type(token))), 0);
 	}
 	while (!ft_ismetachr(*(*input + i)))
-		if (*(*input + i++) == ' ')
-			break ;
+		i++;
 	token = ft_substr(*input, 0, i);
 	if (!token)
 		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
-	*input += i;
-	return (addtoken(list, newtoken(token, token_type(token))), 0);
+	if (*(*input + i) == ' ')
+		return (addtoken(list, newtoken(ft_strdup(" "), token_type(token))), *input += ++i, 0);
+	else
+		return (*input += i, addtoken(list, newtoken(token, token_type(token))), 0);
 }
 
 int	quote_token(char **input, t_token **list)

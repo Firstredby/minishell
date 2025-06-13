@@ -81,12 +81,12 @@ int main(int argc, char **argv, char **envp)
         if (!token)
             (env_cleaner(env), exit(12));
         data.token = token;
-		//show_token(token);
+		show_token(token);
         cmds = parserV3(token, env);
         if (!cmds)
             (free_all(NULL, env, token), exit(12));
         data.cmd = cmds;
-        //show_args(cmds);
+        show_args(cmds);
         (void) data;
         exe_prep(cmds);
         if(!cmds->next)
