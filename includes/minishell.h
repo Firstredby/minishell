@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/10 22:10:03 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/13 17:31:32 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 int	            ft_ismetachr(int c);
 t_token_type	token_type(char *type);
 t_token	        *newtoken(char *token, t_token_type type);
-void	        addtoken(t_token **list, t_token *new);
+int	            addtoken(t_token **list, t_token *new);
 
 //tokenizer
 t_token	**tokenizerV3(char *input, size_t size);

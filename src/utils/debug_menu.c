@@ -16,11 +16,11 @@ void	show_args(t_cmd *cmd)
 		printf("(fd): %d\n", cmd->fd);
 		printf("(fd_in): %d\n", cmd->fd_in);
 		printf("(fd_out): %d\n", cmd->fd_out);
-		// while (cmd->limiter && *cmd->limiter[i])
-		// {
-		// 	printf("(limiter[%d]): %s\n", i, cmd->limiter[i]);
-		// 	i++;
-		// }
+		while (cmd->limiter && *(cmd->limiter + i))
+		{
+			printf("(limiter[%d]): %s\n", i, cmd->limiter[i]);
+			i++;
+		}
 		printf("(next pointer): %p\n", cmd->next);
 		l = 0;
 		i = 0;
