@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/14 02:25:02 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/14 12:08:29 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ t_cmd	*parserV3(t_token **tokens, t_env *env);
 //cleaner
 void    TRASH_COLLECTOR_GOES_BRRRR(t_token **list);
 void    cmd_cleaner(t_cmd *cmd);
-void    env_cleaner(t_env **env);
-void    free_all(t_cmd *cmd, t_env **env, t_token **token);
+void    env_cleaner(t_env *env);
+void    free_all(t_cmd *cmd, t_env *env, t_token **token);
 
 int ft_echo(t_cmd *cmd);
 int ft_pwd(t_cmd *cmd);
