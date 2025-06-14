@@ -19,24 +19,6 @@
 
 int g_exit_status = 0;
 
-
-/* Free a split array */
-void ft_free_split(char **split)
-{
-    int i = 0;
-    
-    if (!split)
-        return;
-    
-    while (split[i])
-    {
-        free(split[i]);
-        i++;
-    }
-    free(split);
-}
-
-
 int main(int argc, char **argv, char **envp)
 {
     char *input;
@@ -58,8 +40,6 @@ int main(int argc, char **argv, char **envp)
         input = readline("minishell$ ");
 		add_history(input);
 
-        if (!ft_strcmp(input, "exit"))
-            break ;
         // Handle EOF (Ctrl+D)
         if (!input)
         {
@@ -76,29 +56,38 @@ int main(int argc, char **argv, char **envp)
         if (!env)
         {
             if (!env_handle(envp, &env))
-                exit(12);
+                continue ;
             data.env = env;
         }
         token = tokenizerV3(input, command_count(input));
         if (!token)
-            (env_cleaner(env), exit(12));
+		{
+            (env_cleaner(env));
+			continue ;
+		}
         data.token = token;
-		show_token(token);
+		//show_token(token);
         cmds = parserV3(token, env);
         if (!cmds)
-            (free_all(NULL, env, token), exit(12));
+		{
+            (free_all(NULL, env, token));
+			continue ;
+		}
         data.cmd = cmds;
         //show_args(cmds);
         (void) data;
-        exe_prep(cmds);
-        if(!cmds->next)
-            exe_cmd(cmds, env);
-        else
-            execute_pipe2(cmds, env);
+		if (!g_exit_status)
+		{
+			exe_prep(cmds);
+			if(!cmds->next)
+				exe_cmd(cmds, env);
+			else
+				execute_pipe(cmds, env);
+		}
         free(input);
         cmd_cleaner(cmds);
 }
-    free_all(cmds, env, NULL);
+    free_all(NULL, env, NULL);
 	rl_clear_history();
     return (g_exit_status);
 }
