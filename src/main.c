@@ -58,6 +58,9 @@ int main(int argc, char **argv, char **envp)
         input = readline("minishell$ ");
 		add_history(input);
 
+        printf("%s\n", input);
+        if (!ft_strcmp(input, "exit"))
+            break ;
         // Handle EOF (Ctrl+D)
         if (!input)
         {
@@ -79,15 +82,16 @@ int main(int argc, char **argv, char **envp)
         }
         token = tokenizerV3(input, command_count(input));
         if (!token)
-            (env_cleaner(env), exit(12));
+            (env_cleaner(&env), exit(12));
         data.token = token;
 		//show_token(token);
         cmds = parserV3(token, env);
         if (!cmds)
-            (free_all(NULL, env, token), exit(12));
+            (free_all(NULL, &env, token), exit(12));
         data.cmd = cmds;
         //show_args(cmds);
         (void) data;
+        continue ;
         exe_prep(cmds);
         if(!cmds->next)
             exe_cmd(cmds, env);
@@ -96,7 +100,7 @@ int main(int argc, char **argv, char **envp)
         free(input);
         cmd_cleaner(cmds);
 }
-    free_all(NULL, env, NULL);
+    free_all(cmds, &env, NULL);
 	rl_clear_history();
     return (g_exit_status);
 }

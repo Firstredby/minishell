@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 21:59:00 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/14 02:33:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ void	command(t_token *token, t_cmd *cmd)
 	}
 	if (cmd->args && cmd->args[0])
 	{
-		if (cmd->args[0][ft_strlen(cmd->args[0]) - 1] == ' ')
-			cmd->cmd = ft_substr(cmd->args[0], 0, ft_strlen(cmd->args[0]) - 1);
-		else
-			cmd->cmd = ft_strdup(cmd->args[0]);
+		cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
 			return (perror("malloc"));// err
 	}
@@ -103,6 +100,8 @@ void    redir(t_token *token, t_cmd *cmd)
 
 	i = 0;
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
+	if (cmd->limiter)
+		return ; //err
     while (token && token->type != T_PIPE)
 	{
         if (token->type >= 2 && token->type <= 5)
@@ -203,7 +202,6 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		expand_quotes(tokens[i], env);
 		expand_variables(tokens[i], env);
 		redir(tokens[i], cmds);
-		//check for spaces to put them in
 		command(tokens[i], cmds);
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{

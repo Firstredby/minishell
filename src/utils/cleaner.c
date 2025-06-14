@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/12 21:05:13 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/14 02:34:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,15 @@ void    free2d(char **list)
 {
     int i;
 
-    if (!list || !*list)
+    if (!list)
         return ;
     i = 0;
-    while (list[i])
-        free(list[i++]);
+    while (*(list + i))
+    {
+        free(*(list + i));
+        i++;
+    }
+    free(list);
     list = NULL;
 }
 
@@ -56,38 +60,33 @@ void    closefd(int fd)
 
 void    cmd_cleaner(t_cmd *cmd)
 {
-    t_cmd   *current;
     t_cmd   *next;
 
-    if (!cmd)
-        return ;
-    current = cmd;
-    while (current)
+    while (cmd)
     {
-        next = current->next;
-        if (current->cmd)
-            free(current->cmd);
-        free2d(current->args);
-        free2d(current->limiter);
-        closefd(current->fd);
-        closefd(current->fd);
-        closefd(current->fd);
-        if (current->filename)
-            free(current->filename);
-        free(current);
-        current = next;
+        next = cmd->next;
+        if (cmd->cmd)
+            free(cmd->cmd);
+        free2d(cmd->args);
+        free2d(cmd->limiter);
+        closefd(cmd->fd);
+        closefd(cmd->fd);
+        closefd(cmd->fd);
+        if (cmd->filename)
+            free(cmd->filename);
+        free(cmd);
+        cmd = next;
     }
-    cmd = NULL;
 }
 
-void    env_cleaner(t_env *env)
+void    env_cleaner(t_env **env)
 {
     t_env   *curr;
     t_env   *next;
 
     if (!env)
         return ;
-    curr = env;
+    curr = *env;
     while (curr)
     {
         next = curr->next;
@@ -103,7 +102,7 @@ void    env_cleaner(t_env *env)
     env = NULL;
 }
 
-void    free_all(t_cmd *cmd, t_env *env, t_token **token)
+void    free_all(t_cmd *cmd, t_env **env, t_token **token)
 {
     if (cmd)
         cmd_cleaner(cmd);
