@@ -6,13 +6,13 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/12 21:17:33 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:48:06 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_strjoin_free(char **s1, char const *s2)
+void	ft_strjoin_free(char **s1, char *s2)
 {
 	char	*newstring;
 	int		i;
