@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 21:30:34 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/14 12:36:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,18 @@ int	quote_token(char **input, t_token **list)
 	return (0);
 }
 
+bool double_pipe(t_token *list)
+{
+	if (list && !ft_strcmp(list->token, "|"))
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
+		ft_putstr_fd(list->token, 2);
+		ft_putstr_fd("\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
 t_token	**tokenizerV3(char *input, size_t size)
 {
 	t_token	**list;
@@ -147,6 +159,8 @@ t_token	**tokenizerV3(char *input, size_t size)
 			return (NULL);
 		if (*str && *(str - 1) == '|')
 			index++;
+		if (index != 0 && double_pipe(list[index - 1]))
+			return (NULL);
 		if (dollar_token(&str, &list[index]))
 			return (NULL);
 		if (quote_token(&str, &list[index]))
