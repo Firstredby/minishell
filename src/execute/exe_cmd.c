@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 21:54:26 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/14 21:08:15 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
         }
         else
         {
-            execvp(cmd->cmd, cmd->args);
-            perror("Exevp failed");
+            if (execvp(cmd->cmd, cmd->args) == -1)
+			{
+				undef_cmd(cmd->cmd);
+				exit(g_exit_status);
+			}
+				
         }
         //printf("%d finished\n", pid);
         exit(EXIT_FAILURE);

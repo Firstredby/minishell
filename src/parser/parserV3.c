@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/14 02:33:03 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/14 22:40:02 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,14 @@ void    redir(t_token *token, t_cmd *cmd)
 
 	i = 0;
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
-	if (cmd->limiter)
+	if (!cmd->limiter)
 		return ; //err
     while (token && token->type != T_PIPE)
 	{
         if (token->type >= 2 && token->type <= 5)
 		{
 			if (!token->next || (token->next->type != 0 && token->next->type != 7))
-                return (ft_putstr_fd("minishell: syntax error near unexpected token", 2)); // err
+                return (syn_err(token->next)); // err
 			if (token->type == T_HEREDOC)
 				collect_limiter(token, cmd, i++);
             else
@@ -142,10 +142,10 @@ char	*dquote_expansion(t_token *token, t_env *env)
 		if (token->token[i++] == '$')
 		{
 			while (!ft_ismetachr(token->token[i + k])
-				&& token->token[i + k] != '|' && token->token[i + k] != ' ')
+				&& token->token[i + k] != '|')
 				k++;
 			if (k == 0)
-				token->token = replace_string(token->token, NULL, i, k);
+				token->token = replace_string(token->token, NULL, (++i) + 1, 0);
 			else
 				token->token = replace_string(token->token,
 					env_from_list(env, ft_substr(token->token, i, k)), i, k);
@@ -207,7 +207,7 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		{
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!cmds)
-				return (head);
+				return (cmd_cleaner(head), NULL);
 			cmds = cmds->next;
 		}
 	}

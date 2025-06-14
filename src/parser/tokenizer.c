@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/14 12:36:56 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/14 21:24:42 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,12 @@ int	quote_token(char **input, t_token **list)
 	while (*(*input + i) && *(*input + i) != **input)
 		i++;
 	if (!*(*input + i) || *(*input + i) != **input)
-		return (ft_putstr_fd("minishell: no closing quote\n", 2),
+		return (miss_quote(),
 		TRASH_COLLECTOR_GOES_BRRRR(list), 1);
 	if (*(*input + i))
 		token = ft_substr(*input, 1, i - 1);
 	else
-		token = ft_strdup("\"");
+		token = ft_calloc(1, 1);
 	if (i == 1)
 		addtoken(list, newtoken(token, T_WORD));
 	else if (**input == '\'')
@@ -132,11 +132,9 @@ int	quote_token(char **input, t_token **list)
 
 bool double_pipe(t_token *list)
 {
-	if (list && !ft_strcmp(list->token, "|"))
+	if (!ft_strcmp(list->token, "|"))
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
-		ft_putstr_fd(list->token, 2);
-		ft_putstr_fd("\n", 2);
+		syn_err(list);
 		return (1);
 	}
 	return (0);
@@ -157,10 +155,10 @@ t_token	**tokenizerV3(char *input, size_t size)
 			str++;
 		if (token(&str, &list[index]))
 			return (NULL);
+		if (index && double_pipe(list[index]))
+			return (NULL);
 		if (*str && *(str - 1) == '|')
 			index++;
-		if (index != 0 && double_pipe(list[index - 1]))
-			return (NULL);
 		if (dollar_token(&str, &list[index]))
 			return (NULL);
 		if (quote_token(&str, &list[index]))
