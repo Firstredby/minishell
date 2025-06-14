@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/14 02:34:33 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/14 12:07:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ void    cmd_cleaner(t_cmd *cmd)
     }
 }
 
-void    env_cleaner(t_env **env)
+void    env_cleaner(t_env *env)
 {
     t_env   *curr;
     t_env   *next;
 
     if (!env)
         return ;
-    curr = *env;
+    curr = env;
     while (curr)
     {
         next = curr->next;
@@ -102,7 +102,7 @@ void    env_cleaner(t_env **env)
     env = NULL;
 }
 
-void    free_all(t_cmd *cmd, t_env **env, t_token **token)
+void    free_all(t_cmd *cmd, t_env *env, t_token **token)
 {
     if (cmd)
         cmd_cleaner(cmd);
