@@ -6,11 +6,13 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 21:29:15 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:35:41 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/types.h>
+
+extern int g_exit_status;
 
 typedef struct s_pipe
 {
