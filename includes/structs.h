@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/14 17:35:41 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:23:56 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/types.h>
+#include <stdbool.h>
 
 extern int g_exit_status;
 
@@ -39,6 +40,7 @@ typedef struct s_cmd
     int				fd;//
     int				fd_in;
     int				fd_out;
+    bool            skip;
 	char			**limiter;
     int             node_nbr;
     char            *filename;
