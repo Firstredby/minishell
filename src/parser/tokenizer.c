@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/14 21:24:42 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/16 20:00:39 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	dollar_token(char **input, t_token **list)
 			newtoken(ft_strdup("$"), T_WORD)), 0);
 	dollar_var = ft_substr(*input, 1, i - 1);
 	if (!dollar_var)
-		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
+		return (perror("malloc"), 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
 	*input += i;
 	set_space(input, list);
@@ -89,17 +89,18 @@ int	token(char **input, t_token **list)
 	{
 		token = ft_strdup("|");
 		if (!token)
-			return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
+			return (perror("malloc"), 1);//err
 		(*input)++;
 		return (addtoken(list, newtoken(token, token_type(token))), 0);
 	}
-	while (!ft_ismetachr(*(*input + i)))
+	while (!ft_ismetachr(*(*input + i)) && *(*input + i) != '>' && *(*input + i) != '<')
 		i++;
 	token = ft_substr(*input, 0, i);
 	if (!token)
-		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
+		return (perror("malloc"), 1);//err
 	*input += i;
-	return (addtoken(list, newtoken(token, token_type(token))), set_space(input, list), 0);
+	addtoken(list, newtoken(token, token_type(token)));
+	return (set_space(input, list), 0);
 }
 
 int	quote_token(char **input, t_token **list)
@@ -113,8 +114,7 @@ int	quote_token(char **input, t_token **list)
 	while (*(*input + i) && *(*input + i) != **input)
 		i++;
 	if (!*(*input + i) || *(*input + i) != **input)
-		return (miss_quote(),
-		TRASH_COLLECTOR_GOES_BRRRR(list), 1);
+		return (miss_quote(), 1);
 	if (*(*input + i))
 		token = ft_substr(*input, 1, i - 1);
 	else
@@ -130,12 +130,29 @@ int	quote_token(char **input, t_token **list)
 	return (0);
 }
 
-bool double_pipe(t_token *list)
+bool double_pipe(t_token **list, int index)
 {
-	if (!ft_strcmp(list->token, "|"))
+	int	i;
+	t_token *head;
+
+	i = 0;
+	while (i < index && list[i]->type != T_EOF)
 	{
-		syn_err(list);
-		return (1);
+		head = list[i];
+		if (head->token && !ft_strcmp(head->token, "|"))
+		{
+			syn_err(head);
+			return (1);
+		}
+		while (head->next)
+			head = head->next;		
+		if (head->token && !ft_strcmp(head->token, "|")
+			&& list[i + 1]->type == T_EOF)
+		{
+			syn_err(head);
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }
@@ -155,8 +172,6 @@ t_token	**tokenizerV3(char *input, size_t size)
 			str++;
 		if (token(&str, &list[index]))
 			return (NULL);
-		if (index && double_pipe(list[index]))
-			return (NULL);
 		if (*str && *(str - 1) == '|')
 			index++;
 		if (dollar_token(&str, &list[index]))
@@ -165,5 +180,7 @@ t_token	**tokenizerV3(char *input, size_t size)
 			return (NULL);
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
+	if (double_pipe(list, index))
+		return (NULL);
 	return (list);
 }
