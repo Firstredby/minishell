@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/17 19:36:59 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:25:27 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 	if (!cmds)
 		return (NULL);
 	head = cmds;
-	while (tokens && tokens[i]->type != T_EOF && !g_exit_status)
+	while (tokens && tokens[i]->type != T_EOF)
 	{
 		expand_quotes(tokens[i], env);
 		expand_variables(tokens[i], env);
@@ -205,6 +205,9 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		command(tokens[i], cmds);
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{
+			if (g_exit_status)
+				break ;
+			cmds->skip = false;
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!cmds)
 				return (cmd_cleaner(head), NULL);

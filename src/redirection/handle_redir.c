@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 21:06:14 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/18 00:40:38 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void    handle_heredoc(t_cmd *cmd)
     int i;
 
     i=0;
-    while(cmd->limiter[i] && *cmd->limiter[i])
+    while(cmd->limiter && cmd->limiter[i] && *cmd->limiter[i])
     {
             cmd->fd = open( cmd->filename, O_WRONLY | O_CREAT | O_TRUNC , 0644);
             if (cmd->fd != -1)
