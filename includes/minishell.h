@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/14 21:23:29 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/16 20:18:25 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void    free_all(t_cmd *cmd, t_env *env, t_token **token);
 void	syn_err(t_token *token);
 void	miss_quote(void);
 void	undef_cmd(char *str);
+void	file_not_exists(char *str);
 
 //builtins
 int		ft_echo(t_cmd *cmd);
