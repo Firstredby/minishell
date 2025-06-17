@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 20:41:52 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/17 21:42:18 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void    exe_prep(t_cmd *cmd)
         //     {
         //         free()
         //     }
+        
         handle_heredoc(cmd);
         i_loop++;
         cmd = cmd->next;
@@ -53,7 +54,7 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
             printf("Quit (core dumped)\n");
         }
     }
-    printf("Exit status: %d\n", g_exit_status);
+    //printf("Exit status: %d\n", g_exit_status);
     if (cmd->fd_in > 2) close(cmd->fd_in);
     if (cmd->fd_out > 2) close(cmd->fd_out);
     if (cmd->fd > 2) close(cmd->fd_out);

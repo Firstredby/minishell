@@ -54,6 +54,7 @@ int main(int argc, char **argv, char **envp)
             free(input);
             continue;
         }
+        g_exit_status = 0;
         if (!env)
         {
             if (!env_handle(envp, &env))
@@ -61,7 +62,7 @@ int main(int argc, char **argv, char **envp)
             data.env = env;
         }
         token = tokenizerV3(input, command_count(input));
-        if (!token)
+        if (!token || g_exit_status != 0)
 		{
             free_all(NULL, NULL, token);
 			continue ;
@@ -70,7 +71,7 @@ int main(int argc, char **argv, char **envp)
 		//show_token(token);
         //continue ;
         cmds = parserV3(token, env);
-        if (!cmds || g_exit_status != 0)
+        if (!cmds)
 		{
             (free_all(cmds, NULL, NULL));
 			continue ;
@@ -78,15 +79,14 @@ int main(int argc, char **argv, char **envp)
         data.cmd = cmds;
         //show_args(cmds);
         (void) data;
-		if (!g_exit_status)
-		{
-			exe_prep(cmds);
+
+        exe_prep(cmds);
         command_sigs();
-			if(!cmds->next)
-				exe_cmd(cmds, env);
-			else
-				execute_pipe(cmds, env);
-		}
+        if(!cmds->next)
+            exe_cmd(cmds, env);
+        else
+            execute_pipe(cmds, env);
+
         free(input);
         cmd_cleaner(cmds);
         main_sigs();
