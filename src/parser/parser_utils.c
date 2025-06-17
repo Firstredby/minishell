@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:44:46 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/11 21:26:40 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:45:28 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ char	*replace_string(char *str, char *var, int i, int k)
 		newstr[str_pos++] = str[i + k++];
 	free(str);
 	free(var);
-	str = newstr;
-	return (newstr);
+	return (str = newstr);
 }
 
 char    *env_from_list(t_env *env, char *key)
@@ -80,9 +79,12 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir)
 		fd = &cmd->fd_out;
 	if (redir == T_RED_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	else
+	else if (redir == T_RED_APPEND)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
     if (*fd)
 		close(*fd);
+	*fd = 0;
     *fd = open(token->next->token, flags, 0644);
+	if (*fd == -1)
+		file_not_exists(token->next->token);
 }
