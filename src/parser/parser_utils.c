@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:44:46 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/11 21:26:40 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:13:52 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char    *env_from_list(t_env *env, char *key)
 	if (!ft_strcmp(key, "?"))
 	{
 		free(key);
-		key = ft_itoa(0);
+		key = ft_itoa(g_exit_status);
 		return (key);
 	}
 	while (head)

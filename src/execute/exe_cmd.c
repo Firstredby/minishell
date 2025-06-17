@@ -6,11 +6,13 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 21:54:26 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/17 20:12:42 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 
@@ -33,13 +35,41 @@ void    exe_prep(t_cmd *cmd)
     }
 }
 
+void    exe_help(int status, t_cmd *cmd, pid_t pid)
+{
+    int sig;
+
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status))
+        g_exit_status = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+    {
+        sig = WTERMSIG(status);
+        if (sig == SIGINT)
+            g_exit_status = 130;
+        else if (sig == SIGQUIT)
+        {
+            g_exit_status = 131;
+            printf("Quit (core dumped)\n");
+        }
+    }
+    printf("Exit status: %d\n", g_exit_status);
+    if (cmd->fd_in > 2) close(cmd->fd_in);
+    if (cmd->fd_out > 2) close(cmd->fd_out);
+    if (cmd->fd > 2) close(cmd->fd_out);
+}
+
 void    exe_cmd(t_cmd *cmd, t_env *env)
 {
     pid_t pid;
+    int status = 0;
     
     pid = fork();
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+        //sleep(10);
         handle_redirV2(cmd);
         if (is_builtin(cmd))
         {
@@ -50,16 +80,12 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
         {
             execvp(cmd->cmd, cmd->args);
             perror("Exevp failed");
+            exit(1);
         }
-        //printf("%d finished\n", pid);
-        exit(EXIT_FAILURE);
+
     }
+    else if (pid > 0)
+        exe_help(status, cmd, pid);
     else
-    {
-        waitpid(pid, NULL, 0);
-        //printf("Child process %d finished\n", pid);
-         if (cmd->fd_in > 2) close(cmd->fd_in);
-         if (cmd->fd_out > 2) close(cmd->fd_out);
-         if (cmd->fd > 2) close(cmd->fd_out);
-    }
+        perror("Fork failed");
 }

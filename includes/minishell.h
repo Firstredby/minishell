@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 21:58:33 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/17 19:34:50 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <readline/readline.h>
+#include <readline/history.h>
+#include <signal.h>
 
+
+extern int g_exit_status;
 //tokenizer_utils
 int	            ft_ismetachr(int c);
 t_token_type	token_type(char *type);
@@ -95,3 +99,8 @@ char	*ft_itoa(int n);
 //debug panel
 void	show_args(t_cmd *cmd);
 void	show_token(t_token **token);
+
+//signal_handler
+void    main_sigs(void);
+void    command_sigs(void);
+void    handle_sigs(int sig);

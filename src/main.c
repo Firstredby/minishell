@@ -52,6 +52,7 @@ int main(int argc, char **argv, char **envp)
     (void)argc;
     (void)argv;
 
+    main_sigs();
     while (1)
     {
 		// Display prompt and read line
@@ -61,7 +62,7 @@ int main(int argc, char **argv, char **envp)
         // Handle EOF (Ctrl+D)
         if (!input)
         {
-            printf("exitss\n");
+            printf("exit\n");
             break;
         }
         
@@ -89,12 +90,14 @@ int main(int argc, char **argv, char **envp)
         //show_args(cmds);
         (void) data;
         exe_prep(cmds);
+        command_sigs();
         if(!cmds->next)
             exe_cmd(cmds, env);
         else
             execute_pipe2(cmds, env);
         free(input);
         cmd_cleaner(cmds);
+        main_sigs();
 }
     free_all(NULL, env, NULL);
 	rl_clear_history();
