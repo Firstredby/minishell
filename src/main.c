@@ -62,15 +62,16 @@ int main(int argc, char **argv, char **envp)
         token = tokenizerV3(input, command_count(input));
         if (!token)
 		{
-            (env_cleaner(env));
+            free_all(NULL, NULL, token);
 			continue ;
 		}
         data.token = token;
 		//show_token(token);
+        //continue ;
         cmds = parserV3(token, env);
         if (!cmds)
 		{
-            (free_all(NULL, env, token));
+            (free_all(cmds, env, token));
 			continue ;
 		}
         data.cmd = cmds;
