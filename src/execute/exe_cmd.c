@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/14 21:08:15 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:56:46 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,22 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
     pid = fork();
     if (pid == 0)
     {
-        handle_redirV2(cmd);
+		handle_redirV2(cmd);
         if (is_builtin(cmd))
         {
-            run_builtin(cmd, env);
+			run_builtin(cmd, env);
             exit(0);
         }
         else
         {
-            if (execvp(cmd->cmd, cmd->args) == -1)
+			if (execvp(cmd->cmd, cmd->args) == -1)
 			{
 				undef_cmd(cmd->cmd);
 				exit(g_exit_status);
 			}
-				
+			
         }
         //printf("%d finished\n", pid);
-        exit(EXIT_FAILURE);
     }
     else
     {

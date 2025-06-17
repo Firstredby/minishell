@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:30:29 by aorth             #+#    #+#             */
-/*   Updated: 2025/03/10 10:49:33 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/17 19:31:15 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int ft_cd(t_cmd *cmd)
         ft_putstr_fd("cd: ", 2);
         ft_putstr_fd(cmd->args[1], 2);
         ft_putstr_fd(": No such file or directory\n", 2);
-        return (1);
+        return (g_exit_status = 1);
     }
     return (0);
 }

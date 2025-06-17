@@ -39,7 +39,7 @@ int main(int argc, char **argv, char **envp)
 		// Display prompt and read line
         input = readline("minishell$ ");
 		add_history(input);
-
+		
         // Handle EOF (Ctrl+D)
         if (!input)
         {
@@ -69,9 +69,9 @@ int main(int argc, char **argv, char **envp)
 		//show_token(token);
         //continue ;
         cmds = parserV3(token, env);
-        if (!cmds)
+        if (!cmds || g_exit_status != 0)
 		{
-            (free_all(cmds, env, token));
+            (free_all(cmds, NULL, NULL));
 			continue ;
 		}
         data.cmd = cmds;

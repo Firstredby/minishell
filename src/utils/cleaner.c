@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/14 12:07:27 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/17 19:05:42 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list)
 	t_token *current;
 	t_token *next;
 
-	if (!list)
+	if (!list || !*list)
 		return;
-
 	while (list[i])
 	{
 		current = list[i];
@@ -31,6 +30,7 @@ void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list)
 			free(current);
 			current = next;
 		}
+		list[i] = NULL;
 		i++;
 	}
 	free(list);
