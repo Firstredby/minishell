@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 20:12:42 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/17 20:41:52 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,22 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
         //sleep(10);
-        handle_redirV2(cmd);
+		handle_redirV2(cmd);
         if (is_builtin(cmd))
         {
-            run_builtin(cmd, env);
+			run_builtin(cmd, env);
             exit(0);
         }
         else
         {
-            execvp(cmd->cmd, cmd->args);
-            perror("Exevp failed");
-            exit(1);
+			if (execvp(cmd->cmd, cmd->args) == -1)
+			{
+				undef_cmd(cmd->cmd);
+				exit(g_exit_status);
+			}
+			
         }
-
+        //printf("%d finished\n", pid);
     }
     else if (pid > 0)
         exe_help(status, cmd, pid);

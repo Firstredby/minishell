@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 21:54:57 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/14 17:21:15 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ static void    init_tpipe(t_cmd *cmd)
 }
 
 
-void execute_pipe2(t_cmd *cmd, t_env *env)
+void execute_pipe(t_cmd *cmd, t_env *env)
 {
     t_cmd *current;
     pid_t *pid;

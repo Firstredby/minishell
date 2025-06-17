@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 15:44:46 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/17 20:13:52 by aorth            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/06/17 20:42:44 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -36,8 +37,7 @@ char	*replace_string(char *str, char *var, int i, int k)
 		newstr[str_pos++] = str[i + k++];
 	free(str);
 	free(var);
-	str = newstr;
-	return (newstr);
+	return (str = newstr);
 }
 
 char    *env_from_list(t_env *env, char *key)
@@ -80,9 +80,12 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir)
 		fd = &cmd->fd_out;
 	if (redir == T_RED_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	else
+	else if (redir == T_RED_APPEND)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
     if (*fd)
 		close(*fd);
+	*fd = 0;
     *fd = open(token->next->token, flags, 0644);
+	if (*fd == -1)
+		file_not_exists(token->next->token);
 }

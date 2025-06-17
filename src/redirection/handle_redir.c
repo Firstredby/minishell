@@ -1,96 +1,143 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_redir.c                                     :+:      :+:    :+:   */
+/*   handle_redirv2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 09:07:47 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/03 13:34:15 by aorth            ###   ########.fr       */
+/*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
+/*   Updated: 2025/06/13 21:55:28 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <readline/readline.h>
+#include <stdio.h>
+#include <unistd.h>
 
-void    redir_append(t_cmd *cmd, int i)
+void    heredoc_helper(t_cmd *cmd)
 {
-    int fd;
-
-    if (!ft_strcmp(cmd->args[i], ">>"))
+    if (cmd->fd_in == 0 && *cmd->limiter)
+    if (cmd->fd_in == 0 && *cmd->limiter)
     {
-        fd = open(cmd->args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-        if (fd == -1)
+        cmd->fd_in = open(cmd->filename, O_RDONLY);
+        if (cmd->fd_in == -1)
         {
-            ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(cmd->args[i + 1], 2);
-            ft_putstr_fd(": No such file or directory\n", 2);
-            exit(1);
+            perror("open for read");
+            return;
         }
-        dup2(fd, 1);
-        close(fd);
-        cmd->args[i] = NULL;
-        cmd->args[i + 1] = NULL;
-    }
-}
-void    redir_out(t_cmd *cmd, int i)
-{
-    int fd;
-
-    if (!ft_strcmp(cmd->args[i], ">"))
-    {
-        fd = open(cmd->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (fd == -1)
-        {
-            ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(cmd->args[i + 1], 2);
-            ft_putstr_fd(": No such file or directory\n", 2);
-            exit(1);
-        }
-        dup2(fd, 1);
-        close(fd);
-        cmd->args[i] = NULL;
-        cmd->args[i + 1] = NULL;
     }
 }
 
-void    redir_in(t_cmd *cmd, int i)
+void    handle_heredoc(t_cmd *cmd)
 {
-    int fd;
-
-    if (!ft_strcmp(cmd->args[i], "<"))
-    {
-        fd = open(cmd->args[i + 1], O_RDONLY);
-        if (fd == -1)
-        {
-            ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(cmd->args[i + 1], 2);
-            ft_putstr_fd(": No such file or directory\n", 2);
-            exit(1);
-        }
-        dup2(fd, 0);
-        close(fd);
-        cmd->args[i] = NULL;
-        cmd->args[i + 1] = NULL;
-    }
-}
-
-void    handle_redir(t_cmd *cmd)
-{
+    char *line;
     int i;
-    int saved_stdout = dup(STDOUT_FILENO);
-    int saved_stdin = dup(STDIN_FILENO); 
-    
-    i = 0;
-    while (cmd->args[i])
+
+    i=0;
+    while(cmd->limiter[i] && *cmd->limiter[i])
     {
-        if (!ft_strcmp(cmd->args[i], ">>"))
-            redir_append(cmd, i);
-        else if (!ft_strcmp(cmd->args[i], ">"))
-            redir_out(cmd, i);
-        else if (!ft_strcmp(cmd->args[i], "<"))
-            redir_in(cmd, i);
-        i++;
+            cmd->fd = open( cmd->filename, O_WRONLY | O_CREAT | O_TRUNC , 0644);
+            if (cmd->fd != -1)
+            {
+                while(1)
+                {
+                    line = readline("> ");
+                    if (!line || !ft_strcmp(line, cmd->limiter[i]))
+                        break;
+                    write(cmd->fd, line, ft_strlen(line));
+                    write(cmd->fd, "\n", 1);
+                    free(line);
+                }
+            }
+            close(cmd->fd);
+            // if (cmd->fd_in == 0)
+            // {
+            //     cmd->fd_in = open(cmd->filename, O_RDONLY);
+            //     if (cmd->fd_in == -1)
+            //         return(perror("open for read"));
+            // }
+            i++;
     }
-    cmd->fd_in = saved_stdin;
-    cmd->fd_out = saved_stdout;
+    heredoc_helper(cmd);
+}
+
+// void    handle_heredocv2(t_cmd *cmd)
+// {
+//     char *line;
+
+//     if (cmd->limiter)
+//     {
+//         cmd->fd_in = open(create_filename("/tmp/heredoc",ft_itoa(cmd->node_nbr), ".tmp"), O_WRONLY | O_CREAT | O_TRUNC , 0644);
+//         if (cmd->fd_in != -1)
+//         {
+//             while(1)
+//             {
+//                 line = readline("> ");
+//                 if (!line || !ft_strcmp(line, cmd->limiter))
+//                     break;
+//                 write(cmd->fd_in, line, ft_strlen(line));
+//                 write(cmd->fd_in, "\n", 1);
+//                 free(line);
+//             }
+//         }
+//         close(cmd->fd_in);    
+//         // cmd->fd_in = open("/tmp/heredoc.tmp", O_RDONLY);
+//         // if (cmd->fd_in == -1)
+//         // {
+//         //     perror("open for read");
+//         //     return;
+//         // }
+//         // //dup2(cmd->fd_in, STDIN_FILENO);
+//         // close(cmd->fd_in);
+//     }
+// }
+
+
+
+void    handle_redirV2(t_cmd *cmd)
+{
+    // char *line;
+    
+    // if (cmd->limiter)
+    // {
+    //     cmd->fd = open("/tmp/heredoc.tmp", O_WRONLY | O_CREAT | O_TRUNC , 0644);
+    //     if (cmd->fd != -1)
+    //     {
+    //         while(1)
+    //         {
+    //             line = readline("> ");
+    //             if (!line || !ft_strcmp(line, cmd->limiter))
+    //                 break;
+    //             write(cmd->fd, line, ft_strlen(line));
+    //             write(cmd->fd, "\n", 1);
+    //             free(line);
+    //         }
+    //     }
+    //     //dup2(cmd->fd, 0);
+    //     close(cmd->fd);    
+    //     cmd->fd = open("/tmp/heredoc.tmp", O_RDONLY);
+    //     if (cmd->fd == -1)
+    //     {
+    //         perror("open for read");
+    //         return;
+    //     }
+    //     dup2(cmd->fd, STDIN_FILENO);
+    //     close(cmd->fd);
+    // }
+    // // dup2(cmd->fd, 0);
+    // close (cmd->fd);
+    if (cmd->fd_out == -1 || cmd->fd_in == -1)
+        printf("No such file or directory\n");
+    if (cmd->fd_out != 0)
+    {
+        dup2(cmd->fd_out, STDOUT_FILENO);
+        close(cmd->fd_out);
+    }
+    if (cmd->fd_in != 0)
+    {
+        dup2(cmd->fd_in, STDIN_FILENO);
+        close(cmd->fd_in);
+        //close(cmd->fd);
+    }
 }

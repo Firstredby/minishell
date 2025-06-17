@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 21:30:34 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:38:58 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	dollar_token(char **input, t_token **list)
 	i = 1;
 	if (**input != '$')
 		return (0);
-	while (*(*input + i) && !ft_ismetachr(*(*input + i)) && *(*input + i) != ' ')
+	while (!ft_ismetachr(*(*input + i)) && *(*input + i) != '/'
+		&& *(*input + i) != '|')
 		i++;
 	if (i == 1 && (*(*input + i) == '"' || *(*input + i) == '\''))
 		return ((*input)++, addtoken(list,
@@ -67,7 +68,7 @@ int	dollar_token(char **input, t_token **list)
 			newtoken(ft_strdup("$"), T_WORD)), 0);
 	dollar_var = ft_substr(*input, 1, i - 1);
 	if (!dollar_var)
-		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
+		return (perror("malloc"), 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
 	*input += i;
 	set_space(input, list);
@@ -89,17 +90,18 @@ int	token(char **input, t_token **list)
 	{
 		token = ft_strdup("|");
 		if (!token)
-			return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
+			return (perror("malloc"), 1);//err
 		(*input)++;
 		return (addtoken(list, newtoken(token, token_type(token))), 0);
 	}
-	while (!ft_ismetachr(*(*input + i)))
+	while (!ft_ismetachr(*(*input + i)) && *(*input + i) != '>' && *(*input + i) != '<')
 		i++;
 	token = ft_substr(*input, 0, i);
 	if (!token)
-		return (perror("malloc"), TRASH_COLLECTOR_GOES_BRRRR(list), 1);//err
+		return (perror("malloc"), 1);//err
 	*input += i;
-	return (addtoken(list, newtoken(token, token_type(token))), set_space(input, list), 0);
+	addtoken(list, newtoken(token, token_type(token)));
+	return (set_space(input, list), 0);
 }
 
 int	quote_token(char **input, t_token **list)
@@ -113,12 +115,11 @@ int	quote_token(char **input, t_token **list)
 	while (*(*input + i) && *(*input + i) != **input)
 		i++;
 	if (!*(*input + i) || *(*input + i) != **input)
-		return (ft_putstr_fd("minishell: no closing quote\n", 2),
-		TRASH_COLLECTOR_GOES_BRRRR(list), 1);
+		return (miss_quote(), 1);
 	if (*(*input + i))
 		token = ft_substr(*input, 1, i - 1);
 	else
-		token = ft_strdup("\"");
+		token = ft_calloc(1, 1);
 	if (i == 1)
 		addtoken(list, newtoken(token, T_WORD));
 	else if (**input == '\'')
@@ -127,6 +128,33 @@ int	quote_token(char **input, t_token **list)
 		addtoken(list, newtoken(token, T_DQUOTE));
 	*input += i + 1;
 	set_space(input, list);
+	return (0);
+}
+
+bool double_pipe(t_token **list, int index)
+{
+	int	i;
+	t_token *head;
+
+	i = 0;
+	while (i < index && list[i]->type != T_EOF)
+	{
+		head = list[i];
+		if (head->token && !ft_strcmp(head->token, "|"))
+		{
+			syn_err(head);
+			return (1);
+		}
+		while (head->next)
+			head = head->next;		
+		if (head->token && !ft_strcmp(head->token, "|")
+			&& list[i + 1]->type == T_EOF)
+		{
+			syn_err(head);
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }
 
@@ -153,5 +181,7 @@ t_token	**tokenizerV3(char *input, size_t size)
 			return (NULL);
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
+	if (double_pipe(list, index))
+		return (NULL);
 	return (list);
 }

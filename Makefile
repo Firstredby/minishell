@@ -19,13 +19,11 @@ SOURCES = src/main.c \
 		  src/utils/ft_strdup.c \
 		  src/utils/ft_calloc.c \
 		  src/utils/ft_split.c \
-		  src/utils/ll_free.c \
 		  src/environment/env_handle.c \
 		  src/utils/env_strcmp.c \
 		  src/parser/tokenizer.c \
 		  src/utils/debug_menu.c \
 		  src/parser/parserV3.c \
-		  src/redirection/handle_redirv2.c \
 		  src/utils/ft_itoa.c \
 		  src/utils/create_filename.c \
 		  src/utils/ft_substr.c \
@@ -33,6 +31,7 @@ SOURCES = src/main.c \
 		  src/utils/cleaner.c \
 		  src/parser/parser_utils.c \
 		  src/utils/ft_strjoin.c \
+		  src/utils/error_messages.c \
 		  src/execute/signal_handler.c 
 
 CC = cc
