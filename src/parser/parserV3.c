@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/14 22:40:02 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:51:15 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ char	*dquote_expansion(t_token *token, t_env *env)
 				&& token->token[i + k] != '|')
 				k++;
 			if (k == 0)
-				token->token = replace_string(token->token, NULL, (++i) + 1, 0);
+				continue ;
 			else
 				token->token = replace_string(token->token,
 					env_from_list(env, ft_substr(token->token, i, k)), i, k);
