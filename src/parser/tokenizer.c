@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/16 20:00:39 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:38:58 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	dollar_token(char **input, t_token **list)
 	i = 1;
 	if (**input != '$')
 		return (0);
-	while (*(*input + i) && !ft_ismetachr(*(*input + i)) && *(*input + i) != ' ')
+	while (!ft_ismetachr(*(*input + i)) && *(*input + i) != '/'
+		&& *(*input + i) != '|')
 		i++;
 	if (i == 1 && (*(*input + i) == '"' || *(*input + i) == '\''))
 		return ((*input)++, addtoken(list,

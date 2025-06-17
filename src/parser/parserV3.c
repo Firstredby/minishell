@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/16 19:51:15 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:36:59 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ char	*dquote_expansion(t_token *token, t_env *env)
 		if (token->token[i++] == '$')
 		{
 			while (!ft_ismetachr(token->token[i + k])
-				&& token->token[i + k] != '|')
+				&& token->token[i + k] != '|' && token->token[i + k] != '/')
 				k++;
 			if (k == 0)
 				continue ;
@@ -197,7 +197,7 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 	if (!cmds)
 		return (NULL);
 	head = cmds;
-	while (tokens && tokens[i]->type != T_EOF)
+	while (tokens && tokens[i]->type != T_EOF && !g_exit_status)
 	{
 		expand_quotes(tokens[i], env);
 		expand_variables(tokens[i], env);
