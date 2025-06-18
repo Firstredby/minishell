@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/17 19:36:59 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:59:18 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,7 @@ void	command(t_token *token, t_cmd *cmd)
 
 void	collect_limiter(t_token *token, t_cmd *cmd, int index)
 {
-	if (token->next->token[ft_strlen(token->next->token) - 1] == ' ')
-		cmd->limiter[index++] = ft_substr(token->next->token, 0,
-			ft_strlen(token->next->token) - 1);
-	else
-		cmd->limiter[index++] = ft_strdup(token->next->token);
+	cmd->limiter[index++] = ft_strdup(token->next->token);
 	if (cmd->fd_in)
 		close(cmd->fd_in);
 	cmd->fd_in = 0;
@@ -110,8 +106,8 @@ void    redir(t_token *token, t_cmd *cmd)
                 return (syn_err(token->next)); // err
 			if (token->type == T_HEREDOC)
 				collect_limiter(token, cmd, i++);
-            else
-				open_fd(token, cmd, token->type);
+            else if (open_fd(token, cmd, token->type))
+				return ;
 			token->next->type = T_RED_TARGET;
 		}
         token = token->next;
@@ -197,7 +193,7 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 	if (!cmds)
 		return (NULL);
 	head = cmds;
-	while (tokens && tokens[i]->type != T_EOF && !g_exit_status)
+	while (tokens && tokens[i]->type != T_EOF)
 	{
 		expand_quotes(tokens[i], env);
 		expand_variables(tokens[i], env);
@@ -205,6 +201,9 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		command(tokens[i], cmds);
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{
+			cmds->skip = false;
+			if (g_exit_status)
+				cmds->skip = true;
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!cmds)
 				return (cmd_cleaner(head), NULL);
