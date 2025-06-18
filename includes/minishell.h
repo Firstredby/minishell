@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 21:39:47 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/18 16:49:35 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,3 +109,4 @@ void	show_token(t_token **token);
 void    main_sigs(void);
 void    command_sigs(void);
 void    handle_sigs(int sig);
+void    heredoc_sigs(void);

@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:38:17 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 21:48:30 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/18 16:13:00 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char    *create_filename(char *path, char *id, char *type)
     char    *temp;
 
     size = ft_strlen(path) + ft_strlen(id) +  ft_strlen(type);
-    temp = ft_calloc(size, sizeof(char) + 1);
+    temp = ft_calloc(size +1, sizeof(char));
     if (!temp)
         return (NULL);
     ft_strroids(temp, path, id, type);

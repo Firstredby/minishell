@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 22:06:45 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/18 19:02:22 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void     alloc_export(t_env *env, int count)
     env_loop = env;
     while (env_loop)
     {
-        printf("ISTHERERER__???%s\n", env->exported_envs[i]);
         env->exported_envs[i] = ft_strdup(env_loop->both);
         if (!env->exported_envs[i])
         {
@@ -109,6 +108,9 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
     }
     return (0);
 }
+
+//exit 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+// need to change atol;
 
 
 

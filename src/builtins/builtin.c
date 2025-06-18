@@ -6,11 +6,12 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/13 21:54:08 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/18 17:20:27 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdlib.h>
 
 int     is_builtin(t_cmd *cmd)
 {
@@ -45,6 +46,11 @@ void    run_builtin(t_cmd *cmd, t_env *env)
         ft_export(cmd, env);
     if (!ft_strcmp(cmd->cmd, "unset"))
         ft_unset(cmd, env);
+    if (!ft_strcmp(cmd->cmd, "exit"))
+    {
+        g_exit_status = ft_exit(cmd);
+        exit(g_exit_status);
+    }
     return;
     // if (!ft_strcmp(cmd->cmd, "exit"))
 	// {

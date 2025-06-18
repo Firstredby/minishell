@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 21:06:14 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/18 17:46:48 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 void    heredoc_helper(t_cmd *cmd)
 {
     if (cmd->fd_in == 0 && *cmd->limiter)
-    if (cmd->fd_in == 0 && *cmd->limiter)
     {
         cmd->fd_in = open(cmd->filename, O_RDONLY);
         if (cmd->fd_in == -1)
@@ -27,6 +26,21 @@ void    heredoc_helper(t_cmd *cmd)
             return;
         }
     }
+}
+
+int    sigs_help(t_cmd *cmd, char *line, int i)
+{
+    if (!line)
+    {
+        write(STDOUT_FILENO, "\n", 1);
+        close(cmd->fd);
+        unlink(cmd->filename); 
+        command_sigs(); 
+        return(1);
+    }
+    if(!ft_strcmp(line, cmd->limiter[i]))
+        return(2);
+    return (0);
 }
 
 void    handle_heredoc(t_cmd *cmd)
@@ -40,23 +54,23 @@ void    handle_heredoc(t_cmd *cmd)
             cmd->fd = open( cmd->filename, O_WRONLY | O_CREAT | O_TRUNC , 0644);
             if (cmd->fd != -1)
             {
+                heredoc_sigs();
                 while(1)
                 {
                     line = readline("> ");
-                    if (!line || !ft_strcmp(line, cmd->limiter[i]))
+                    if (sigs_help(cmd, line, i) == 1)
+                        return;
+                    else if (sigs_help(cmd, line, i) == 2)
                         break;
+                    //if (!line || !ft_strcmp(line, cmd->limiter[i]))
+                    //    break;
                     write(cmd->fd, line, ft_strlen(line));
                     write(cmd->fd, "\n", 1);
                     free(line);
                 }
+                command_sigs();
             }
             close(cmd->fd);
-            // if (cmd->fd_in == 0)
-            // {
-            //     cmd->fd_in = open(cmd->filename, O_RDONLY);
-            //     if (cmd->fd_in == -1)
-            //         return(perror("open for read"));
-            // }
             i++;
     }
     heredoc_helper(cmd);

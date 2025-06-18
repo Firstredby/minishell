@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/14 17:21:15 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:56:14 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void    alloc_pipe(t_cmd *cmd)
 
 static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
 {
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
     if (i == 0)
         dup2(pipe->fds[0][1], STDOUT_FILENO);
     else if (i == pipe->cmd_count - 1)
@@ -72,7 +74,27 @@ static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
     exit(0);
 }
 
-static void    free_pipes(t_pipe *pipe, t_cmd *cmd, pid_t *pid)
+void   pipe_exit_status(int status)
+{
+    int sig;
+
+    sig = 0;
+    if (WIFEXITED(status))
+        g_exit_status = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+    {
+        sig = WTERMSIG(status);
+        if (sig == SIGINT)
+            g_exit_status = 130;
+        else if (sig == SIGQUIT)
+        {
+            g_exit_status = 131;
+            printf("Quit (core dumped)\n");
+        }
+    }  
+}
+
+static void    free_pipes(t_pipe *pipe, t_cmd *cmd, pid_t *pid, int status)
 {
     int i;
 
@@ -85,7 +107,12 @@ static void    free_pipes(t_pipe *pipe, t_cmd *cmd, pid_t *pid)
     }    
     i = 0;
     while (i < cmd->pipe->cmd_count)
-        waitpid(pid[i++], NULL, 0);
+    {
+        waitpid(pid[i], &status, 0);
+        if (i == cmd->pipe->cmd_count - 1)
+            pipe_exit_status(status);
+        i++;
+    }
     i = 0;
     while (i < pipe->pipe_count)
     {
@@ -148,8 +175,9 @@ void execute_pipe(t_cmd *cmd, t_env *env)
     pid_t *pid;
     int i;
     t_pipe *pipe;
+    int status;
 
-
+    status = 0;
     init_tpipe(cmd);
     alloc_pipe(cmd);
     pipe = cmd->pipe;
@@ -166,7 +194,7 @@ void execute_pipe(t_cmd *cmd, t_env *env)
         current = current->next;
         i++;
     }
-    free_pipes(pipe, cmd, pid);
+    free_pipes(pipe, cmd, pid, status);
 }
 
 
