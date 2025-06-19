@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 14:44:19 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 21:59:28 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
 		handle_redirV2(cmd);
-        if(is_builtin(cmd))
+        if(cmd->cmd && is_builtin(cmd))
         {
 		    run_builtin(cmd, env);
             exit(g_exit_status);    
