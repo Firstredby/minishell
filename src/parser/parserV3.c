@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/18 00:59:18 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:41:43 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ void    redir(t_token *token, t_cmd *cmd)
 	{
         if (token->type >= 2 && token->type <= 5)
 		{
-			if (!token->next || (token->next->type != 0 && token->next->type != 7))
-                return (syn_err(token->next)); // err
 			if (token->type == T_HEREDOC)
 				collect_limiter(token, cmd, i++);
             else if (open_fd(token, cmd, token->type))

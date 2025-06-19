@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 19:15:36 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 20:50:01 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	            ft_ismetachr(int c);
 t_token_type	token_type(char *type);
 t_token	        *newtoken(char *token, t_token_type type);
 void	        addtoken(t_token **list, t_token *node);
+void			set_space(char **input, t_token **list);
 
 //tokenizer
 t_token	**tokenizerV3(char *input, size_t size);

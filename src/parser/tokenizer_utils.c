@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/13 21:58:42 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 20:49:36 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,22 @@ t_token_type	token_type(char *type)
 		return (T_WORD);
 }
 
-
-
 int	ft_ismetachr(int c)
 {
 	return (c == '\0' || c == '\t' || c == '$'
 		|| c == '"' || c == '\'' || c == ' ');
+}
+
+void	set_space(char **input, t_token **list)
+{
+	char	*space;
+
+	if (*(*input) == ' ' || *(*input) == '\t')
+	{
+		space = ft_strdup(" ");
+		if (!space)
+			return (ft_putstr_fd("malloc error", 2));
+		*input += 1;
+		addtoken(list, newtoken(space, T_WORD));
+	}
 }
