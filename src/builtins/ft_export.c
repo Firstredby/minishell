@@ -6,11 +6,12 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 20:47:26 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 22:00:46 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 #include <sys/types.h>
 
 static void     alloc_export(t_env *env, int count)
@@ -25,7 +26,10 @@ static void     alloc_export(t_env *env, int count)
     env_loop = env;
     while (env_loop)
     {
-        env->exported_envs[i] = ft_strdup(env_loop->both);
+        if (!env_loop->both)
+            env->exported_envs[i] = ft_strdup(env_loop->key);
+        else
+            env->exported_envs[i] = ft_strdup(env_loop->both);
         if (!env->exported_envs[i])
         {
             while (i >= 0)
@@ -75,13 +79,11 @@ int export_add_help(t_cmd *cmd)
 {
     int i;
     i=0;
-    while(cmd->args[1][i] != '=' && !cmd->args[1][i])
+    while(cmd->args[1][i] != '=' && cmd->args[1][i])
     {
-        if (!ft_isalpha(cmd->args[1][i]))
+        if (!ft_isalnum(cmd->args[1][i]))
         {
-            if(cmd->args[1][i] == '_')
-                continue;
-            else
+            if(cmd->args[1][i] != '_')
                 return (1);
         }
         i++;
@@ -89,12 +91,15 @@ int export_add_help(t_cmd *cmd)
     return(0);
 }
 
+
+
+
 int ft_export_add(t_cmd *cmd, t_env *env)
 {
     t_env *env_loop;
     char *temp;
-
-    if (ft_strchr(cmd->args[1], '=') > 1 || cmd->args[1][0] == '='|| export_add_help(cmd))
+//ft_strchr(cmd->args[1], '=') > 1 ||
+    if ( cmd->args[1][0] == '='|| export_add_help(cmd))
     {
         ft_putstr_fd("export: `", 2);
         ft_putstr_fd(cmd->args[1], 2);
@@ -118,9 +123,12 @@ int ft_export_add(t_cmd *cmd, t_env *env)
         // printf("exported: %s\n", env->exported_envs[count]);
         // printf("exported1: %s\n", env->exported_envs[count-1]);
         // sort_export(env, count +1);
-        printf("TEST9\n");
         env_add(&env, cmd->args[1]);
-        printf("TEST10\n");
+        // while (env)
+        // {
+        //     printf("%s\n", env->key);
+        //     env = env->next;
+        // }
         return(0);
     }
     env_loop = env;
@@ -141,11 +149,7 @@ int ft_export_add(t_cmd *cmd, t_env *env)
         env_loop = env_loop->next;
     }
     if(!cmd->next)
-    {
-        printf("TEST9\n");
         env_add(&env, cmd->args[1]);
-        printf("TEST10\n");
-    }
     return (g_exit_status = 0);
 }
 
@@ -166,11 +170,8 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
             count++;
             env_loop = env_loop->next;
         }
-        if (!env->exported_envs)
-        {
-            alloc_export(env, count);
-            sort_export(env, count);
-        }
+        alloc_export(env, count);
+        sort_export(env, count);
         i = 0;
         while (env->exported_envs[i])
             printf("declare -x %s\n", env->exported_envs[i++]);

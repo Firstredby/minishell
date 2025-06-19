@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 20:51:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 21:19:07 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char    *env_strdup(char *env, bool flag)
 	if (!env)
 		return (NULL);
     i = 0;
-    while (env[i] != '=')
+    while (env[i] != '=' && env[i])
         i++;
     if (flag)
     {
@@ -50,18 +50,19 @@ t_env *env_create(char *env)
     env_new = ft_calloc(sizeof(t_env), 1);
     if (env_new == NULL)
         return (NULL);
-    if (ft_strchr(env, '=') != 0)
-        env_new->both = ft_strdup(env);
-    if (!env_new->both)
-        return (NULL);
     env_new->key = env_strdup(env, true);
     if (!env_new->key)
-        return (NULL);//(free(env_new->both), NULL);
+        return (NULL);
     if (ft_strchr(env, '=') != 0)
+    {
+        env_new->both = ft_strdup(env);
+        if (!env_new->both)
+            return (free(env_new->key),NULL);
         env_new->value = env_strdup(env, false);
-    if (!env_new->value)
-        return (free(env_new->both),
-            free(env_new->key), NULL);
+        if (!env_new->value)
+            return (free(env_new->both),
+                free(env_new->key), NULL);        
+    }
     env_new->next = NULL;
     return (env_new);
 }
