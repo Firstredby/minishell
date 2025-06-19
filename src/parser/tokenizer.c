@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/17 19:38:58 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:50:14 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,6 @@ char	*redirs(char **input, char sign)
 		return (res);
 	}
 	return (NULL);
-}
-
-void	set_space(char **input, t_token **list)
-{
-	char	*space;
-
-	if (*(*input) == ' ' || *(*input) == '\t')
-	{
-		space = ft_strdup(" ");
-		if (!space)
-			return (ft_putstr_fd("malloc error", 2));
-		*input += 1;
-		addtoken(list, newtoken(space, T_WORD));
-	}
 }
 
 int	dollar_token(char **input, t_token **list)
@@ -131,33 +117,6 @@ int	quote_token(char **input, t_token **list)
 	return (0);
 }
 
-bool double_pipe(t_token **list, int index)
-{
-	int	i;
-	t_token *head;
-
-	i = 0;
-	while (i < index && list[i]->type != T_EOF)
-	{
-		head = list[i];
-		if (head->token && !ft_strcmp(head->token, "|"))
-		{
-			syn_err(head);
-			return (1);
-		}
-		while (head->next)
-			head = head->next;		
-		if (head->token && !ft_strcmp(head->token, "|")
-			&& list[i + 1]->type == T_EOF)
-		{
-			syn_err(head);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 t_token	**tokenizerV3(char *input, size_t size)
 {
 	t_token	**list;
@@ -181,7 +140,5 @@ t_token	**tokenizerV3(char *input, size_t size)
 			return (NULL);
 	}
 	addtoken(&list[++index], newtoken(NULL, T_EOF));
-	if (double_pipe(list, index))
-		return (NULL);
 	return (list);
 }
