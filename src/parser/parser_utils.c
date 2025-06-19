@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/18 19:57:22 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 21:26:13 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,6 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir)
 		close(*fd);
 	*fd = 0;
     *fd = open(token->next->token, flags, 0644);
+	if (*fd == -1)
+		file_not_exists(token->next->token);
 }

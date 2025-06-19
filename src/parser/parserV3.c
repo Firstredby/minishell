@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 20:55:02 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 21:24:01 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void    redir(t_token *token, t_cmd *cmd)
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
 	if (!cmd->limiter)
 		return ; //err
-    while (token && token->type != T_PIPE)
+    while (token && token->type != T_PIPE && !g_exit_status)
 	{
         if (token->type >= 2 && token->type <= 5)
 		{
