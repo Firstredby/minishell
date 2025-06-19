@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 16:56:14 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 14:42:40 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,16 @@ static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
     if (is_builtin(cmd))
     {
         run_builtin(cmd, env);
+        exit(g_exit_status);
     }
     else
     {
-        execvp(cmd->cmd, cmd->args);
-        perror("execvp");
+        if(execvp(cmd->cmd, cmd->args) == -1)
+        {
+            undef_cmd(cmd->cmd);
+		    exit(g_exit_status);            
+        }
+
     }
     exit(0);
 }

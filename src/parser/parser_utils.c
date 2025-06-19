@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/18 00:56:24 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:57:22 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char    *env_from_list(t_env *env, char *key)
 	return (key);
 }
 
-int	open_fd(t_token *token, t_cmd *cmd, int redir)
+void	open_fd(t_token *token, t_cmd *cmd, int redir)
 {
     int flags;
 	int *fd;
@@ -86,7 +86,4 @@ int	open_fd(t_token *token, t_cmd *cmd, int redir)
 		close(*fd);
 	*fd = 0;
     *fd = open(token->next->token, flags, 0644);
-	if (*fd == -1)
-		return (file_not_exists(token->next->token), 1);
-	return (0);
 }

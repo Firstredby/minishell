@@ -3,24 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 14:02:20 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/05/20 18:24:59 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:43:45 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*ft_strchr(const	char *s, int c)
+int	ft_strchr(const	char *s, int c)
 {
 	char	*str;
+	int i;
 
+	i = 0;
 	str = (char *)s;
 	while (*str != '\0')
-		if (*str == (char)c || !str++)
-			return (str);
-	if ((char)c == '\0')
-		return (str);
-	return (NULL);
+	{
+		if (*str == (char)c)
+			i++;
+		str++;
+	}
+	return (i);
 }

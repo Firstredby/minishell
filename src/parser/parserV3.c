@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/18 00:59:18 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:32:47 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	command(t_token *token, t_cmd *cmd)
 	{
 		if (*token->token && token->type == T_WORD)
 		{
-			if (!ft_strcmp(token->token, " "))
+			if (!ft_strcmp(token->token, " ") && cmd->args[i])
 				i++;
-			else
+			else if (ft_strcmp(token->token, " "))
 				ft_strjoin_free(&cmd->args[i], token->token);
 		}
 		token = token->next;
@@ -106,8 +106,8 @@ void    redir(t_token *token, t_cmd *cmd)
                 return (syn_err(token->next)); // err
 			if (token->type == T_HEREDOC)
 				collect_limiter(token, cmd, i++);
-            else if (open_fd(token, cmd, token->type))
-				return ;
+            else
+				open_fd(token, cmd, token->type);
 			token->next->type = T_RED_TARGET;
 		}
         token = token->next;

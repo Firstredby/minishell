@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 void	show_args(t_cmd *cmd)
 {
@@ -16,6 +17,7 @@ void	show_args(t_cmd *cmd)
 		printf("(fd): %d\n", cmd->fd);
 		printf("(fd_in): %d\n", cmd->fd_in);
 		printf("(fd_out): %d\n", cmd->fd_out);
+		printf("(is_correct): %d\n", cmd->skip);
 		while (cmd->limiter && *(cmd->limiter + i))
 		{
 			printf("(limiter[%d]): %s\n", i, cmd->limiter[i]);

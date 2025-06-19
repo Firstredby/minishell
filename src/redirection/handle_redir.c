@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 19:16:23 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 12:49:49 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,10 @@ void    handle_redirV2(t_cmd *cmd)
     // // dup2(cmd->fd, 0);
     // close (cmd->fd);
     if (cmd->fd_out == -1 || cmd->fd_in == -1)
-        printf("No such file or directory\n");
+        {
+            perror("open");
+            exit(g_exit_status);
+        }
     if (cmd->fd_out != 0)
     {
         dup2(cmd->fd_out, STDOUT_FILENO);

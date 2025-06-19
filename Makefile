@@ -32,8 +32,8 @@ SOURCES = src/main.c \
 		  src/parser/parser_utils.c \
 		  src/utils/ft_strjoin.c \
 		  src/utils/error_messages.c \
-		  src/execute/signal_handler.c 
-
+		  src/execute/signal_handler.c \
+		  src/utils/ft_strchr.c
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3
 OBJS = $(SOURCES:.c=.o)

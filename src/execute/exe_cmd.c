@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/17 21:42:18 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 14:44:19 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,33 +60,32 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
     if (cmd->fd > 2) close(cmd->fd_out);
 }
 
+
 void    exe_cmd(t_cmd *cmd, t_env *env)
 {
     pid_t pid;
     int status = 0;
     
+    builtin_parent(cmd, env);
     pid = fork();
     if (pid == 0)
     {
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
-        //sleep(10);
 		handle_redirV2(cmd);
-        if (is_builtin(cmd))
+        if(is_builtin(cmd))
         {
-			run_builtin(cmd, env);
-            exit(0);
+		    run_builtin(cmd, env);
+            exit(g_exit_status);    
         }
-        else
-        {
-			if (execvp(cmd->cmd, cmd->args) == -1)
-			{
+        else 
+		{
+            if(execvp(cmd->cmd, cmd->args) == -1)
+            {
 				undef_cmd(cmd->cmd);
 				exit(g_exit_status);
-			}
-			
-        }
-        //printf("%d finished\n", pid);
+            }
+		}
     }
     else if (pid > 0)
         exe_help(status, cmd, pid);

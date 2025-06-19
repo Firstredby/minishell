@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 17:20:27 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 15:48:17 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@ void    run_builtin(t_cmd *cmd, t_env *env)
         ft_echo(cmd);
     if (!ft_strcmp(cmd->cmd, "pwd")/*  || !ft_strcmp(cmd->cmd, "pwd ") */)
         ft_pwd(cmd);
-    if (!ft_strcmp(cmd->cmd, "cd")/*  || !ft_strcmp(cmd->cmd, "cd ") */)
-        ft_cd(cmd);
+    // if (!ft_strcmp(cmd->cmd, "cd")/*  || !ft_strcmp(cmd->cmd, "cd ") */)
+    //     ft_cd(cmd);
     if (!ft_strcmp(cmd->cmd, "env"))
         ft_env(cmd, env);
-    if (!ft_strcmp(cmd->cmd, "export"))
+    if (!ft_strcmp(cmd->cmd, "export") && !cmd->args[1])
         ft_export(cmd, env);
-    if (!ft_strcmp(cmd->cmd, "unset"))
-        ft_unset(cmd, env);
-    if (!ft_strcmp(cmd->cmd, "exit"))
-    {
-        g_exit_status = ft_exit(cmd);
-        exit(g_exit_status);
-    }
+    // if (!ft_strcmp(cmd->cmd, "unset"))
+    //     ft_unset(cmd, env);
+    // if (!ft_strcmp(cmd->cmd, "exit"))
+    // {
+    //     g_exit_status = ft_exit(cmd);
+    //     exit(g_exit_status);
+    // }
     return;
     // if (!ft_strcmp(cmd->cmd, "exit"))
 	// {
@@ -59,3 +59,18 @@ void    run_builtin(t_cmd *cmd, t_env *env)
 	// 	//please exit not whole programm
 	// }
 } 
+
+void    builtin_parent(t_cmd *cmd, t_env *env)
+{
+    if (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
+        g_exit_status = ft_export_add(cmd, env);
+    if (!ft_strcmp(cmd->cmd, "unset"))
+        ft_unset(cmd, env);
+    if (!ft_strcmp(cmd->cmd, "exit"))
+    {
+        g_exit_status = ft_exit(cmd);
+        exit(g_exit_status);
+    }
+    if (!ft_strcmp(cmd->cmd, "cd"))
+        ft_cd(cmd);
+}

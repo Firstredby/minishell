@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 19:15:36 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 18:33:20 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_token	**tokenizerV3(char *input, size_t size);
 //parser_utils
 char	*replace_string(char *str, char *var, int i, int k);
 char    *env_from_list(t_env *env, char *key);
-int 	open_fd(t_token *token, t_cmd *cmd, int redir);
+void 	open_fd(t_token *token, t_cmd *cmd, int redir);
 
 //parser
 t_cmd	*parserV3(t_token **tokens, t_env *env);
@@ -67,10 +67,13 @@ int		ft_env(t_cmd *cmd, t_env *env);
 int		ft_export(t_cmd *cmd, t_env *env);
 int		ft_unset(t_cmd *cmd, t_env *env);
 void    run_builtin(t_cmd *cmd, t_env *env);
+void    builtin_parent(t_cmd *cmd, t_env *env);
+int     ft_export_add(t_cmd *cmd, t_env *env);
 
 //env
 int		env_add(t_env **env_head, char *env);
 t_env	*env_create(char *env);
+char    *env_strdup(char *env, bool flag);
 
 //execution
 void	exe_cmd(t_cmd *cmd, t_env *env);
@@ -87,7 +90,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	ft_memcpy(void *dest, const void *src, size_t n);
-long	ft_atoi(const char *str);
+unsigned long	ft_atoi(const char *str);
 int		ft_isdigit(int c);
 int     ft_isalpha(int c);
 int     ft_isalnum(int c);
@@ -100,6 +103,8 @@ int		env_strcmp(const char *s1, const char *s2);
 size_t	command_count(char *input);
 void	ft_strjoin_free(char **s1, char *s2);
 char	*ft_itoa(int n);
+int     ft_strchr(const	char *s, int c);
+int	    ft_isalpha(int c);
 
 //debug panel
 void	show_args(t_cmd *cmd);
