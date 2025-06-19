@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 20:25:06 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 20:48:03 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:10:35 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,20 @@ int	parser_validator(t_token **token)
 	i = 0;
 	if (double_pipe(token))
 		return (1);
-	while (token[i] != T_EOF)
+	while (token[i] && token[i]->type != T_EOF)
 	{
 		curr = token[i];
 		while (curr)
 		{
-			if (curr->token == "=")
+			if (!ft_strcmp(curr->token, "="))
 				return (ft_putstr_fd("bad assigment\n", 2), 1);
-			if (is_redir(curr->type) && !curr->next
-				|| (curr->next->type != 0 && curr->next->type != 7))
+			if (is_redir(curr->type) && (!curr->next
+				|| (curr->next->type != 0 && curr->next->type != 7
+				&& curr->next->type != 9 && curr->next->type != 10)))
                 return (syn_err(curr->next), 1);
+			curr = curr->next;
 		}
 		i++;
-	}	
+	}
+	return (0);
 }

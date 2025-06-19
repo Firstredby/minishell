@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 20:54:34 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 21:46:17 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "executor.h"
+#include <dirent.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -36,6 +37,7 @@ void	        addtoken(t_token **list, t_token *node);
 void			set_space(char **input, t_token **list);
 
 //tokenizer
+int		parser_validator(t_token **token);
 t_token	**tokenizerV3(char *input, size_t size);
 
 //parser_utils
