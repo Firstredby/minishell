@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:46:17 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:21:49 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_token	**tokenizerV3(char *input, size_t size);
 char	*replace_string(char *str, char *var, int i, int k);
 char    *env_from_list(t_env *env, char *key);
 void 	open_fd(t_token *token, t_cmd *cmd, int redir);
+bool	is_redir(t_token_type type);
 
 //parser
 t_cmd	*parserV3(t_token **tokens, t_env *env);

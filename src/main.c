@@ -83,7 +83,6 @@ int main(int argc, char **argv, char **envp)
         data.cmd = cmds;
         //show_args(cmds);
         (void) data;
-
         exe_prep(cmds);
         command_sigs();
         if(!cmds->next)
