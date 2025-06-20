@@ -1,0 +1,20 @@
+bye
+-------------------------------
+(cmd): /bin/echo
+(arg[0]): /bin/echo
+(arg[1]): hi
+(fd): 0
+(fd_in): 0
+(fd_out): -1
+(is_correct): 1
+(next pointer): 0x3c612b90
+-------------------------------
+(cmd): /bin/echo
+(arg[0]): /bin/echo
+(arg[1]): bye
+(fd): 0
+(fd_in): 0
+(fd_out): 0
+(is_correct): 0
+(next pointer): (nil)
+----------end of list----------

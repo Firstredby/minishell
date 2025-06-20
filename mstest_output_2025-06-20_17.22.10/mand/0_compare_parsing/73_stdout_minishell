@@ -1,0 +1,18 @@
+feel my pain-------------------------------
+(cmd): /bin/echo
+(arg[0]): /bin/echo
+(arg[1]): -n
+(arg[2]): -nnnnnnn
+(arg[3]): -n
+(arg[4]): -nnn
+(arg[5]): -nnnnn
+(arg[6]): -n
+(arg[7]): feel
+(arg[8]): my
+(arg[9]): pain
+(fd): 0
+(fd_in): 0
+(fd_out): 0
+(is_correct): 0
+(next pointer): (nil)
+----------end of list----------

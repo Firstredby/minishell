@@ -1,0 +1,18 @@
+aorth$USERtext oui oui oui oui aorth oui aorth
+-------------------------------
+(cmd): /bin/echo
+(arg[0]): /bin/echo
+(arg[1]): aorth$USERtext
+(arg[2]): oui
+(arg[3]): oui
+(arg[4]): oui
+(arg[5]): oui
+(arg[6]): aorth
+(arg[7]): oui
+(arg[8]): aorth
+(fd): 0
+(fd_in): 0
+(fd_out): 0
+(is_correct): 0
+(next pointer): (nil)
+----------end of list----------

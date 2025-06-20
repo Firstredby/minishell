@@ -1,0 +1,20 @@
+-------------------------------
+(cmd): asd
+(arg[0]): asd
+(fd): 0
+(fd_in): 0
+(fd_out): 3
+(is_correct): 0
+(next pointer): (nil)
+----------end of list----------
+-------------------------------
+(cmd): /bin/rm
+(arg[0]): /bin/rm
+(arg[1]): -f
+(arg[2]): >
+(fd): 0
+(fd_in): 0
+(fd_out): 0
+(is_correct): 0
+(next pointer): (nil)
+----------end of list----------

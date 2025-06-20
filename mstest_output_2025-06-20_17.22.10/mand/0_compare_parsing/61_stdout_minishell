@@ -1,0 +1,12 @@
+test1 test2-------------------------------
+(cmd): /bin/echo
+(arg[0]): /bin/echo
+(arg[1]): -n
+(arg[2]): test1
+(arg[3]): test2
+(fd): 0
+(fd_in): 0
+(fd_out): 0
+(is_correct): 0
+(next pointer): (nil)
+----------end of list----------

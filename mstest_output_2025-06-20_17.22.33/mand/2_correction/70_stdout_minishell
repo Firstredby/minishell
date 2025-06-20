@@ -1,0 +1,12 @@
+LD_PRELOAD=/home/aorth/42_minishell_tester/utils/libintercept/libintercept.so
+USER_ZDOTDIR=/home/aorth
+LOGNAME=aorth
+XAUTHORITY=/home/aorth/.Xauthority
+XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/aorth
+HOME=/home/aorth
+ZDOTDIR=/home/aorth
+USER=aorth
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/aorth/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+PATH=/bin:/usr/bin:/usr/sbin:/home/aorth/.local/funcheck/host:/home/aorth/bin:/home/aorth/.local/funcheck/host:/home/aorth/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rust/cargo/bin
+OLDPWD=/home/aorth/Projects/minishell_versions/v3
+_=/home/aorth/Projects/minishell_versions/v3/minishell

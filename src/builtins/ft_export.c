@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 16:31:16 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/20 17:25:58 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
         while (env->exported_envs[i])
             printf("declare -x %s\n", env->exported_envs[i++]);
     }
-    return (0);
+    return (g_exit_status = 0);
 }
 
 //exit 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
