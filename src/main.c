@@ -81,7 +81,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		}
         data.cmd = cmds;
-        //show_args(cmds);
+        show_args(cmds);
         (void) data;
 
         exe_prep(cmds);

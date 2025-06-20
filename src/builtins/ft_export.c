@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 22:00:46 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/20 16:31:16 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,15 @@ static void    sort_export(t_env *env, int count)
 //     env_add(&env, cmd->args[1]);
 // }
 
-int export_add_help(t_cmd *cmd)
+int export_add_help(t_cmd *cmd, int index)
 {
     int i;
     i=0;
-    while(cmd->args[1][i] != '=' && cmd->args[1][i])
+    while(cmd->args[index][i] != '=' && cmd->args[index][i])
     {
-        if (!ft_isalnum(cmd->args[1][i]))
+        if (!ft_isalnum(cmd->args[index][i]))
         {
-            if(cmd->args[1][i] != '_')
+            if(cmd->args[index][i] != '_')
                 return (1);
         }
         i++;
@@ -94,12 +94,12 @@ int export_add_help(t_cmd *cmd)
 
 
 
-int ft_export_add(t_cmd *cmd, t_env *env)
+int ft_export_add(t_cmd *cmd, t_env *env, int index)
 {
     t_env *env_loop;
     char *temp;
 //ft_strchr(cmd->args[1], '=') > 1 ||
-    if ( cmd->args[1][0] == '='|| export_add_help(cmd))
+    if ( cmd->args[index][0] == '='|| export_add_help(cmd, index))
     {
         ft_putstr_fd("export: `", 2);
         ft_putstr_fd(cmd->args[1], 2);
@@ -114,7 +114,7 @@ int ft_export_add(t_cmd *cmd, t_env *env)
     //     count++;
     //     env_loop = env_loop->next;
     // }
-    if (ft_strchr(cmd->args[1], '=') == 0)
+    if (ft_strchr(cmd->args[index], '=') == 0)
     {
         // printf("args: %s\n", cmd->args[1]);
         // free(env->exported_envs);
@@ -123,7 +123,7 @@ int ft_export_add(t_cmd *cmd, t_env *env)
         // printf("exported: %s\n", env->exported_envs[count]);
         // printf("exported1: %s\n", env->exported_envs[count-1]);
         // sort_export(env, count +1);
-        env_add(&env, cmd->args[1]);
+        env_add(&env, cmd->args[index]);
         // while (env)
         // {
         //     printf("%s\n", env->key);
@@ -132,7 +132,7 @@ int ft_export_add(t_cmd *cmd, t_env *env)
         return(0);
     }
     env_loop = env;
-    temp = env_strdup(cmd->args[1], true);
+    temp = env_strdup(cmd->args[index], true);
     while(env_loop)
     {
         if(!ft_strcmp(temp, env_loop->key))
@@ -140,8 +140,8 @@ int ft_export_add(t_cmd *cmd, t_env *env)
             free(temp);
             free(env_loop->value);
             free(env_loop->both);
-            env_loop->both = ft_strdup(cmd->args[1]);
-            temp = env_strdup(cmd->args[1], false);
+            env_loop->both = ft_strdup(cmd->args[index]);
+            temp = env_strdup(cmd->args[index], false);
             env_loop->value = ft_strdup(temp);
             free(temp);
             return(g_exit_status = 0);
@@ -149,7 +149,7 @@ int ft_export_add(t_cmd *cmd, t_env *env)
         env_loop = env_loop->next;
     }
     if(!cmd->next)
-        env_add(&env, cmd->args[1]);
+        env_add(&env, cmd->args[index]);
     return (g_exit_status = 0);
 }
 

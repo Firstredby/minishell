@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:58:38 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:33:40 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,16 @@ void    run_builtin(t_cmd *cmd, t_env *env)
 
 void    builtin_parent(t_cmd *cmd, t_env *env)
 {
+    int i;
+
 	if (!cmd->cmd)
 		return ;
     if (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
-        g_exit_status = ft_export_add(cmd, env);
+    {
+        i = 1;
+        while (cmd->args[i])
+            g_exit_status = ft_export_add(cmd, env, i++);
+    }
     if (!ft_strcmp(cmd->cmd, "unset"))
         ft_unset(cmd, env);
     if (!ft_strcmp(cmd->cmd, "exit"))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:46:17 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:29:35 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		ft_export(t_cmd *cmd, t_env *env);
 int		ft_unset(t_cmd *cmd, t_env *env);
 void    run_builtin(t_cmd *cmd, t_env *env);
 void    builtin_parent(t_cmd *cmd, t_env *env);
-int     ft_export_add(t_cmd *cmd, t_env *env);
+int     ft_export_add(t_cmd *cmd, t_env *env, int index);
 
 //env
 int		env_add(t_env **env_head, char *env);
