@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:19:07 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/19 23:10:00 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char    *env_strdup(char *env, bool flag)
     }
     else
 	    len = ft_strlen(env) - (++i);
-	str = ft_calloc(len, sizeof(char));
+	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
     j = 0;

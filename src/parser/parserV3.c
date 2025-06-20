@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 21:24:01 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:22:19 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,10 @@ void	command(t_token *token, t_cmd *cmd)
 		return (perror("malloc"));//err
 	while (token && token->type != T_PIPE && token->type != T_EOF)
 	{
-		if (*token->token && token->type == T_WORD)
-		{
-			if (!ft_strcmp(token->token, " ") && cmd->args[i])
-				i++;
-			else if (ft_strcmp(token->token, " "))
-				ft_strjoin_free(&cmd->args[i], token->token);
-		}
+		if (!ft_strcmp(token->token, " ") && token->type == T_WORD && cmd->args[i])
+			i++;
+		else if (!is_redir(token->type) && token->type != T_RED_TARGET)
+			ft_strjoin_free(&cmd->args[i], token->token);
 		token = token->next;
 	}
 	if (cmd->args && cmd->args[0])
@@ -163,8 +160,6 @@ int	expand_quotes(t_token *token, t_env *env)
 		{
 			if (!dquote_expansion(token, env))
 				return (1);
-			else
-				token->type = T_WORD;
 		}
 		else if (token->type == T_SQUOTE)
 		{
@@ -173,7 +168,6 @@ int	expand_quotes(t_token *token, t_env *env)
 				return (1); //err
 			free(token->token);
 			token->token = tmp;
-			token->type = T_WORD;
 		}
 		token = token->next;
 	}
