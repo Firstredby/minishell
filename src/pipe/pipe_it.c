@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 14:42:40 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/20 17:12:35 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,18 @@ static void    init_tpipe(t_cmd *cmd)
     cmd->pipe->pipe_count = 0;
 }
 
+void	skip_broken_commands(t_cmd *cmd)
+{
+	t_cmd *curr;
+
+	curr = cmd;
+	while (curr)
+	{
+		if (curr->fd_in == -1 || curr->fd_out == -1)
+			curr->skip = true;
+		curr = curr->next;
+	}
+}
 
 void execute_pipe(t_cmd *cmd, t_env *env)
 {
@@ -183,6 +195,7 @@ void execute_pipe(t_cmd *cmd, t_env *env)
     int status;
 
     status = 0;
+	skip_broken_commands(cmd);
     init_tpipe(cmd);
     alloc_pipe(cmd);
     pipe = cmd->pipe;
