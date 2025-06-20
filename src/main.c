@@ -54,7 +54,6 @@ int main(int argc, char **argv, char **envp)
             free(input);
             continue;
         }
-        g_exit_status = 0;
         if (!env)
         {
             if (!env_handle(envp, &env))
@@ -62,7 +61,7 @@ int main(int argc, char **argv, char **envp)
             data.env = env;
         }
         token = tokenizerV3(input, command_count(input));
-        if (!token || g_exit_status != 0)
+        if (!token)
 		{
             free_all(NULL, NULL, token);
 			continue ;
@@ -89,7 +88,6 @@ int main(int argc, char **argv, char **envp)
             exe_cmd(cmds, env);
         else
             execute_pipe(cmds, env);
-
         free(input);
         cmd_cleaner(cmds);
         main_sigs();
