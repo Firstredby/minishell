@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:11:45 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 22:47:51 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:32:05 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ int    ft_echo(t_cmd *cmd)
     }
     if (!n_flag)
         ft_putstr_fd("\n", 1);
-    return (0);
+    return (g_exit_status = 0);
 }

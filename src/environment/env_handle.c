@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 23:10:00 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:32:24 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char    *env_strdup(char *env, bool flag)
     }
     else
 	    len = ft_strlen(env) - (++i);
-	str = ft_calloc(len + 1, sizeof(char));
+	str = ft_calloc(len + 1 + 1, sizeof(char));
 	if (!str)
 		return (NULL);
     j = 0;

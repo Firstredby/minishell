@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 15:12:38 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:21:01 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/20 17:25:46 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ int ft_env(t_cmd *cmd, t_env *env)
             printf("%s\n", env_loop->both);
         env_loop = env_loop->next;
     }
-    return (0);
+    return (g_exit_status = 0);
 }
