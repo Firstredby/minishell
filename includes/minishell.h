@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:31:10 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:37:51 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	ft_memcpy(void *dest, const void *src, size_t n);
-unsigned long	ft_atoi(const char *str);
+long long	ft_atoi(const char *str);
 int		ft_isdigit(int c);
 int     ft_isalpha(int c);
 int     ft_isalnum(int c);
 void	ft_putstr_fd(char *s, int fd);
-size_t	ft_strlen(const char *s);
+size_t	ft_strlen(char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 char	**ft_split(char const *s, char c);
 int		env_handle(char **env, t_env **env_head);

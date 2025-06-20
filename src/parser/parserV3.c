@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/20 16:56:38 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:19:21 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	cmd_size(t_token *token)
 	size = 0;
 	while (token && token->type != T_PIPE)
 	{
-		if (token->type == T_WORD)
+		if (token->type != T_SPACE && !is_redir(token->type))
 			size++;
 		token = token->next;
 	}
@@ -65,7 +65,7 @@ void	command(t_token *token, t_cmd *cmd)
 		return (perror("malloc"));//err
 	while (token && token->type != T_PIPE && token->type != T_EOF)
 	{
-		if (!ft_strcmp(token->token, " ") && token->type == T_WORD && cmd->args[i])
+		if (token->type == T_SPACE)
 			i++;
 		else if (!is_redir(token->type) && token->type != T_RED_TARGET)
 			ft_strjoin_free(&cmd->args[i], token->token);
@@ -73,7 +73,10 @@ void	command(t_token *token, t_cmd *cmd)
 	}
 	if (cmd->args && cmd->args[0])
 	{
-		cmd->cmd = ft_strdup(cmd->args[0]);
+		if (!*cmd->args[0])
+			cmd->cmd = ft_calloc(1, 1);
+		else
+			cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
 			return (perror("malloc"));// err
 	}

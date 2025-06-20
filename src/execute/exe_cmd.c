@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:59:28 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:52:04 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
 		handle_redirV2(cmd);
         if(cmd->cmd && is_builtin(cmd))
         {
-		    run_builtin(cmd, env);
+			run_builtin(cmd, env);
             exit(g_exit_status);    
         }
         else 

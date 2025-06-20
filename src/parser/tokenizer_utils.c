@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 20:49:36 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:13:55 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,6 @@ void	set_space(char **input, t_token **list)
 		if (!space)
 			return (ft_putstr_fd("malloc error", 2));
 		*input += 1;
-		addtoken(list, newtoken(space, T_WORD));
+		addtoken(list, newtoken(space, T_SPACE));
 	}
 }

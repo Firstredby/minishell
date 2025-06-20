@@ -3,43 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 12:38:33 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 19:40:56 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/20 20:36:37 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-static void error_exit(const char *msg) {
-    printf("Error: %s\n", msg);
-    exit(EXIT_FAILURE);
-}
-
-// static int	is_valid_help(long temp)
-// {
-// 	if (temp < -2147483648 || temp > 2147483647)
-// 		return (0);
-// 	return (1);
-// }
-
-// static int	atoi_helper(const char *str, int n)
-// {
-// 	int	i;
-
-// 	i = n;
-// 	while (str[i] == '0')
-// 		i++;
-// 	if (ft_strlen(str) - i > 10)
-// 		return (0);
-// 	return (1);
-// }
-
-unsigned long	ft_atoi(const char *nptr)
+long long int	ft_atoi(const char *nptr)
 {
-	unsigned long	result;
+	long long	result;
 	int		sign;
 	size_t		i;
 
@@ -52,16 +27,10 @@ unsigned long	ft_atoi(const char *nptr)
 		if (nptr[i++] == '-')
 			sign *= -1;
 	}
-	if (!ft_isdigit(nptr[i]))
-		error_exit("Agrument is not a number");
-	// if (!atoi_helper(nptr, i))
-	// 	error_exit("Argument is too long");
 	result = 0;
 	while (nptr[i] && ft_isdigit(nptr[i]))
 		result = result * 10 + nptr[i++] - '0';
 	if (nptr[i] && !ft_isdigit(nptr[i]))
 		return (0);
-	// if (!is_valid_help(result))
-	// 	error_exit("Argument is too long");
 	return (result * sign);
 }

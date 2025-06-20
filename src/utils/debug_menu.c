@@ -11,7 +11,7 @@ void	show_args(t_cmd *cmd)
 		printf("(cmd): %s\n", cmd->cmd);
 		while (cmd->args[l])
 		{
-			printf("(arg[%d]): %s\n", l, cmd->args[l]);
+			printf("(arg[%d]): %s$\n", l, cmd->args[l]);
 			l++;
 		}
 		printf("(fd): %d\n", cmd->fd);

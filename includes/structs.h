@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/18 00:23:56 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:13:39 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ typedef enum e_token_type {
 	T_DOLLAR = 7,
 	T_RED_TARGET = 8,
     T_SQUOTE = 9,
-	T_DQUOTE = 10
+	T_DQUOTE = 10,
+	T_SPACE = 11
 }   t_token_type;
 
 typedef struct s_token

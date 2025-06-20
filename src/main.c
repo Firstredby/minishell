@@ -67,12 +67,12 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		}
         data.token = token;
-		//show_token(token);
 		if (parser_validator(token))
 		{
-            free_all(NULL, NULL, token);
+			free_all(NULL, NULL, token);
 			continue ;
 		}
+		//show_token(token);
         cmds = parserV3(token, env);
         if (!cmds)
 		{

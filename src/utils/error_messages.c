@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:14:44 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 21:56:39 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:42:43 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	directory(char *str)
 
 void	undef_cmd(char *str)
 {
-	
 	if (str && ((*str == '.' && *(str + 1) == '/') || *str == '/'))
 	{
 		if (directory(str))	
