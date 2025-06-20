@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/14 22:48:06 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:58:35 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_strjoin_free(char **s1, char *s2)
 	while ((*s1)[j])
 		newstring[i++] = (*s1)[j++];
 	j = 0;
-	while (s2[j] && newstring)
+	while (s2 && s2[j] && newstring)
 		newstring[i++] = s2[j++];
 	free(*s1);
 	*s1 = newstring;
