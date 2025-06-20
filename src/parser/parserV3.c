@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 23:22:19 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:56:38 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,8 +194,6 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{
 			cmds->skip = false;
-			if (g_exit_status)
-				cmds->skip = true;
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!cmds)
 				return (cmd_cleaner(head), NULL);
