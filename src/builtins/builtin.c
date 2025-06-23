@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:25:06 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/23 11:14:06 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,11 @@ void    run_builtin(t_cmd *cmd, t_env *env)
         ft_echo(cmd);
     if (!ft_strcmp(cmd->cmd, "pwd")/*  || !ft_strcmp(cmd->cmd, "pwd ") */)
         ft_pwd(cmd);
-    // if (!ft_strcmp(cmd->cmd, "cd")/*  || !ft_strcmp(cmd->cmd, "cd ") */)
-    //     ft_cd(cmd);
     if (!ft_strcmp(cmd->cmd, "env"))
         ft_env(cmd, env);
     if (!ft_strcmp(cmd->cmd, "export") && !cmd->args[1])
         ft_export(cmd, env);
-    // if (!ft_strcmp(cmd->cmd, "unset"))
-    //     ft_unset(cmd, env);
-    // if (!ft_strcmp(cmd->cmd, "exit"))
-    // {
-    //     g_exit_status = ft_exit(cmd);
-    //     exit(g_exit_status);
-    // }
     return;
-    // if (!ft_strcmp(cmd->cmd, "exit"))
-	// {
-	// 	exit(ft_exit(cmd));
-	// 	printf("its exits\n"); // exits only child process
-	// 	//please exit not whole programm
-	// }
 } 
 
 void    builtin_parent(t_cmd *cmd, t_env *env)
@@ -70,7 +55,7 @@ void    builtin_parent(t_cmd *cmd, t_env *env)
     {
         i = 1;
         while (cmd->args[i])
-            g_exit_status = ft_export_add(cmd, env, i++);
+            ft_export_add(cmd, env, i++);
     }
     if (!ft_strcmp(cmd->cmd, "unset"))
         ft_unset(cmd, env);
@@ -80,5 +65,5 @@ void    builtin_parent(t_cmd *cmd, t_env *env)
         exit(g_exit_status);
     }
     if (!ft_strcmp(cmd->cmd, "cd"))
-        ft_cd(cmd);
+        ft_cd(cmd, env);
 }

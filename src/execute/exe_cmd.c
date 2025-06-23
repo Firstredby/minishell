@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 19:38:35 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:07:17 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,9 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
 void    exe_cmd(t_cmd *cmd, t_env *env)
 {
     pid_t pid;
-    int status = 0;
+    int status;
     
+    status = 0;
     builtin_parent(cmd, env);
     pid = fork();
     if (pid == 0)

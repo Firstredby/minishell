@@ -34,7 +34,8 @@ SOURCES = src/main.c \
 		  src/utils/error_messages.c \
 		  src/execute/signal_handler.c \
 		  src/utils/ft_strchr.c \
-		  src/parser/validation.c
+		  src/parser/validation.c \
+		  src/builtins/ft_export_help.c
 		  
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/22 19:04:02 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:07:07 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	file_not_exists(char *str);
 //builtins
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(t_cmd *cmd);
-int		ft_cd(t_cmd *cmd);
+int		ft_cd(t_cmd *cmd, t_env *env);
 int		ft_exit(t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
 int		ft_env(t_cmd *cmd, t_env *env);
@@ -73,6 +73,8 @@ int		ft_unset(t_cmd *cmd, t_env *env);
 void    run_builtin(t_cmd *cmd, t_env *env);
 void    builtin_parent(t_cmd *cmd, t_env *env);
 int     ft_export_add(t_cmd *cmd, t_env *env, int index);
+int     export_add_help(t_cmd *cmd, int index);
+int     export_check(t_cmd *cmd, t_env *env, int index);
 
 //env
 int		env_add(t_env **env_head, char *env);
