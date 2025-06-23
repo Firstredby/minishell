@@ -3,27 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:11:45 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:32:05 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:55:10 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int echo_help(t_cmd *cmd)
+{
+    int i;
+    size_t j;
+    
+    i = 1;
+    while (cmd->args[i] && *cmd->args[i])
+    {
+        j = 0;
+        if(!ft_strcmp(cmd->args[i], "-n"))
+        {
+            i++;
+            continue;
+        }
+        else if(cmd->args[i][j] == '-')
+        {
+            j++;
+            while(cmd->args[i][j] == 'n')
+                j++;
+            if(ft_strlen(cmd->args[i]) > j)
+                return(i);
+        }
+        else
+            return(i);
+        i++;
+    }
+    return(i);
+}
+
 
 int    ft_echo(t_cmd *cmd)
 {
     int i;
     int n_flag;
 
-    i = 1;
+    i = echo_help(cmd);
     n_flag = 0;
-    while (cmd->args[i] && *cmd->args[i] && !ft_strcmp(cmd->args[i], "-n"))
-    {
+    if(i > 1)
         n_flag = 1;
-        i++;
-    }
+    // while (cmd->args[i] && *cmd->args[i]) // && !ft_strcmp(cmd->args[i], "-n"
+    // {
+    //     j=0;
+    //     if(cmd->args[i][j] == '-')
+    //     {
+    //         j++;
+    //         while(cmd->args[i][j] == 'n')
+    //             j++;
+    //         if (cmd->args[i][j] != '\n')
+    //             break;
+    //     }
+    //     n_flag = 1;
+    //     i++;    
+    // }
     while (cmd->args[i])
     {
         ft_putstr_fd(cmd->args[i], 1);

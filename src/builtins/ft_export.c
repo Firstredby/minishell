@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:25:58 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/23 11:40:58 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,9 @@ static void     alloc_export(t_env *env, int count)
         if (!env->exported_envs[i])
         {
             while (i >= 0)
-            {
-                free(env->exported_envs[i]);
-                i--;
-            }
+                free(env->exported_envs[i--]);
             free(env->exported_envs);
             return(perror("malloc:"));
-            
         }
         env_loop = env_loop->next;
         i++;
@@ -70,26 +66,6 @@ static void    sort_export(t_env *env, int count)
     }
 }
 
-// void    add_export(t_cmd *cmd, t_env *env)
-// {
-//     env_add(&env, cmd->args[1]);
-// }
-
-int export_add_help(t_cmd *cmd, int index)
-{
-    int i;
-    i=0;
-    while(cmd->args[index][i] != '=' && cmd->args[index][i])
-    {
-        if (!ft_isalnum(cmd->args[index][i]))
-        {
-            if(cmd->args[index][i] != '_')
-                return (1);
-        }
-        i++;
-    }
-    return(0);
-}
 
 
 
@@ -98,39 +74,22 @@ int ft_export_add(t_cmd *cmd, t_env *env, int index)
 {
     t_env *env_loop;
     char *temp;
-//ft_strchr(cmd->args[1], '=') > 1 ||
-    if ( cmd->args[index][0] == '='|| export_add_help(cmd, index))
-    {
-        ft_putstr_fd("export: `", 2);
-        ft_putstr_fd(cmd->args[1], 2);
-        ft_putstr_fd("': not a valid identifier\n", 2);
-        g_exit_status = 1;
-        exit(g_exit_status);
-    }
-    // env_loop = env;
-    // int count = 0;
-    // while (env_loop)
+    
+    // if ( cmd->args[index][0] == '='|| export_add_help(cmd, index))
     // {
-    //     count++;
-    //     env_loop = env_loop->next;
+    //     ft_putstr_fd("export: `", 2);
+    //     ft_putstr_fd(cmd->args[1], 2);
+    //     ft_putstr_fd("': not a valid identifier\n", 2);
+    //     g_exit_status = 1;
+    //     exit(g_exit_status);
     // }
-    if (ft_strchr(cmd->args[index], '=') == 0)
-    {
-        // printf("args: %s\n", cmd->args[1]);
-        // free(env->exported_envs);
-        // alloc_export(env, count + 1);
-        // env->exported_envs[count] = ft_strdup(cmd->args[1]);
-        // printf("exported: %s\n", env->exported_envs[count]);
-        // printf("exported1: %s\n", env->exported_envs[count-1]);
-        // sort_export(env, count +1);
-        env_add(&env, cmd->args[index]);
-        // while (env)
-        // {
-        //     printf("%s\n", env->key);
-        //     env = env->next;
-        // }
-        return(0);
-    }
+    // if (ft_strchr(cmd->args[index], '=') == 0)
+    // {
+    //     env_add(&env, cmd->args[index]);
+    //     return(0);
+    // }
+    if(!export_check(cmd, env, index))
+        return(g_exit_status = 1);
     env_loop = env;
     temp = env_strdup(cmd->args[index], true);
     while(env_loop)

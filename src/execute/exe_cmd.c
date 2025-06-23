@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:52:04 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:29:32 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
 void    exe_cmd(t_cmd *cmd, t_env *env)
 {
     pid_t pid;
-    int status = 0;
+    int status;
     
+    status = 0;
     builtin_parent(cmd, env);
     pid = fork();
     if (pid == 0)

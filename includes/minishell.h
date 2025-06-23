@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 20:37:51 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:23:50 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	file_not_exists(char *str);
 //builtins
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(t_cmd *cmd);
-int		ft_cd(t_cmd *cmd);
+int		ft_cd(t_cmd *cmd, t_env *env);
 int		ft_exit(t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
 int		ft_env(t_cmd *cmd, t_env *env);
@@ -73,6 +73,8 @@ int		ft_unset(t_cmd *cmd, t_env *env);
 void    run_builtin(t_cmd *cmd, t_env *env);
 void    builtin_parent(t_cmd *cmd, t_env *env);
 int     ft_export_add(t_cmd *cmd, t_env *env, int index);
+int     export_add_help(t_cmd *cmd, int index);
+int     export_check(t_cmd *cmd, t_env *env, int index);
 
 //env
 int		env_add(t_env **env_head, char *env);
@@ -99,7 +101,7 @@ int		ft_isdigit(int c);
 int     ft_isalpha(int c);
 int     ft_isalnum(int c);
 void	ft_putstr_fd(char *s, int fd);
-size_t	ft_strlen(char *s);
+size_t	ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 char	**ft_split(char const *s, char c);
 int		env_handle(char **env, t_env **env_head);
