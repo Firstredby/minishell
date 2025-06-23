@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/17 19:05:42 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:44:01 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list)
 		i++;
 	}
 	free(list);
+	list = NULL;
 }
 
 void    free2d(char **list)
@@ -69,14 +70,15 @@ void    cmd_cleaner(t_cmd *cmd)
             free(cmd->cmd);
         free2d(cmd->args);
         free2d(cmd->limiter);
-        closefd(cmd->fd);
-        closefd(cmd->fd);
+        closefd(cmd->fd_in);
+        closefd(cmd->fd_out);
         closefd(cmd->fd);
         if (cmd->filename)
             free(cmd->filename);
         free(cmd);
         cmd = next;
     }
+	cmd = NULL;
 }
 
 void    env_cleaner(t_env *env)
@@ -105,9 +107,18 @@ void    env_cleaner(t_env *env)
 void    free_all(t_cmd *cmd, t_env *env, t_token **token)
 {
     if (cmd)
+	{
         cmd_cleaner(cmd);
+		cmd = NULL;
+	}
     if (env)
+	{
         env_cleaner(env);
+		env = NULL;
+	}
     if (token)
+	{
         TRASH_COLLECTOR_GOES_BRRRR(token);
+		token = NULL;
+	}
 }

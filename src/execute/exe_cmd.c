@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:52:04 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:38:35 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,28 @@
 #include <unistd.h>
 
 
-void    exe_prep(t_cmd *cmd)
+int	exe_prep(t_cmd *cmd)
 {
-    int i_loop;
+    int		i_loop;
+	char	*order;
 
     i_loop = 1;
+	order = NULL;
     while (cmd)
     {
         cmd->node_nbr = i_loop;
-        cmd->filename = create_filename("/tmp/heredoc", ft_itoa(cmd->node_nbr), ".tmp");
-        // if (!cmd->filename)
-        //     {
-        //         free()
-        //     }
-        
+		order = ft_itoa(cmd->node_nbr);
+		if (!order)
+			return (1);
+		if (cmd->limiter)
+        	cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
+        if (!cmd->filename)
+			return (ft_putstr_fd("malloc error\n", 2), 1);
         handle_heredoc(cmd);
         i_loop++;
         cmd = cmd->next;
     }
+	return (0);
 }
 
 void    exe_help(int status, t_cmd *cmd, pid_t pid)

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 20:37:51 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/22 19:04:02 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void    handle_redirV2(t_cmd *cmd);
 //execution preparation
 void    handle_heredoc(t_cmd *cmd);
 char    *create_filename(char *path, char *id, char *type);
-void    exe_prep(t_cmd *cmd);
+int		exe_prep(t_cmd *cmd);
 
 //utils
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -99,7 +99,7 @@ int		ft_isdigit(int c);
 int     ft_isalpha(int c);
 int     ft_isalnum(int c);
 void	ft_putstr_fd(char *s, int fd);
-size_t	ft_strlen(char *s);
+size_t	ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 char	**ft_split(char const *s, char c);
 int		env_handle(char **env, t_env **env_head);

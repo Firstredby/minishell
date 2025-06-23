@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 23:07:26 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:54:58 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,19 @@ char	*redirs(char **input, char sign)
 		{
 			res = ft_substr(*input, 0, 2);
 			if (!res)
-				perror("malloc");//err
+			{
+				ft_putstr_fd("malloc error", 2);//err
+				g_exit_status = 12;
+			}
 			(*input) += 2;
 			return (res);
 		}
 		res = ft_substr(*input, 0, 1);
 		if (!res)
-			perror("malloc");//err
+		{
+			ft_putstr_fd("malloc error", 2);//err
+			g_exit_status = 12;
+		}
 		(*input)++;
 		return (res);
 	}
@@ -54,7 +60,7 @@ int	dollar_token(char **input, t_token **list)
 			newtoken(ft_strdup("$"), T_WORD)), 0);
 	dollar_var = ft_substr(*input, 1, i - 1);
 	if (!dollar_var)
-		return (perror("malloc"), 1);//err
+		return (ft_putstr_fd("malloc error", 2), g_exit_status = 12, 1);//err
 	addtoken(list, newtoken(dollar_var, T_DOLLAR));
 	*input += i;
 	set_space(input, list);
@@ -76,15 +82,15 @@ int	token(char **input, t_token **list)
 	{
 		token = ft_strdup("|");
 		if (!token)
-			return (perror("malloc"), 1);//err
+			return (ft_putstr_fd("malloc error", 2), g_exit_status = 12, 1);
 		(*input)++;
 		return (addtoken(list, newtoken(token, token_type(token))), 0);
 	}
-	while (!ft_ismetachr(*(*input + i)) && *(*input + i) != '>' && *(*input + i) != '<')
+	while (!ft_ismetachr(*(*input + i)) && *(*input + i) != '>' && *(*input + i) != '<' && *(*input + i) != '|')
 		i++;
 	token = ft_substr(*input, 0, i);
 	if (!token)
-		return (perror("malloc"), 1);//err
+		return (ft_putstr_fd("malloc error", 2), g_exit_status = 12, 1);
 	*input += i;
 	addtoken(list, newtoken(token, token_type(token)));
 	return (set_space(input, list), 0);
@@ -106,6 +112,8 @@ int	quote_token(char **input, t_token **list)
 		token = ft_substr(*input, 1, i - 1);
 	else
 		token = ft_calloc(1, 1);
+	if (!token)
+		return (ft_putstr_fd("malloc error", 2), g_exit_status = 12, 1);
 	if (i == 1)
 		addtoken(list, newtoken(token, T_WORD));
 	else if (**input == '\'')
@@ -124,6 +132,8 @@ t_token	**tokenizerV3(char *input, size_t size)
 	char	*str;
 
 	list = (t_token **)ft_calloc(sizeof(t_token *), (size + 2));
+	if (!list)
+		return (g_exit_status = 12, NULL);
 	index = 0;
 	str = input;
 	while (str && *str)

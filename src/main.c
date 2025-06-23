@@ -17,82 +17,85 @@
 #include <readline/history.h>
 #include <string.h>
 
-int g_exit_status = 0;
+int	g_exit_status = 0;
+
+int	cmd_init(t_data *data, char *input, char **envp)
+{
+	data->cmd = NULL;
+	data->env = NULL;
+	data->token = NULL;
+	if (!data->env)
+		if (!env_handle(envp, &data->env))
+			return (12);
+	data->token = tokenizerV3(input, command_count(input));
+	if (!data->token && g_exit_status == 12)
+		return (free_all(NULL, data->env, data->token), 12);
+	else if (!data->token)
+		return (free_all(NULL, NULL, data->token), 1);
+	if (parser_validator(data->token))
+		return (free_all(NULL, NULL, data->token), 1);
+	data->cmd = parserV3(data->token, data->env);
+	if (!data->cmd)
+		return (free_all(data->cmd, data->env, data->token), 12);
+	return (0);
+}
+
+int	start_exec(t_data *data)
+{
+	if (exe_prep(data->cmd))
+	{
+		free_all(data->cmd, data->env, data->token);
+		return (g_exit_status = 12);
+	}
+	command_sigs();
+	if(!data->cmd->next)
+		exe_cmd(data->cmd, data->env);
+	else
+		execute_pipe(data->cmd, data->env);
+	return (0);
+}
 
 int main(int argc, char **argv, char **envp)
 {
-    char *input;
-    //char **args = NULL;
-   // t_cmd *cmd = NULL;
-   // t_cmd *cmd1 = NULL;
-   // t_cmd *cmd2 = NULL;
-    t_env *env = NULL;
-    t_cmd *cmds = NULL;
-    t_token **token = NULL;
-    t_data  data;
+    char	*input;
+    t_data	*data;
+	int		check;
 
     (void)argc;
     (void)argv;
-
-    main_sigs();
+	data = ft_calloc(1, sizeof(t_data));
+	if (!data)
+		return (12);
     while (1)
     {
-		// Display prompt and read line
+		main_sigs();
         input = readline("minishell$ ");
 		add_history(input);
-		
-        // Handle EOF (Ctrl+D)
         if (!input)
         {
             printf("exit\n");
             break;
         }
-        
-        // Skip empty lines
         if (input[0] == '\0')
         {
             free(input);
             continue;
         }
-        if (!env)
-        {
-            if (!env_handle(envp, &env))
-                continue ;
-            data.env = env;
-        }
-        token = tokenizerV3(input, command_count(input));
-        if (!token)
-		{
-            free_all(NULL, NULL, token);
+		check = cmd_init(data, input, envp);
+		free(input);
+		if (check == 1)
 			continue ;
-		}
-        data.token = token;
-		if (parser_validator(token))
-		{
-			free_all(NULL, NULL, token);
-			continue ;
-		}
-		//show_token(token);
-        cmds = parserV3(token, env);
-        if (!cmds)
-		{
-            (free_all(cmds, NULL, NULL));
-			continue ;
-		}
-        data.cmd = cmds;
-        //show_args(cmds);
-        (void) data;
-        exe_prep(cmds);
-        command_sigs();
-        if(!cmds->next)
-            exe_cmd(cmds, env);
-        else
-            execute_pipe(cmds, env);
-        free(input);
-        cmd_cleaner(cmds);
-        main_sigs();
-}
-    free_all(NULL, env, NULL);
+		if (check == 12)
+			break ;
+        if (start_exec(data))
+			return (g_exit_status);
+        cmd_cleaner(data->cmd);
+		rl_clear_history();
+	}
+    free_all(NULL, data->env, NULL);
+	free(data);
+	if (input)
+		free(input);
 	rl_clear_history();
     return (g_exit_status);
 }

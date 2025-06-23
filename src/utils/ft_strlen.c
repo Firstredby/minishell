@@ -6,13 +6,13 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:26:58 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 20:37:37 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:55:36 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-size_t  ft_strlen(char *s)
+size_t  ft_strlen(const char *s)
 {
     size_t i;
 
