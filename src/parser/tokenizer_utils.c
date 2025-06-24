@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/20 18:13:55 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 12:51:52 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ t_token	*newtoken(char *token, t_token_type type)
 	
 	new_token = (t_token *)malloc(sizeof(t_token));
 	if (!new_token)
-		perror("malloc");//err
+	{
+		if (token)
+			free(token);
+		return (perror("malloc"), NULL);
+	}
 	new_token->token = token;
 	new_token->type = type;
 	new_token->next = NULL;	
@@ -74,7 +78,11 @@ void	set_space(char **input, t_token **list)
 	{
 		space = ft_strdup(" ");
 		if (!space)
-			return (ft_putstr_fd("malloc error", 2));
+		{
+			ft_putstr_fd("malloc error", 2);
+			g_exit_status = 12;
+			return;
+		}
 		*input += 1;
 		addtoken(list, newtoken(space, T_SPACE));
 	}

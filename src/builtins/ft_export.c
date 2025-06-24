@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:06:48 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:32:09 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-static void     alloc_export(t_env *env, int count)
+static int     alloc_export(t_env *env, int count)
 {
     int i;
     t_env *env_loop;
 
     env->exported_envs = ft_calloc(sizeof(char *), (count + 1));
     if (!env->exported_envs)
-        return(perror("malloc:"));
+        return (perror("malloc:"), -1);
     i = 0;
     env_loop = env;
     while (env_loop)
@@ -32,14 +32,16 @@ static void     alloc_export(t_env *env, int count)
             env->exported_envs[i] = ft_strdup(env_loop->both);
         if (!env->exported_envs[i])
         {
-            while (i >= 0)
-                free(env->exported_envs[i--]);
+            while (i > 0)
+                free(env->exported_envs[--i]);
             free(env->exported_envs);
-            return(perror("malloc:"));
+            env->exported_envs = NULL;
+            return (perror("malloc:"), -1);
         }
         env_loop = env_loop->next;
         i++;
     }
+    return (0);
 }
 
 static void    sort_export(t_env *env, int count)
@@ -79,28 +81,39 @@ int ft_export_add(t_cmd *cmd, t_env **env, int index)
         return(g_exit_status = 1);
     env_loop = *env;
     temp = env_strdup(cmd->args[index], true);
+    if (!temp)
+        return (g_exit_status = 12);
     while(env_loop)
     {
         if(!ft_strcmp(temp, env_loop->key))
         {
             free(temp);
-            free(env_loop->value);
-            free(env_loop->both);
+            if (env_loop->value)
+                free(env_loop->value);
+            if (env_loop->both)
+                free(env_loop->both);
             env_loop->both = ft_strdup(cmd->args[index]);
+            if (!env_loop->both)
+                return (g_exit_status = 12);
             temp = env_strdup(cmd->args[index], false);
+            if (!temp)
+                return (g_exit_status = 12);
             env_loop->value = ft_strdup(temp);
             free(temp);
+            if (!env_loop->value)
+                return (g_exit_status = 12);
             return(g_exit_status = 0);
         }
         env_loop = env_loop->next;
     }
+    free(temp);
     if(!cmd->next)
         env_add(env, cmd->args[index]);
     return (g_exit_status = 0);
 }
 
 
-int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another variable
+int ft_export(t_cmd *cmd, t_env *env)
 {
     int i;
     int count;
@@ -108,7 +121,6 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
 
     if(cmd->args[0] && !cmd->args[1])
     {
-        //env->exported_envs = NULL;
         count = 0;
         env_loop = env;
         while (env_loop)
@@ -116,7 +128,8 @@ int ft_export(t_cmd *cmd, t_env *env) // have to save the sorted envp in another
             count++;
             env_loop = env_loop->next;
         }
-        alloc_export(env, count);
+        if (alloc_export(env, count) == -1)
+            return (g_exit_status = 12);
         sort_export(env, count);
         i = 0;
         while (env->exported_envs[i])
