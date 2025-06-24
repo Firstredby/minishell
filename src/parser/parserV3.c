@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/24 20:30:08 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:41:02 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	command(t_token *token, t_cmd *cmd)
 	}
 	if (cmd->args && cmd->args[0])
 	{
-		if (!*cmd->args[0])
+		if (!*cmd->args[0] && !cmd->cmd)
 			cmd->cmd = ft_calloc(1, 1);
-		else
+		else if (!cmd->cmd)
 			cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
 			return (perror("malloc"));// err

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 19:38:32 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:39:53 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,12 @@ t_env *env_create(char *env)
     env_new->key = env_strdup(env, true);
     if (!env_new->key)
         return (free(env_new), NULL);
+        return (free(env_new), NULL);
     if (ft_strchr(env, '=') != 0)
     {
         env_new->both = ft_strdup(env);
         if (!env_new->both)
+            return (free(env_new->key), free(env_new), NULL);
             return (free(env_new->key), free(env_new), NULL);
         env_new->value = env_strdup(env, false);
         if (!env_new->value)

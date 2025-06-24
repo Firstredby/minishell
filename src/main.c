@@ -32,9 +32,10 @@ int	cmd_init(t_data *data, char *input, char **envp)
 	if (parser_validator(data->token))
 		return (free_all(NULL, NULL, data->token), data->token = NULL, 1);
 	data->cmd = parserV3(data->token, data->env);
-	data->token = NULL;
 	if (!data->cmd)
 		return (free_all(data->cmd, data->env, NULL), 12);
+	data->token = NULL;
+	show_args(data->cmd);
 	return (0);
 }
 
@@ -47,9 +48,9 @@ int	start_exec(t_data *data)
 	}
 	command_sigs();
 	if(!data->cmd->next)
-		exe_cmd(data->cmd, &data->env);
+		exe_cmd(data->cmd, &data->env, data);
 	else
-		execute_pipe(data->cmd, data->env);
+		execute_pipe(data->cmd, data->env, data);
 	return (0);
 }
 
@@ -85,7 +86,8 @@ int main(int argc, char **argv, char **envp)
         {
             free(input);
             continue;
-        }		check = cmd_init(data, input, envp);
+        }		
+		check = cmd_init(data, input, envp);
 		free(input);
         input = NULL;
 		if (check == 1)
@@ -124,6 +126,7 @@ int main(int argc, char **argv, char **envp)
 		//printf("minishell2: %d\n", g_exit_status);
 		if (should_exit)
 		    break;
+		show_args(data->cmd);
 	}
     free_all(NULL, data->env, NULL);
 	free(data);

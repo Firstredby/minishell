@@ -6,12 +6,13 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 20:17:37 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:40:34 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <stdio.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -66,14 +67,20 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
 }
 
 
-static void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code)
+void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code, t_data *data, pid_t *pid)
 {
     child_safe_cleanup(cmd);
     env_cleaner(env);
+    if(pid)
+        (free(pid));
+    pid = NULL;
+    if(data)
+        free(data);
+    data = NULL;
     exit(exit_code);
 }
 
-void    exe_cmd(t_cmd *cmd, t_env **env)
+void    exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 {
     pid_t pid;
     int status;
@@ -90,23 +97,24 @@ void    exe_cmd(t_cmd *cmd, t_env **env)
     {
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
-		handle_redirV2(cmd);
+		if(handle_redirV2(cmd))
+            child_cleanup_and_exit(cmd, *env, g_exit_status, data, NULL);
         if(cmd->cmd && is_builtin(cmd))
         {
 			run_builtin(cmd, *env);
-            child_cleanup_and_exit(cmd, *env, g_exit_status);    
+            child_cleanup_and_exit(cmd, *env, g_exit_status, data, NULL);
         }
         else 
 		{
             if (!*cmd->cmd)
             {
                 //ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
-                child_cleanup_and_exit(cmd, *env, 0);
+                child_cleanup_and_exit(cmd, *env, 0, data, NULL);
             }
             if(execvp(cmd->cmd, cmd->args) == -1)
             {
 				undef_cmd(cmd->cmd);
-				child_cleanup_and_exit(cmd, *env, g_exit_status);
+				child_cleanup_and_exit(cmd, *env, g_exit_status, data, NULL);
             }
 		}
     }
