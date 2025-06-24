@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:24:29 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:29:06 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,18 @@ int    sigs_help(t_cmd *cmd, char *line, int i)
 {
     if (!line)
     {
-        write(STDOUT_FILENO, "\n", 1);
+        // write(STDOUT_FILENO, "\n", 1);
         close(cmd->fd);
         unlink(cmd->filename); 
-        command_sigs(); 
-        return(1);
+        command_sigs();
+		ft_putstr_fd("warning: here-document at line 2 delimited ", 2);
+		ft_putstr_fd("by end-of-file (wanted `", 2);
+		ft_putstr_fd(cmd->limiter[i], 2);
+		ft_putstr_fd("')\n", 2);
+        return (1);
     }
     if(!ft_strcmp(line, cmd->limiter[i]))
-        return(2);
+        return (2);
     return (0);
 }
 

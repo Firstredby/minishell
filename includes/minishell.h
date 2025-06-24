@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 16:56:04 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 20:07:19 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_token	**tokenizerV3(char *input, size_t size);
 //parser_utils
 char	*replace_string(char *str, char *var, int i, int k);
 char    *env_from_list(t_env *env, char *key);
-void 	open_fd(t_token *token, t_cmd *cmd, int redir);
+void 	open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag);
 bool	is_redir(t_token_type type);
 
 //parser

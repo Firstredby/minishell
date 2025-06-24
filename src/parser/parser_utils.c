@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/19 21:26:13 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:07:40 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char    *env_from_list(t_env *env, char *key)
 	return (key);
 }
 
-void	open_fd(t_token *token, t_cmd *cmd, int redir)
+void	open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag)
 {
     int flags;
 	int *fd;
@@ -87,5 +87,5 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir)
 	*fd = 0;
     *fd = open(token->next->token, flags, 0644);
 	if (*fd == -1)
-		file_not_exists(token->next->token);
+		(file_not_exists(token->next->token), *flag = false);
 }

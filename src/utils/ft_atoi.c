@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 12:38:33 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 20:36:37 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 22:41:52 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ long long int	ft_atoi(const char *nptr)
 	while (nptr[i] && ft_isdigit(nptr[i]))
 		result = result * 10 + nptr[i++] - '0';
 	if (nptr[i] && !ft_isdigit(nptr[i]))
-		return (0);
-	return (result * sign);
+		return (g_exit_status = 2);
+	return (g_exit_status = result * sign);
 }

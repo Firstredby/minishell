@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/24 19:35:06 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:30:08 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ void	command(t_token *token, t_cmd *cmd)
 		return (perror("malloc"));//err
 	while (token && token->type != T_PIPE && token->type != T_EOF)
 	{
-		if (token->type == T_SPACE)
+		if (token->type == T_SPACE && cmd->args[i])
 			i++;
-		else if (!is_redir(token->type) && token->type != T_RED_TARGET)
+		else if (!is_redir(token->type) && token->type != T_RED_TARGET
+			&& token->type != T_SPACE)
 			ft_strjoin_free(&cmd->args[i], token->token);
 		token = token->next;
 	}
@@ -100,20 +101,22 @@ void	collect_limiter(t_token *token, t_cmd *cmd, int index)
 
 void    redir(t_token *token, t_cmd *cmd)
 {
-	int	i;
+	int		i;
+	bool	flag;
 
 	i = 0;
+	flag = true;
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
 	if (!cmd->limiter)
 		return ; //err
-    while (token && token->type != T_PIPE && !g_exit_status)
+    while (token && token->type != T_PIPE && flag)
 	{
         if (token->type >= 2 && token->type <= 5)
 		{
 			if (token->type == T_HEREDOC)
 				collect_limiter(token, cmd, i++);
             else
-				open_fd(token, cmd, token->type);
+				open_fd(token, cmd, token->type, &flag);
 			token->next->type = T_RED_TARGET;
 		}
         token = token->next;

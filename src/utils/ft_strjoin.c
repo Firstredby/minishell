@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/24 19:37:32 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:32:42 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	ft_strjoin_free(char **s1, char *s2)
 	int		i;
 	int		j;
 
-	if (!s1)
-		return ;
-	if (!*s1)
+	if (!s1 || !*s1)
 	{
 		if (!s2 || !*s2)
 			*s1 = ft_calloc(1, 1);

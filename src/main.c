@@ -122,7 +122,6 @@ int main(int argc, char **argv, char **envp)
             data->token = NULL;
         }
 		//printf("minishell2: %d\n", g_exit_status);
-		rl_clear_history();
 		if (should_exit)
 		    break;
 	}

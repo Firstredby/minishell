@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 17:42:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 20:17:14 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
     }
     else
     {
-        if (!cmd->cmd)
+        if (!*cmd->cmd)
         {
-            ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
-            child_cleanup_and_exit(cmd, env, 127);
+            //ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+            child_cleanup_and_exit(cmd, env, 0);
         }
         if(execvp(cmd->cmd, cmd->args) == -1)
         {

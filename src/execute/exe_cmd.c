@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 19:34:45 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:17:37 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,10 @@ void    exe_cmd(t_cmd *cmd, t_env **env)
         }
         else 
 		{
-            if (!cmd->cmd)
+            if (!*cmd->cmd)
             {
-                ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
-                child_cleanup_and_exit(cmd, *env, 127);
+                //ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+                child_cleanup_and_exit(cmd, *env, 0);
             }
             if(execvp(cmd->cmd, cmd->args) == -1)
             {

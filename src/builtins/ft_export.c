@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 14:32:09 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 19:43:26 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int ft_export_add(t_cmd *cmd, t_env **env, int index)
             env_loop->value = ft_strdup(temp);
             free(temp);
             if (!env_loop->value)
-                return (g_exit_status = 12);
+                return (g_exit_status = 0);
             return(g_exit_status = 0);
         }
         env_loop = env_loop->next;
