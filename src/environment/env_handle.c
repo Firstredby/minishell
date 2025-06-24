@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 18:44:13 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/25 00:27:48 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ char    *env_strdup(char *env, bool flag)
         i = 0;
     }
     else
-        return (no_more_spaces(env, ++i));
-    ;
+		return (no_more_spaces(env, ++i));
 	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
@@ -89,7 +88,9 @@ t_env *env_create(char *env)
             return (free(env_new->key), free(env_new), NULL);
         env_new->value = env_strdup(env, false);
         if (!env_new->value)
-            return (free(env_new->both), free(env_new->key), free(env_new), NULL);        
+            return (free(env_new->both),
+				free(env_new->key),
+				free(env_new), NULL);        
     }
     env_new->next = NULL;
     return (env_new);

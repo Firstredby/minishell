@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/24 22:36:57 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/25 00:28:43 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_strjoin_free(char **s1, char *s2)
 		return ;
 	newstring = ft_calloc(ft_strlen(*s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (!newstring)
-		return;
+		return (perror("malloc"));
 	i = 0;
 	j = 0;
 	while ((*s1)[j])

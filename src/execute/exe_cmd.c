@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/25 00:10:56 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/25 00:28:07 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	exe_prep(t_cmd *cmd)
 			return (1);
 		if (cmd->limiter)
         	cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
-        free(order);
+		free(order);
         if (!cmd->filename)
 			return (ft_putstr_fd("malloc error\n", 2), 1);
         handle_heredoc(cmd);
