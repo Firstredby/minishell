@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 16:56:04 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 21:21:51 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void    child_safe_cleanup(t_cmd *cmd);
 void    free_all(t_cmd *cmd, t_env *env, t_token **token);
 void    pipe_cleaner(t_pipe *pipe);
 void    free2d(char **list);
+void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code, t_data *data, pid_t *pid);
 
 //error messages
 void	syn_err(t_token *token);
@@ -85,9 +86,9 @@ t_env	*env_create(char *env);
 char    *env_strdup(char *env, bool flag);
 
 //execution
-void	exe_cmd(t_cmd *cmd, t_env **env);
-void	execute_pipe(t_cmd *cmd, t_env *env);
-void    handle_redirV2(t_cmd *cmd);
+void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data);
+void	execute_pipe(t_cmd *cmd, t_env *env, t_data *data);
+int    handle_redirV2(t_cmd *cmd);
 
 //execution preparation
 void    handle_heredoc(t_cmd *cmd);

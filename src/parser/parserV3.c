@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/24 17:42:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/25 00:20:14 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void	command(t_token *token, t_cmd *cmd)
 	}
 	if (cmd->args && cmd->args[0])
 	{
-		if (!*cmd->args[0])
+		if (!*cmd->args[0] && !cmd->cmd)
 			cmd->cmd = ft_calloc(1, 1);
-		else
+		else if (!cmd->cmd)
 			cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
 			return (perror("malloc"));// err
@@ -100,7 +100,7 @@ void    redir(t_token *token, t_cmd *cmd)
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
 	if (!cmd->limiter)
 		return ; //err
-    while (token && token->type != T_PIPE && !g_exit_status)
+    while (token && token->type != T_PIPE)
 	{
         if (token->type >= 2 && token->type <= 5)
 		{

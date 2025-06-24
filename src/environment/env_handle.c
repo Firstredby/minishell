@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 14:32:17 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 18:44:13 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char    *env_strdup(char *env, bool flag)
     }
     else
         return (no_more_spaces(env, ++i));
-    // len = ft_strlen(env) - (++i);
+    ;
 	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);

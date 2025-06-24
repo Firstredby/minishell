@@ -32,7 +32,9 @@ void	show_args(t_cmd *cmd)
 		printf("(fd_in): %d\n", cmd->fd_in);
 		printf("(fd_out): %d\n", cmd->fd_out);
 		printf("(is_correct): %d\n", cmd->skip);
-		while (cmd->limiter && *(cmd->limiter + i))
+		printf("(filename): %s\n", cmd->filename);
+		printf("limiter list pointer: %p\n", cmd->limiter);
+		while (cmd->limiter[i])
 		{
 			printf("(limiter[%d]): %s\n", i, cmd->limiter[i]);
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/19 21:24:29 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:51:42 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void    handle_heredoc(t_cmd *cmd)
 
 
 
-void    handle_redirV2(t_cmd *cmd)
+int    handle_redirV2(t_cmd *cmd)
 {
     // char *line;
     
@@ -142,7 +142,7 @@ void    handle_redirV2(t_cmd *cmd)
     // // dup2(cmd->fd, 0);
     // close (cmd->fd);
     if (cmd->fd_out == -1 || cmd->fd_in == -1)
-		exit(g_exit_status);
+		return(g_exit_status = 1);
     if (cmd->fd_out != 0)
     {
         dup2(cmd->fd_out, STDOUT_FILENO);
@@ -154,4 +154,5 @@ void    handle_redirV2(t_cmd *cmd)
         close(cmd->fd_in);
         //close(cmd->fd);
     }
+    return (0);
 }

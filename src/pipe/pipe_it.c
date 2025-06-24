@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 17:42:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/25 00:08:14 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ static int    alloc_pipe(t_cmd *cmd)
     return (0);
 }
 
-static void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code)
-{
-    child_safe_cleanup(cmd);
-    env_cleaner(env);
-    exit(exit_code);
-}
+// static void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code)
+// {
+//     child_safe_cleanup(cmd);
+//     env_cleaner(env);
+//     exit(exit_code);
+// }
 
-static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
+static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data, pid_t *pid)
 {
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
@@ -82,26 +82,27 @@ static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
         j++;
     }
     handle_redirV2(cmd);
+    child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);
     if (is_builtin(cmd))
     {
         run_builtin(cmd, env);
-        child_cleanup_and_exit(cmd, env, g_exit_status);
+        child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);
     }
     else
     {
         if (!cmd->cmd)
         {
             ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
-            child_cleanup_and_exit(cmd, env, 127);
+            child_cleanup_and_exit(cmd, env, 127, data, pid);
         }
         if(execvp(cmd->cmd, cmd->args) == -1)
         {
             undef_cmd(cmd->cmd);
-            child_cleanup_and_exit(cmd, env, g_exit_status);            
+            child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);            
         }
 
     }
-    child_cleanup_and_exit(cmd, env, 0);
+    child_cleanup_and_exit(cmd, env, 0, data, pid);
 }
 
 void   pipe_exit_status(int status)
@@ -224,7 +225,7 @@ void	skip_broken_commands(t_cmd *cmd)
 	}
 }
 
-void execute_pipe(t_cmd *cmd, t_env *env)
+void execute_pipe(t_cmd *cmd, t_env *env, t_data *data)
 {
     t_cmd *current;
     pid_t *pid;
@@ -250,7 +251,7 @@ void execute_pipe(t_cmd *cmd, t_env *env)
     {
         pid[i] = fork();
         if (pid[i] == 0)
-            assign_fds(i, current, pipe, env);
+            assign_fds(i, current, pipe, env, data, pid);
         current = current->next;
         i++;
     }

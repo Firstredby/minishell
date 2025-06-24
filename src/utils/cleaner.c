@@ -6,11 +6,13 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/24 17:25:23 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/25 00:07:16 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 void	TRASH_COLLECTOR_GOES_BRRRR(t_token **list)
 {
@@ -44,14 +46,16 @@ void    free2d(char **list)
 {
     int i;
 
-    if (!list)
-        return ;
+    if (!*list)
+        return (free(list));
     i = 0;
-    while (*(list + i))
+    while (list[i])
     {
-        free(*(list + i));
+        free(list[i]);
+        list[i] = NULL;
         i++;
     }
+    free(list[i]);
     free(list);
 }
 
@@ -69,15 +73,13 @@ void    cmd_cleaner(t_cmd *cmd)
     while (cmd)
     {
         next = cmd->next;
-        if (cmd->cmd)
-            free(cmd->cmd);
+        free(cmd->cmd);
         free2d(cmd->args);
         free2d(cmd->limiter);
         closefd(cmd->fd_in);
         closefd(cmd->fd_out);
         closefd(cmd->fd);
-        if (cmd->filename)
-            free(cmd->filename);
+        free(cmd->filename);
         if (cmd->pipe && pipe_to_free != cmd->pipe)
         {
             pipe_to_free = cmd->pipe;
@@ -188,4 +190,8 @@ void    child_safe_cleanup(t_cmd *cmd)
         free(current);
         current = next;
     }
-}
+    if(STDOUT_FILENO)
+        close(STDOUT_FILENO);
+    if(STDIN_FILENO)
+        close(STDIN_FILENO);
+    }
