@@ -35,7 +35,10 @@ SOURCES = src/main.c \
 		  src/execute/signal_handler.c \
 		  src/utils/ft_strchr.c \
 		  src/parser/validation.c \
-		  src/builtins/ft_export_help.c
+		  src/builtins/ft_export_help.c \
+		  src/utils/ft_memcpy.c \
+		  src/utils/ft_strncmp.c \
+		  src/utils/ll.c
 		  
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

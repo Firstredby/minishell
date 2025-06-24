@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parserV3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/20 18:19:21 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:42:50 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ void	command(t_token *token, t_cmd *cmd)
 
 void	collect_limiter(t_token *token, t_cmd *cmd, int index)
 {
-	cmd->limiter[index++] = ft_strdup(token->next->token);
+	cmd->limiter[index] = ft_strdup(token->next->token);
+	if (!cmd->limiter[index])
+		return;
 	if (cmd->fd_in)
 		close(cmd->fd_in);
 	cmd->fd_in = 0;
@@ -198,10 +200,11 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 		{
 			cmds->skip = false;
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
-			if (!cmds)
+			if (!cmds->next)
 				return (cmd_cleaner(head), NULL);
 			cmds = cmds->next;
 		}
 	}
-	return (TRASH_COLLECTOR_GOES_BRRRR(tokens), head);
+	TRASH_COLLECTOR_GOES_BRRRR(tokens);
+	return (head);
 }

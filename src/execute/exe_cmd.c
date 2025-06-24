@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:22:24 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:42:50 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	exe_prep(t_cmd *cmd)
 			return (1);
 		if (cmd->limiter)
         	cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
+        free(order);
         if (!cmd->filename)
 			return (ft_putstr_fd("malloc error\n", 2), 1);
         handle_heredoc(cmd);
@@ -65,6 +66,13 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
 }
 
 
+static void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code)
+{
+    child_safe_cleanup(cmd);
+    env_cleaner(env);
+    exit(exit_code);
+}
+
 void    exe_cmd(t_cmd *cmd, t_env **env)
 {
     pid_t pid;
@@ -72,6 +80,11 @@ void    exe_cmd(t_cmd *cmd, t_env **env)
     
     status = 0;
     builtin_parent(cmd, env);
+    if (cmd->cmd && (!ft_strcmp(cmd->cmd, "exit") || 
+                     !ft_strcmp(cmd->cmd, "cd") || 
+                     (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1]) ||
+                     !ft_strcmp(cmd->cmd, "unset")))
+        return;   
     pid = fork();
     if (pid == 0)
     {
@@ -81,14 +94,19 @@ void    exe_cmd(t_cmd *cmd, t_env **env)
         if(cmd->cmd && is_builtin(cmd))
         {
 			run_builtin(cmd, *env);
-            exit(g_exit_status);    
+            child_cleanup_and_exit(cmd, *env, g_exit_status);    
         }
         else 
 		{
+            if (!cmd->cmd)
+            {
+                ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+                child_cleanup_and_exit(cmd, *env, 127);
+            }
             if(execvp(cmd->cmd, cmd->args) == -1)
             {
 				undef_cmd(cmd->cmd);
-				exit(g_exit_status);
+				child_cleanup_and_exit(cmd, *env, g_exit_status);
             }
 		}
     }

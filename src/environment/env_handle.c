@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:46:31 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:32:17 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char    *no_more_spaces(char *env, int pos)
     int     size;
 
     i = pos;
+    size = 0;
     while (env[i])
     {
         while (env[i] == ' ' && env[i + 1] == ' ')
@@ -30,6 +31,8 @@ char    *no_more_spaces(char *env, int pos)
         i++;
     }
     res = ft_calloc(sizeof(char), size + 1);
+    if (!res)
+        return (NULL);
     i = 0;
     while (env[pos])
     {
@@ -78,16 +81,15 @@ t_env *env_create(char *env)
         return (NULL);
     env_new->key = env_strdup(env, true);
     if (!env_new->key)
-        return (NULL);
+        return (free(env_new), NULL);
     if (ft_strchr(env, '=') != 0)
     {
         env_new->both = ft_strdup(env);
         if (!env_new->both)
-            return (free(env_new->key),NULL);
+            return (free(env_new->key), free(env_new), NULL);
         env_new->value = env_strdup(env, false);
         if (!env_new->value)
-            return (free(env_new->both),
-                free(env_new->key), NULL);        
+            return (free(env_new->both), free(env_new->key), free(env_new), NULL);        
     }
     env_new->next = NULL;
     return (env_new);

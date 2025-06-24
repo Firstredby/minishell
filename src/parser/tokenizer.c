@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/23 19:54:58 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:56:04 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ int	dollar_token(char **input, t_token **list)
 {
 	int		i;
 	char	*dollar_var;
+	char *dollar_str;
 
 	i = 1;
+	dollar_str = NULL;
 	if (**input != '$')
 		return (0);
 	while (ft_isalnum(*(*input + i)) || *(*input + i) == '_'
@@ -56,8 +58,13 @@ int	dollar_token(char **input, t_token **list)
 		return ((*input)++, addtoken(list,
 			newtoken(ft_calloc(1, 1), T_WORD)), 0);
 	else if (i == 1)
+	{
+		dollar_str = ft_strdup("$");
+		if (!dollar_str)
+			return (ft_putstr_fd("malloc error", 2), g_exit_status = 12, 1);
 		return ((*input)++, addtoken(list,
-			newtoken(ft_strdup("$"), T_WORD)), 0);
+			newtoken(dollar_str, T_WORD)), 0);
+	}
 	dollar_var = ft_substr(*input, 1, i - 1);
 	if (!dollar_var)
 		return (ft_putstr_fd("malloc error", 2), g_exit_status = 12, 1);//err
@@ -142,7 +149,7 @@ t_token	**tokenizerV3(char *input, size_t size)
 			str++;
 		if (token(&str, &list[index]))
 			return (NULL);
-		if (*str && *(str - 1) == '|')
+		if (*str && str > input && *(str - 1) == '|')
 			index++;
 		if (dollar_token(&str, &list[index]))
 			return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:12:35 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:42:50 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-static void    alloc_pipe(t_cmd *cmd)
+static int    alloc_pipe(t_cmd *cmd)
 {
     t_cmd *current;
     int i;
@@ -28,17 +28,37 @@ static void    alloc_pipe(t_cmd *cmd)
     cmd->pipe->pipe_count = cmd->pipe->cmd_count - 1; 
     cmd->pipe->fds = malloc(sizeof(int*) * cmd->pipe->pipe_count);
     if (cmd->pipe->fds == NULL)
-        return(perror("malloc"));
+        return (perror("malloc"), -1);
     i = 0;
     while (i < cmd->pipe->pipe_count)
     {
         cmd->pipe->fds[i] = malloc(sizeof(int) * 2);
         if (cmd->pipe->fds[i] == NULL)
-            return(perror("malloc"));
+        {
+            while (--i >= 0)
+                free(cmd->pipe->fds[i]);
+            free(cmd->pipe->fds);
+            cmd->pipe->fds = NULL;
+            return (perror("malloc"), -1);
+        }
         if (pipe(cmd->pipe->fds[i]) == -1)
-            return(perror("pipe"));
+        {
+            while (i >= 0)
+                free(cmd->pipe->fds[i--]);
+            free(cmd->pipe->fds);
+            cmd->pipe->fds = NULL;
+            return (perror("pipe"), -1);
+        }
         i++;
     }
+    return (0);
+}
+
+static void    child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code)
+{
+    child_safe_cleanup(cmd);
+    env_cleaner(env);
+    exit(exit_code);
 }
 
 static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
@@ -65,18 +85,23 @@ static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env)
     if (is_builtin(cmd))
     {
         run_builtin(cmd, env);
-        exit(g_exit_status);
+        child_cleanup_and_exit(cmd, env, g_exit_status);
     }
     else
     {
+        if (!cmd->cmd)
+        {
+            ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+            child_cleanup_and_exit(cmd, env, 127);
+        }
         if(execvp(cmd->cmd, cmd->args) == -1)
         {
             undef_cmd(cmd->cmd);
-		    exit(g_exit_status);            
+            child_cleanup_and_exit(cmd, env, g_exit_status);            
         }
 
     }
-    exit(0);
+    child_cleanup_and_exit(cmd, env, 0);
 }
 
 void   pipe_exit_status(int status)
@@ -125,6 +150,7 @@ static void    free_pipes(t_pipe *pipe, t_cmd *cmd, pid_t *pid, int status)
         i++;
     }
     free(pipe->fds);
+    pipe->fds = NULL;
     free(pid);
     if (cmd->fd_in > 2) close(cmd->fd_in);
     if (cmd->fd_out > 2) close(cmd->fd_out);
@@ -166,11 +192,23 @@ static void    free_pipes(t_pipe *pipe, t_cmd *cmd, pid_t *pid, int status)
 
 static void    init_tpipe(t_cmd *cmd)
 {
-    cmd->pipe = ft_calloc(sizeof(t_pipe), 1);
-    if (!cmd->pipe)
-        return(perror("malloc"));
-    cmd->pipe->cmd_count = 0;
-    cmd->pipe->pipe_count = 0;
+    t_cmd *current;
+    t_pipe *pipe;
+
+    pipe = ft_calloc(sizeof(t_pipe), 1);
+    if (!pipe)
+    {
+        perror("malloc");
+        return;
+    }
+    pipe->cmd_count = 0;
+    pipe->pipe_count = 0;
+    current = cmd;
+    while (current)
+    {
+        current->pipe = pipe;
+        current = current->next;
+    }
 }
 
 void	skip_broken_commands(t_cmd *cmd)
@@ -197,12 +235,16 @@ void execute_pipe(t_cmd *cmd, t_env *env)
     status = 0;
 	skip_broken_commands(cmd);
     init_tpipe(cmd);
-    alloc_pipe(cmd);
+    if (alloc_pipe(cmd) == -1)
+        return;
     pipe = cmd->pipe;
     current = cmd;
     pid = malloc(sizeof(pid_t) * pipe->cmd_count);
     if (pid == NULL)
-        return(perror("malloc"));
+    {
+        perror("malloc");
+        return;
+    }
     i = 0;
     while (current)
     {

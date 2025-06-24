@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:21:38 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:58:53 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ void    builtin_parent(t_cmd *cmd, t_env **env)
     if (!ft_strcmp(cmd->cmd, "unset"))
         ft_unset(cmd, env);
     if (!ft_strcmp(cmd->cmd, "exit"))
-    {
         g_exit_status = ft_exit(cmd);
-        exit(g_exit_status);
-    }
     if (!ft_strcmp(cmd->cmd, "cd"))
         ft_cd(cmd, env);
 }

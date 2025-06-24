@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:21:42 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:56:04 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ t_cmd	*parserV3(t_token **tokens, t_env *env);
 void    TRASH_COLLECTOR_GOES_BRRRR(t_token **list);
 void    cmd_cleaner(t_cmd *cmd);
 void    env_cleaner(t_env *env);
+void    child_safe_cleanup(t_cmd *cmd);
 void    free_all(t_cmd *cmd, t_env *env, t_token **token);
+void    pipe_cleaner(t_pipe *pipe);
+void    free2d(char **list);
 
 //error messages
 void	syn_err(t_token *token);
