@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/25 00:41:34 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:50:16 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void    assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *d
         j++;
     }
     handle_redirV2(cmd);
-    child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);
+        child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);
     if (is_builtin(cmd))
     {
         run_builtin(cmd, env);

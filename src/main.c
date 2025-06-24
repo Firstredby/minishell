@@ -35,7 +35,7 @@ int	cmd_init(t_data *data, char *input, char **envp)
 	if (!data->cmd)
 		return (free_all(data->cmd, data->env, NULL), 12);
 	data->token = NULL;
-	show_args(data->cmd);
+	//show_args(data->cmd);
 	return (0);
 }
 
@@ -126,7 +126,7 @@ int main(int argc, char **argv, char **envp)
 		//printf("minishell2: %d\n", g_exit_status);
 		if (should_exit)
 		    break;
-		show_args(data->cmd);
+		//show_args(data->cmd);
 	}
     free_all(NULL, data->env, NULL);
 	free(data);
