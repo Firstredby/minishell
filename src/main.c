@@ -21,12 +21,9 @@ int	g_exit_status = 0;
 
 int	cmd_init(t_data *data, char *input, char **envp)
 {
-	data->cmd = NULL;
-	data->env = NULL;
-	data->token = NULL;
 	if (!data->env)
 		if (!env_handle(envp, &data->env))
-			return (12);
+			return (free_all(NULL, data->env, NULL), 12);
 	data->token = tokenizerV3(input, command_count(input));
 	if (!data->token && g_exit_status == 12)
 		return (free_all(NULL, data->env, data->token), 12);
@@ -49,7 +46,7 @@ int	start_exec(t_data *data)
 	}
 	command_sigs();
 	if(!data->cmd->next)
-		exe_cmd(data->cmd, data->env);
+		exe_cmd(data->cmd, &data->env);
 	else
 		execute_pipe(data->cmd, data->env);
 	return (0);
@@ -66,6 +63,9 @@ int main(int argc, char **argv, char **envp)
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (12);
+	data->cmd = NULL;
+	data->env = NULL;
+	data->token = NULL;
     while (1)
     {
 		main_sigs();
@@ -90,6 +90,7 @@ int main(int argc, char **argv, char **envp)
         if (start_exec(data))
 			return (g_exit_status);
         cmd_cleaner(data->cmd);
+		data->cmd = NULL;
 		rl_clear_history();
 	}
     free_all(NULL, data->env, NULL);

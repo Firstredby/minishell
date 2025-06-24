@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 20:07:17 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:22:24 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void    exe_help(int status, t_cmd *cmd, pid_t pid)
 }
 
 
-void    exe_cmd(t_cmd *cmd, t_env *env)
+void    exe_cmd(t_cmd *cmd, t_env **env)
 {
     pid_t pid;
     int status;
@@ -80,7 +80,7 @@ void    exe_cmd(t_cmd *cmd, t_env *env)
 		handle_redirV2(cmd);
         if(cmd->cmd && is_builtin(cmd))
         {
-			run_builtin(cmd, env);
+			run_builtin(cmd, *env);
             exit(g_exit_status);    
         }
         else 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 11:14:06 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 03:21:38 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void    run_builtin(t_cmd *cmd, t_env *env)
     return;
 } 
 
-void    builtin_parent(t_cmd *cmd, t_env *env)
+void    builtin_parent(t_cmd *cmd, t_env **env)
 {
     int i;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 11:40:58 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 03:06:48 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,14 @@ static void    sort_export(t_env *env, int count)
 
 
 
-int ft_export_add(t_cmd *cmd, t_env *env, int index)
+int ft_export_add(t_cmd *cmd, t_env **env, int index)
 {
     t_env *env_loop;
     char *temp;
-    
-    // if ( cmd->args[index][0] == '='|| export_add_help(cmd, index))
-    // {
-    //     ft_putstr_fd("export: `", 2);
-    //     ft_putstr_fd(cmd->args[1], 2);
-    //     ft_putstr_fd("': not a valid identifier\n", 2);
-    //     g_exit_status = 1;
-    //     exit(g_exit_status);
-    // }
-    // if (ft_strchr(cmd->args[index], '=') == 0)
-    // {
-    //     env_add(&env, cmd->args[index]);
-    //     return(0);
-    // }
-    if(!export_check(cmd, env, index))
+
+    if(!export_check(cmd, *env, index))
         return(g_exit_status = 1);
-    env_loop = env;
+    env_loop = *env;
     temp = env_strdup(cmd->args[index], true);
     while(env_loop)
     {
@@ -108,7 +95,7 @@ int ft_export_add(t_cmd *cmd, t_env *env, int index)
         env_loop = env_loop->next;
     }
     if(!cmd->next)
-        env_add(&env, cmd->args[index]);
+        env_add(env, cmd->args[index]);
     return (g_exit_status = 0);
 }
 

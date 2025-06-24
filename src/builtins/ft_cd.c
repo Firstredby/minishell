@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:30:29 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 12:32:36 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 03:21:18 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 
-int cd_pwd(t_env *env)
+int cd_pwd(t_env **env)
 {
     t_env *env_loop;
 
     
-    env_loop = env;
+    env_loop = *env;
     while (env_loop)
     {
         if(!ft_strcmp("PWD", env_loop->key))
@@ -36,19 +36,19 @@ int cd_pwd(t_env *env)
      return(g_exit_status = 1);
 }
 
-int cd_oldpwd(t_env *env)
+int cd_oldpwd(t_env **env)
 {
     t_env *env_loop;
     char    *temp;
 
-    env_loop = env;
+    env_loop = *env;
     while(env_loop)
     {
         if(!ft_strcmp("PWD", env_loop->key))
             temp = ft_strdup(env_loop->value);
         env_loop = env_loop->next;
     }
-    env_loop = env;
+    env_loop = *env;
     while (env_loop)
     {
         if(!ft_strcmp("OLDPWD", env_loop->key))
@@ -95,7 +95,7 @@ int cd_check(t_cmd *cmd, t_env *env)
     return(0);
 }
 
-int ft_cd(t_cmd *cmd, t_env *env)
+int ft_cd(t_cmd *cmd, t_env **env)
 {
     (void)env;
     
@@ -106,7 +106,7 @@ int ft_cd(t_cmd *cmd, t_env *env)
             chdir(getenv("HOME"));
             return (g_exit_status = 0);
         }
-        if(cd_check(cmd, env))
+        if(cd_check(cmd, *env))
             return(g_exit_status = 1);
         // if (chdir(cmd->args[1]) == -1)
         // {

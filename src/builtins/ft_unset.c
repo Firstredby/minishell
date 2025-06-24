@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:01:35 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 11:27:20 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 03:20:16 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int ft_unset(t_cmd *cmd, t_env *env)
+int ft_unset(t_cmd *cmd, t_env **env)
 {
     t_env *env_temp;
     t_env *env_loop;
 
     env_temp = NULL;
-    env_loop = env;
+    env_loop = *env;
     if(cmd && !cmd->next)
     {
         while (env_loop)
