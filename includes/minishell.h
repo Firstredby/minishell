@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 20:07:07 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:21:42 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ void	file_not_exists(char *str);
 //builtins
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(t_cmd *cmd);
-int		ft_cd(t_cmd *cmd, t_env *env);
+int		ft_cd(t_cmd *cmd, t_env **env);
 int		ft_exit(t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
 int		ft_env(t_cmd *cmd, t_env *env);
 int		ft_export(t_cmd *cmd, t_env *env);
-int		ft_unset(t_cmd *cmd, t_env *env);
+int		ft_unset(t_cmd *cmd, t_env **env);
 void    run_builtin(t_cmd *cmd, t_env *env);
-void    builtin_parent(t_cmd *cmd, t_env *env);
-int     ft_export_add(t_cmd *cmd, t_env *env, int index);
+void    builtin_parent(t_cmd *cmd, t_env **env);
+int     ft_export_add(t_cmd *cmd, t_env **env, int index);
 int     export_add_help(t_cmd *cmd, int index);
 int     export_check(t_cmd *cmd, t_env *env, int index);
 
@@ -82,7 +82,7 @@ t_env	*env_create(char *env);
 char    *env_strdup(char *env, bool flag);
 
 //execution
-void	exe_cmd(t_cmd *cmd, t_env *env);
+void	exe_cmd(t_cmd *cmd, t_env **env);
 void	execute_pipe(t_cmd *cmd, t_env *env);
 void    handle_redirV2(t_cmd *cmd);
 
@@ -115,6 +115,7 @@ int	    ft_isalpha(int c);
 //debug panel
 void	show_args(t_cmd *cmd);
 void	show_token(t_token **token);
+void	show_env(t_env *env);
 
 //signal_handler
 void    main_sigs(void);
