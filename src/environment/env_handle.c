@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/20 17:32:24 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:46:31 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,31 @@
 #include <complex.h>
 #include <stddef.h>
 #include <string.h>
+
+char    *no_more_spaces(char *env, int pos)
+{
+    char    *res;
+    int     i;
+    int     size;
+
+    i = pos;
+    while (env[i])
+    {
+        while (env[i] == ' ' && env[i + 1] == ' ')
+            i++;
+        size++;
+        i++;
+    }
+    res = ft_calloc(sizeof(char), size + 1);
+    i = 0;
+    while (env[pos])
+    {
+        while (env[pos] == ' ' && env[pos + 1] == ' ')
+            pos++;
+        res[i++] = env[pos++];
+    }
+    return (res);
+}
 
 char    *env_strdup(char *env, bool flag)
 {
@@ -33,8 +58,9 @@ char    *env_strdup(char *env, bool flag)
         i = 0;
     }
     else
-	    len = ft_strlen(env) - (++i);
-	str = ft_calloc(len + 1 + 1, sizeof(char));
+        return (no_more_spaces(env, ++i));
+    // len = ft_strlen(env) - (++i);
+	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
     j = 0;
@@ -78,15 +104,15 @@ int env_add(t_env **env_head, char *env)
     if (*env_head == NULL)   
     {
         *env_head = env_new;
-        return(1);
+        // return(1);
     }
     else
     {
-    loop = *env_head;
-    while (loop->next)
-        loop = loop->next;
-    loop->next = env_new;
-    env_new->next = NULL;
+        loop = *env_head;
+        while (loop->next)
+            loop = loop->next;
+        loop->next = env_new;
+        env_new->next = NULL;
     }
     return(1);
 }
@@ -99,7 +125,7 @@ int    env_handle(char **env, t_env **env_head)
     while (env[i])
     {
         if (!env_add(env_head, env[i]))
-            return (env_cleaner(*env_head), 0);
+            return (0);
         i++;
     }
     return(1);
