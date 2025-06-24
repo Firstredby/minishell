@@ -1,6 +1,20 @@
 #include "../../includes/minishell.h"
 #include <stdio.h>
 
+void	show_env(t_env *env)
+{
+	t_env *curr;
+
+	curr = env;
+	while (curr)
+	{
+		printf("env both: %s\n", curr->both);
+		printf("env key: %s\n", curr->key);
+		printf("env value: %s\n", curr->value);
+		curr = curr->next;
+	}
+}
+
 void	show_args(t_cmd *cmd)
 {
 	int l = 0;
