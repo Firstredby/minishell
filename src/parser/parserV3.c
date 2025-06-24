@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/20 18:19:21 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:56:49 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,13 @@ void	command(t_token *token, t_cmd *cmd)
 
 void	collect_limiter(t_token *token, t_cmd *cmd, int index)
 {
-	cmd->limiter[index++] = ft_strdup(token->next->token);
+	if (token->next->type == T_DOLLAR)
+	{
+		cmd->limiter[index] = ft_strdup("$");	
+		ft_strjoin_free(&cmd->limiter[index++], token->next->token) ;
+	}
+	else
+		cmd->limiter[index++] = ft_strdup(token->next->token);
 	if (cmd->fd_in)
 		close(cmd->fd_in);
 	cmd->fd_in = 0;
@@ -190,9 +196,9 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 	head = cmds;
 	while (tokens && tokens[i]->type != T_EOF)
 	{
+		redir(tokens[i], cmds);
 		expand_quotes(tokens[i], env);
 		expand_variables(tokens[i], env);
-		redir(tokens[i], cmds);
 		command(tokens[i], cmds);
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{

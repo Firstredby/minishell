@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:22:24 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:21:46 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	exe_prep(t_cmd *cmd)
 			return (1);
 		if (cmd->limiter)
         	cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
+		free(order);
         if (!cmd->filename)
 			return (ft_putstr_fd("malloc error\n", 2), 1);
         handle_heredoc(cmd);

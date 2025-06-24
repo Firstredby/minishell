@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 20:25:06 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/22 20:20:33 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:28:28 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,32 @@ int	redir_check(t_token *curr)
 	return (0);
 }
 
+void	open_heredoc(t_token **src, t_token *end)
+{
+	char	*line;
+	t_token *begin;
+	int	i;
+
+	i = 0;
+	begin = src[i];
+	while (src[i + 1]->type != T_EOF && begin != end)
+	{
+		begin = src[i++];
+		while (begin)
+		{
+			if (begin->type == 5)
+				while(1)
+				{
+					line = readline("> ");
+					if (!ft_strcmp(line, begin->next->token) || !line)
+						break ;
+					free(line);
+				}
+			begin = begin->next;
+		}
+	}
+}
+
 int	parser_validator(t_token **token)
 {
 	int	i;
@@ -68,7 +94,11 @@ int	parser_validator(t_token **token)
 		while (curr)
 		{
 			if (redir_check(curr))
-                return (syn_err(curr->next), 1);
+			{
+				syn_err(curr->next);
+				open_heredoc(token, curr);
+                return (1);
+			}
 			curr = curr->next;
 		}
 		i++;

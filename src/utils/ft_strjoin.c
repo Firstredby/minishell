@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/20 18:04:49 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:52:27 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	ft_strjoin_free(char **s1, char *s2)
 		return ;
 	}
 	newstring = ft_calloc(ft_strlen(*s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (!newstring)
+		return (perror("malloc"));
 	i = 0;
 	j = 0;
 	while ((*s1)[j])

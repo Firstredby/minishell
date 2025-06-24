@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:01:35 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 03:20:16 by vboxuser         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:31:11 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ int ft_unset(t_cmd *cmd, t_env **env)
             env_loop = env_loop->next;
         }
     }
-    return (0);
+    return (g_exit_status = 0);
 }

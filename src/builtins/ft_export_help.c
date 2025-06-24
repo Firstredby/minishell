@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_help.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:17:49 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 11:25:48 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/24 15:23:44 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int export_check(t_cmd *cmd, t_env *env, int index)
     if (ft_strchr(cmd->args[index], '=') == 0)
     {
         if (env_add(&env, cmd->args[index]))
-            return(0);
+            return(1);
     }
     return(1);
 }
