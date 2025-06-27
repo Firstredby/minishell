@@ -24,14 +24,14 @@ int	cmd_init(t_data *data, char *input, char **envp)
 	if (!data->env)
 		if (!env_handle(envp, &data->env))
 			return (free_all(NULL, data->env, NULL), 12);
-	data->token = tokenizerV3(input, command_count(input));
+	data->token = tokenizer(input, command_count(input));
 	if (!data->token && g_exit_status == 12)
 		return (free_all(NULL, data->env, NULL), 12);
 	else if (!data->token)
 		return (1);
 	if (parser_validator(data->token))
 		return (free_all(NULL, NULL, data->token), data->token = NULL, 1);
-	data->cmd = parserV3(data->token, data->env);
+	data->cmd = parser(data->token, data->env);
 	if (!data->cmd)
 		return (free_all(data->cmd, data->env, NULL), 12);
 	data->token = NULL;
@@ -101,7 +101,7 @@ int main(int argc, char **argv, char **envp)
 		    }
 		    if (data->token)
 		    {
-		        TRASH_COLLECTOR_GOES_BRRRR(data->token);
+		        trash_collector_goes_brrrr(data->token);
 		        data->token = NULL;
 		    }
 			break ;
@@ -120,7 +120,7 @@ int main(int argc, char **argv, char **envp)
 		data->cmd = NULL;
         if (data->token)
         {
-            TRASH_COLLECTOR_GOES_BRRRR(data->token);
+            trash_collector_goes_brrrr(data->token);
             data->token = NULL;
         }
 		//printf("minishell2: %d\n", g_exit_status);

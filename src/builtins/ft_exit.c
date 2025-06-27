@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:39:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 22:41:22 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:34:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	value_validator(t_cmd *cmd)
 {
 	int	pos;
 	int	len;
-	int negative;
+	int	negative;
 
 	pos = 0;
 	negative = 0;
@@ -38,7 +38,7 @@ int	value_validator(t_cmd *cmd)
 		pos++;
 	len = ft_strlen(&cmd->args[1][pos]);
 	if (len > 20)
-			return (err_msg(cmd), g_exit_status = 2);
+		return (err_msg(cmd), g_exit_status = 2);
 	else if (len == 19 && negative
 		&& ft_strcmp(&cmd->args[1][pos], "9223372036854775808") > 0)
 		return (err_msg(cmd), g_exit_status = 2);
@@ -49,14 +49,14 @@ int	value_validator(t_cmd *cmd)
 		return (0);
 }
 
-int ft_exit(t_cmd *cmd)
+int	ft_exit(t_cmd *cmd)
 {
 	int	exit_code;
 	int	i;
 
 	i = 0;
-    if (cmd->args[1])
-    {
+	if (cmd->args[1])
+	{
 		if (!cmd->args[1][0])
 			return (err_msg(cmd), 2);
 		if (value_validator(cmd))
@@ -68,12 +68,12 @@ int ft_exit(t_cmd *cmd)
 				return (err_msg(cmd), g_exit_status = 2);
 			i++;
 		}
-        if (cmd->args[2])
-            return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
+		if (cmd->args[2])
+			return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
 		exit_code = ft_atoi(cmd->args[1]);
 		if (exit_code == 2)
 			err_msg(cmd);
 		return (g_exit_status);
-    }
-    return (0);
+	}
+	return (0);
 }

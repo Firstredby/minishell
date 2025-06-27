@@ -23,7 +23,7 @@ SOURCES = src/main.c \
 		  src/utils/env_strcmp.c \
 		  src/parser/tokenizer.c \
 		  src/utils/debug_menu.c \
-		  src/parser/parserV3.c \
+		  src/parser/parser.c \
 		  src/utils/ft_itoa.c \
 		  src/utils/create_filename.c \
 		  src/utils/ft_substr.c \
@@ -38,7 +38,6 @@ SOURCES = src/main.c \
 		  src/builtins/ft_export_help.c \
 		  src/utils/ft_memcpy.c \
 		  src/utils/ft_strncmp.c \
-		  src/utils/ll.c
 		  
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

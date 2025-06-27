@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/24 12:51:52 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/27 15:52:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	addtoken(t_token **list, t_token *node)
 t_token	*newtoken(char *token, t_token_type type)
 {
 	t_token	*new_token;
-	
+
 	new_token = (t_token *)malloc(sizeof(t_token));
 	if (!new_token)
 	{
@@ -42,7 +42,7 @@ t_token	*newtoken(char *token, t_token_type type)
 	}
 	new_token->token = token;
 	new_token->type = type;
-	new_token->next = NULL;	
+	new_token->next = NULL;
 	return (new_token);
 }
 
@@ -81,7 +81,7 @@ void	set_space(char **input, t_token **list)
 		{
 			ft_putstr_fd("malloc error", 2);
 			g_exit_status = 12;
-			return;
+			return ;
 		}
 		*input += 1;
 		addtoken(list, newtoken(space, T_SPACE));

@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:57:02 by aorth             #+#    #+#             */
-/*   Updated: 2025/05/15 16:03:13 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/27 16:26:01 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-
-
 
 void	*ft_memset(void *s, int c, size_t n)
 {

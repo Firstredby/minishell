@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 14:02:20 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/19 21:55:49 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/27 16:25:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_strchr(const	char *s, int c)
 {
 	char	*str;
-	int i;
+	int		i;
 
 	i = 0;
 	str = (char *)s;

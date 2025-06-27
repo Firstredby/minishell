@@ -3,7 +3,7 @@
 
 void	show_env(t_env *env)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = env;
 	while (curr)
@@ -19,7 +19,7 @@ void	show_args(t_cmd *cmd)
 {
 	int l = 0;
 	int	i = 0;
-	while (cmd) //visualizer
+	while (cmd)
 	{
 		printf("-------------------------------\n");
 		printf("(cmd): %s\n", cmd->cmd);

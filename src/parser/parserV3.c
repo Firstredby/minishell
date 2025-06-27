@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parserV3.c                                         :+:      :+:    :+:   */
+/*   parser.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:09:41 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/25 00:41:02 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:01:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	command(t_token *token, t_cmd *cmd)
 	i = 0;
 	cmd->args = ft_calloc(sizeof(char *), cmd_size(token) + 1);
 	if (!cmd->args)
-		return (perror("malloc"));//err
+		return (perror("malloc"));
 	while (token && token->type != T_PIPE && token->type != T_EOF)
 	{
 		if (token->type == T_SPACE && cmd->args[i])
@@ -79,7 +79,7 @@ void	command(t_token *token, t_cmd *cmd)
 		else if (!cmd->cmd)
 			cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
-			return (perror("malloc"));// err
+			return (perror("malloc"));
 	}
 }
 
@@ -87,19 +87,19 @@ void	collect_limiter(t_token *token, t_cmd *cmd, int index)
 {
 	if (token->next->type == T_DOLLAR)
 	{
-		cmd->limiter[index] = ft_strdup("$");	
-		ft_strjoin_free(&cmd->limiter[index++], token->next->token) ;
+		cmd->limiter[index] = ft_strdup("$");
+		ft_strjoin_free(&cmd->limiter[index++], token->next->token);
 	}
 	else
 		cmd->limiter[index] = ft_strdup(token->next->token);
 	if (!cmd->limiter[index])
-		return;
+		return ;
 	if (cmd->fd_in)
 		close(cmd->fd_in);
 	cmd->fd_in = 0;
 }
 
-void    redir(t_token *token, t_cmd *cmd)
+void	redir(t_token *token, t_cmd *cmd)
 {
 	int		i;
 	bool	flag;
@@ -108,18 +108,18 @@ void    redir(t_token *token, t_cmd *cmd)
 	flag = true;
 	cmd->limiter = ft_calloc(lim_size(token) + 1, sizeof(char *));
 	if (!cmd->limiter)
-		return ; //err
-    while (token && token->type != T_PIPE && flag)
+		return ;
+	while (token && token->type != T_PIPE && flag)
 	{
-        if (token->type >= 2 && token->type <= 5)
+		if (token->type >= 2 && token->type <= 5)
 		{
 			if (token->type == T_HEREDOC)
 				collect_limiter(token, cmd, i++);
-            else
+			else
 				open_fd(token, cmd, token->type, &flag);
 			token->next->type = T_RED_TARGET;
 		}
-        token = token->next;
+		token = token->next;
 	}
 }
 
@@ -153,7 +153,7 @@ char	*dquote_expansion(t_token *token, t_env *env)
 				continue ;
 			else
 				token->token = replace_string(token->token,
-					env_from_list(env, ft_substr(token->token, i, k)), i, k);
+						env_from_list(env, ft_substr(token->token, i, k)), i, k);
 			if (!token->token)
 				return (NULL);
 			break ;
@@ -179,7 +179,7 @@ int	expand_quotes(t_token *token, t_env *env)
 		{
 			tmp = ft_substr(token->token, 0, ft_strlen(token->token));
 			if (!tmp)
-				return (1); //err
+				return (1);
 			free(token->token);
 			token->token = tmp;
 		}
@@ -188,7 +188,7 @@ int	expand_quotes(t_token *token, t_env *env)
 	return (0);
 }
 
-t_cmd	*parserV3(t_token **tokens, t_env *env)
+t_cmd	*parser(t_token **tokens, t_env *env)
 {
 	t_cmd	*cmds;
 	t_cmd	*head;
@@ -214,6 +214,6 @@ t_cmd	*parserV3(t_token **tokens, t_env *env)
 			cmds = cmds->next;
 		}
 	}
-	TRASH_COLLECTOR_GOES_BRRRR(tokens);
+	trash_collector_goes_brrrr(tokens);
 	return (head);
 }

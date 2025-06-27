@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:26:58 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/23 20:07:27 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:29:53 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-size_t  ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-    size_t i;
+	size_t	i;
 
-    i = 0;
+	i = 0;
 	if (!s || !*s)
 		return (0);
-    while (*(s + i))
-        i++;
-    return (i);
+	while (*(s + i))
+		i++;
+	return (i);
 }

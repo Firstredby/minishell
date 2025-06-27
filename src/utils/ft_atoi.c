@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 12:38:33 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/24 22:41:52 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:41:20 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 long long int	ft_atoi(const char *nptr)
 {
 	long long	result;
-	int		sign;
+	int			sign;
 	size_t		i;
 
 	i = 0;

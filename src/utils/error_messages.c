@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:14:44 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/20 17:42:43 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:30:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	miss_quote(void)
 
 int	directory(char *str)
 {
-	DIR *dir;
-	
+	DIR	*dir;
+
 	dir = opendir(str);
 	if (!dir)
 		return (1);
@@ -45,7 +45,7 @@ void	undef_cmd(char *str)
 {
 	if (str && ((*str == '.' && *(str + 1) == '/') || *str == '/'))
 	{
-		if (directory(str))	
+		if (directory(str))
 			return (file_not_exists(str), (void)(g_exit_status = 127));
 		else
 			return (ft_putstr_fd(str, 2),

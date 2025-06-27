@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:28:15 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/25 00:41:58 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:28:01 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ void	ft_strjoin_free(char **s1, char *s2)
 	if (!s1 || !*s1)
 	{
 		if (!s2 || !*s2)
-			*s1 = ft_calloc(1, 1);
+			return ((void)(*s1 = ft_calloc(1, 1)));
 		else
-			*s1 = ft_strdup(s2);
-		return ;
+			return ((void)(*s1 = ft_strdup(s2)));
 	}
 	if (!s2)
 		return ;

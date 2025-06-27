@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/24 20:07:40 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:57:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -25,7 +24,7 @@ char	*replace_string(char *str, char *var, int i, int k)
 	size = i - 1 + ft_strlen(var) + (ft_strlen(str) - i - k + 1);
 	newstr = ft_calloc(size, sizeof(char));
 	if (!newstr)
-		return (NULL);//err
+		return (NULL);
 	while (str_pos < i - 1)
 	{
 		newstr[str_pos] = str[str_pos];
@@ -40,9 +39,9 @@ char	*replace_string(char *str, char *var, int i, int k)
 	return (str = newstr);
 }
 
-char    *env_from_list(t_env *env, char *key)
+char	*env_from_list(t_env *env, char *key)
 {
-	t_env *head;
+	t_env	*head;
 
 	head = env;
 	if (!ft_strcmp(key, "?"))
@@ -68,24 +67,24 @@ char    *env_from_list(t_env *env, char *key)
 
 void	open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag)
 {
-    int flags;
-	int *fd;
+	int	flags;
+	int	*fd;
 
-    if (redir == T_RED_IN)
+	if (redir == T_RED_IN)
 	{
 		flags = O_RDONLY;
 		fd = &cmd->fd_in;
 	}
-    else
+	else
 		fd = &cmd->fd_out;
 	if (redir == T_RED_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	else if (redir == T_RED_APPEND)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
-    if (*fd)
+	if (*fd)
 		close(*fd);
 	*fd = 0;
-    *fd = open(token->next->token, flags, 0644);
+	*fd = open(token->next->token, flags, 0644);
 	if (*fd == -1)
 		(file_not_exists(token->next->token), *flag = false);
 }
