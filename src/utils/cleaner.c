@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/27 16:40:20 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/27 22:56:26 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	free2d(char **list)
 {
 	int	i;
 
-	if (!*list)
-		return (free(list));
+	if (!list)
+		return ;
 	i = 0;
 	while (list[i])
 	{
@@ -56,7 +56,6 @@ void	free2d(char **list)
 		list[i] = NULL;
 		i++;
 	}
-	free(list[i]);
 	free(list);
 }
 
@@ -166,16 +165,10 @@ void	child_safe_cleanup(t_cmd *cmd)
 			free(current->cmd);
 			current->cmd = NULL;
 		}
-		if (current->args)
-		{
-			free2d(current->args);
-			current->args = NULL;
-		}
-		if (current->limiter)
-		{
-			free2d(current->limiter);
-			current->limiter = NULL;
-		}
+		free2d(current->args);
+		current->args = NULL;
+		free2d(current->limiter);
+		current->limiter = NULL;
 		if (current->filename)
 		{
 			free(current->filename);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 16:33:27 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/27 22:30:57 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void			child_safe_cleanup(t_cmd *cmd);
 void			free_all(t_cmd *cmd, t_env *env, t_token **token);
 void			pipe_cleaner(t_pipe *pipe);
 void			free2d(char **list);
-void			child_cleanup_and_exit(t_cmd *cmd, t_env *env, int exit_code, t_data *data, pid_t *pid);
+void			child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid);
 
 //error messages
 void			syn_err(t_token *token);

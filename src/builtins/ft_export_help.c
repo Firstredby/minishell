@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_help.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:17:49 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 15:12:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/27 22:15:22 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int	export_check(t_cmd *cmd, t_env *env, int index)
 		ft_putstr_fd("export: `", 2);
 		ft_putstr_fd(cmd->args[1], 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
-		g_exit_status = 1;
-		exit(g_exit_status);
+		return (g_exit_status = 1);
 	}
 	if (ft_strchr(cmd->args[index], '=') == 0)
 	{

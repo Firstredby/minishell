@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 15:46:01 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/27 21:44:29 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*no_more_spaces(char *env, int pos)
 char	*env_strdup(char *env, bool flag)
 {
 	char	*str;
-	size_t	len;
 	int		i;
 	int		j;
 
@@ -56,16 +55,15 @@ char	*env_strdup(char *env, bool flag)
 	while (env[i] != '=' && env[i])
 		i++;
 	if (flag)
-	{
-		len = ++i;
-		i = 0;
-	}
-	else
+		str = ft_calloc(++i + 1, sizeof(char));
+	else if (env[i] == '=')
 		return (no_more_spaces(env, ++i));
-	str = ft_calloc(len + 1, sizeof(char));
+	else
+		return (ft_substr(env, 0, i));		
 	if (!str)
 		return (NULL);
 	j = 0;
+	i = 0;
 	while (env[i] && env[i] != '=')
 		str[j++] = env[i++];
 	return (str);

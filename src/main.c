@@ -32,10 +32,9 @@ int	cmd_init(t_data *data, char *input, char **envp)
 	if (parser_validator(data->token))
 		return (free_all(NULL, NULL, data->token), data->token = NULL, 1);
 	data->cmd = parser(data->token, data->env);
-	if (!data->cmd)
+	if (!data->cmd || g_exit_status == 12)
 		return (free_all(data->cmd, data->env, NULL), 12);
 	data->token = NULL;
-	//show_args(data->cmd);
 	return (0);
 }
 
@@ -54,24 +53,15 @@ int	start_exec(t_data *data)
 	return (0);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main_loop(t_data *data, char **envp)
 {
-    char	*input;
-    t_data	*data;
 	int		check;
 	int		should_exit;
+	char	*input;
 
-    (void)argc;
-    (void)argv;
+	input = NULL;
 	should_exit = 0;
-	data = ft_calloc(1, sizeof(t_data));
-	if (!data)
-		return (12);
-	data->cmd = NULL;
-	data->env = NULL;
-	data->token = NULL;
-    input = NULL;
-    while (1)
+	while (1)
     {
 		main_sigs();
         input = readline("minishell$ ");
@@ -80,12 +70,12 @@ int main(int argc, char **argv, char **envp)
         if (!input)
         {
             printf("exit\n");
-            break;
+            break ;
         }
         if (input[0] == '\0')
         {
             free(input);
-            continue;
+            continue ;
         }		
 		check = cmd_init(data, input, envp);
 		free(input);
@@ -93,41 +83,39 @@ int main(int argc, char **argv, char **envp)
 		if (check == 1)
 			continue ;
 		if (check == 12)
-		{
-		    if (data->cmd)
-		    {
-		        cmd_cleaner(data->cmd);
-		        data->cmd = NULL;
-		    }
-		    if (data->token)
-		    {
-		        trash_collector_goes_brrrr(data->token);
-		        data->token = NULL;
-		    }
-			break ;
-		}
+			return (free_all(data->cmd, data->env, data->token),
+					free(data), g_exit_status = 12);
         if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd, "exit"))
             should_exit = 1;
         if (start_exec(data))
-        {
-            free_all(data->cmd, data->env, data->token);
-            free(data);
-			return (g_exit_status);
-        }
-		//printf("minishell: %d\n", g_exit_status);
+			return (free_all(data->cmd, data->env, data->token),
+					free(data), g_exit_status);
         cmd_cleaner(data->cmd);
-		//printf("minishell1: %d\n", g_exit_status);
 		data->cmd = NULL;
         if (data->token)
         {
             trash_collector_goes_brrrr(data->token);
             data->token = NULL;
         }
-		//printf("minishell2: %d\n", g_exit_status);
 		if (should_exit)
-		    break;
-		//show_args(data->cmd);
+		    break ;
 	}
+	return (0);
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    t_data	*data;
+
+
+    ((void)argc, (void)argv);
+	data = ft_calloc(1, sizeof(t_data));
+	if (!data)
+		return (12);
+	data->cmd = NULL;
+	data->env = NULL;
+	data->token = NULL;
+	main_loop(data, envp);   
     free_all(NULL, data->env, NULL);
 	free(data);
 	rl_clear_history();

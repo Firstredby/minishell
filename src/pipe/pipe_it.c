@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 16:21:42 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/27 22:32:23 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,24 +76,26 @@ static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data
 		close(pipe->fds[j][1]);
 		j++;
 	}
-	handle_redir(cmd);
-		child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);
+	if (handle_redir(cmd))
+		child_cleanup_and_exit(g_exit_status, data, pid);
 	if (is_builtin(cmd))
 	{
 		run_builtin(cmd, env);
-		child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);
+		child_cleanup_and_exit(g_exit_status, data, pid);
 	}
 	else
 	{
+		if (!cmd->cmd)
+			child_cleanup_and_exit(0, data, pid);
 		if (!*cmd->cmd)
-			child_cleanup_and_exit(cmd, env, 0, data, pid);
+			child_cleanup_and_exit(127, data, pid);
 		if (execvp(cmd->cmd, cmd->args) == -1)
 		{
 			undef_cmd(cmd->cmd);
-			child_cleanup_and_exit(cmd, env, g_exit_status, data, pid);	
+			child_cleanup_and_exit(g_exit_status, data, pid);	
 		}
 	}
-	child_cleanup_and_exit(cmd, env, 0, data, pid);
+	child_cleanup_and_exit(0, data, pid);
 }
 
 void	pipe_exit_status(int status)

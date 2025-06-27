@@ -79,7 +79,7 @@ void	command(t_token *token, t_cmd *cmd)
 		else if (!cmd->cmd)
 			cmd->cmd = ft_strdup(cmd->args[0]);
 		if (!cmd->cmd)
-			return (perror("malloc"));
+			return (perror("malloc"), (void)(g_exit_status = 12));
 	}
 }
 
