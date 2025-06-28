@@ -207,6 +207,7 @@ t_cmd	*parser(t_token **tokens, t_env *env)
 		command(tokens[i], cmds);
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{
+			
 			cmds->skip = false;
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!cmds->next)
@@ -214,6 +215,9 @@ t_cmd	*parser(t_token **tokens, t_env *env)
 			cmds = cmds->next;
 		}
 	}
+	// printf("fd_in %d\n", cmds->fd_in);
+	// printf("fd_out %d\n", cmds->fd_out);
+	// printf("fd %d\n", cmds->fd);
 	trash_collector_goes_brrrr(tokens);
 	return (head);
 }

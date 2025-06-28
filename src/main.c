@@ -118,6 +118,9 @@ int main(int argc, char **argv, char **envp)
 	main_loop(data, envp);   
     free_all(NULL, data->env, NULL);
 	free(data);
+	close(STDERR_FILENO);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	rl_clear_history();
     return (g_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 22:32:23 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/28 13:09:54 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (i == 0)
+	if (i == 0 && !cmd->skip)
 		dup2(pipe->fds[0][1], STDOUT_FILENO);
 	else if (i == pipe->cmd_count - 1)
 		dup2(pipe->fds[i-1][0], STDIN_FILENO);
-	else
+	else if (!cmd->skip)
 	{
 		dup2(pipe->fds[i - 1][0], STDIN_FILENO);
 		dup2(pipe->fds[i][1], STDOUT_FILENO);
@@ -76,6 +76,8 @@ static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data
 		close(pipe->fds[j][1]);
 		j++;
 	}
+	if (cmd->skip)
+		child_cleanup_and_exit(g_exit_status, data, pid);
 	if (handle_redir(cmd))
 		child_cleanup_and_exit(g_exit_status, data, pid);
 	if (is_builtin(cmd))

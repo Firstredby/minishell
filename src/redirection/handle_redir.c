@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 16:21:42 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/28 13:45:16 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ void	handle_heredoc(t_cmd *cmd)
 			{
 				line = readline("> ");
 				if (sigs_help(cmd, line, i) == 1)
-					return ;
+					return (free(line));
 				else if (sigs_help(cmd, line, i) == 2)
 					break ;
 				write(cmd->fd, line, ft_strlen(line));
 				write(cmd->fd, "\n", 1);
 				free(line);
 			}
+			free(line);
 			command_sigs();
 		}
 		close(cmd->fd);
