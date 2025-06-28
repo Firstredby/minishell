@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 20:25:06 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/28 14:02:16 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/28 14:13:17 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,16 @@ void	open_heredoc(t_token **src, t_token *end)
 		begin = src[i++];
 		while (begin)
 		{
+			line = NULL;
 			while (begin->type == 5)
 			{
 				line = readline("> ");
-				if (!ft_strcmp(line, begin->next->token) || !line)
+				if (!line || !ft_strcmp(line, begin->next->token))
 					break ;
 				free(line);
 			}
-			free(line);
+			if (line)
+				free(line);
 			begin = begin->next;
 		}
 	}
