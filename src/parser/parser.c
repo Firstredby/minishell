@@ -94,7 +94,7 @@ void	collect_limiter(t_token *token, t_cmd *cmd, int index)
 		cmd->limiter[index] = ft_strdup(token->next->token);
 	if (!cmd->limiter[index])
 		return ;
-	if (cmd->fd_in)
+	if (cmd->fd_in > 2)
 		close(cmd->fd_in);
 	cmd->fd_in = 0;
 }

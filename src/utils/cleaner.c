@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/28 13:38:46 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 21:22:14 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,4 @@ void	child_safe_cleanup(t_cmd *cmd)
 		free(current);
 		current = next;
 	}
-	close(STDOUT_FILENO);
-	close(STDIN_FILENO);
-	close(STDERR_FILENO);
 }

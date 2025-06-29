@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 15:15:33 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 21:28:05 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	sigs_help(t_cmd *cmd, char *line, int i)
 	return (0);
 }
 
-void	handle_heredoc(t_cmd *cmd)
+int	handle_heredoc(t_cmd *cmd)
 {
 	char	*line;
 	int		i;
@@ -62,7 +62,10 @@ void	handle_heredoc(t_cmd *cmd)
 			{
 				line = readline("> ");
 				if (sigs_help(cmd, line, i) == 1)
-					return (free(line));
+				{
+					close(cmd->fd);
+					return (free(line), 1);
+				}
 				else if (sigs_help(cmd, line, i) == 2)
 					break ;
 				write(cmd->fd, line, ft_strlen(line));
@@ -77,6 +80,7 @@ void	handle_heredoc(t_cmd *cmd)
 		i++;
 	}
 	heredoc_helper(cmd);
+	return (0);
 }
 
 int	handle_redir(t_cmd *cmd)

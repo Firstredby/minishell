@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 17:36:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 22:13:32 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ int	exe_prep(t_cmd *cmd)
 		cmd->node_nbr = i_loop;
 		order = ft_itoa(cmd->node_nbr);
 		if (!order)
-			return (1);
+			return (g_exit_status=12);
 		if (cmd->limiter && *cmd->limiter)
 		{
 			cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
 			free(order);
 			if (!cmd->filename)
 				return (ft_putstr_fd("malloc error\n", 2), 1);
-			handle_heredoc(cmd);
+			if(handle_heredoc(cmd))
+				return(1);
 		}
 		else
 			free(order);
@@ -63,17 +64,25 @@ void	exe_help(int status, t_cmd *cmd, pid_t pid)
 			printf("Quit (core dumped)\n");
 		}
 	}
+	(void)cmd;
 	if (cmd->fd_in > 2)
 		close(cmd->fd_in);
 	if (cmd->fd_out > 2)
 		close(cmd->fd_out);
 	if (cmd->fd > 2)
-		close(cmd->fd_out);
+		close(cmd->fd);
 }
 
 void	child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid)
 {
+	(void)fork;
 	child_safe_cleanup(data->cmd);
+	//if (fork)
+	//{
+		close(STDOUT_FILENO);
+		close(STDIN_FILENO);
+		close(STDERR_FILENO);
+//	}
 	env_cleaner(data->env);
 	if (pid)
 		free(pid);
@@ -97,6 +106,7 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 			|| (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
 			|| !ft_strcmp(cmd->cmd, "unset")))
 		return ;
+//	show_args(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -113,7 +123,7 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 		{
 			if (!cmd->cmd)
 				child_cleanup_and_exit(0, data, NULL);
-			else if (!*cmd->cmd)
+			if (!*cmd->cmd)
 			{
 				undef_cmd(NULL);
 				child_cleanup_and_exit(0, data, NULL);

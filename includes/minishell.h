@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/28 20:28:31 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 22:11:52 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void			execute_pipe(t_cmd *cmd, t_env *env, t_data *data);
 int				handle_redir(t_cmd *cmd);
 
 // execution preparation
-void			handle_heredoc(t_cmd *cmd);
+int			handle_heredoc(t_cmd *cmd);
 char			*create_filename(char *path, char *id, char *type);
 int				exe_prep(t_cmd *cmd);
 

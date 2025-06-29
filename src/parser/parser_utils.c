@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/28 12:51:47 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 21:27:34 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	else if (redir == T_RED_APPEND)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
-	if (*fd)
+	if (*fd > 2)
 		close(*fd);
 	*fd = 0;
 	*fd = open(token->next->token, flags, 0644);
