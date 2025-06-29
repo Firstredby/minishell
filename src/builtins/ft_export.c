@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 19:44:36 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:51:26 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void	sort_export(t_env *env, int count)
 
 int	export_replace(t_env *env_loop, t_cmd *cmd, char *temp, int index)
 {
-	free(temp);
 	if (env_loop->value)
 		free(env_loop->value);
 	if (env_loop->both)
@@ -79,10 +78,15 @@ int	export_replace(t_env *env_loop, t_cmd *cmd, char *temp, int index)
 	temp = env_strdup(cmd->args[index], false);
 	if (!temp)
 		return (g_exit_status = 12);
-	env_loop->value = ft_strdup(temp);
+	if (*temp)
+	{
+		env_loop->value = ft_strdup(temp);
+		if (!env_loop->value)
+			return (g_exit_status = 12);		
+	}
+	else
+		env_loop->value = NULL;
 	free(temp);
-	if (!env_loop->value)
-		return (g_exit_status = 12);
 	return (g_exit_status = 0);
 }
 
@@ -101,7 +105,7 @@ int	ft_export_add(t_cmd *cmd, t_env **env, int index)
 	{
 		if (!ft_strcmp(temp, env_loop->key))
 			if (export_replace(env_loop, cmd, temp, index))
-				return (1);
+				return (free(temp), 1);
 		env_loop = env_loop->next;
 	}
 	free(temp);

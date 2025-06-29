@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 22:33:11 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:38:34 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data)
 {
 	char	*temp;
 
+	temp = NULL;
 	if (!cmd->cmd)
 		child_cleanup_and_exit(0, data, NULL);
 	else if (!*cmd->cmd)
@@ -111,8 +112,7 @@ void	run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data)
 		temp = ft_strdup(cmd->cmd);
 	if (execve(temp, cmd->args, (*env)->exported_envs) == -1)
 	{
-		undef_cmd(cmd->cmd);
-		free(temp);
+		(undef_cmd(cmd->cmd), free(temp));
 		temp = NULL;
 		child_cleanup_and_exit(g_exit_status, data, NULL);
 	}
