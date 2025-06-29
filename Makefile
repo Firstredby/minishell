@@ -43,33 +43,53 @@ SOURCES = src/main.c \
 		  src/utils/cleaner_utils.c \
 		  src/parser/parser_len_counter.c \
 		  src/builtins/cd_utils.c
-		  
+
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g3
+CFLAGS = -Werror -Wextra -Wall -O2 -g
 OBJS = $(SOURCES:.c=.o)
 
-all: $(NAME)
+GREEN = \033[1;32m
+RED = \033[1;31m
+BLUE = \033[1;34m
+CYAN = \033[1;36m
+RESET = \033[0m
+CHECK = ✓
+CROSS = ✗
+
+all: banner $(NAME)
 
 $(NAME): $(OBJS)
-		$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	@printf "$(GREEN)[$(CHECK)] Build successful: $(NAME)$(RESET)\n"
+	@$(MAKE) --no-print-directory minihell
+
+banner:
+	@printf "$(CYAN)🚀 Building $(NAME)...$(RESET)\n"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@printf "$(BLUE)[*] Compiling $<...$(RESET)\n"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+minihell:
+	@echo "$(RED)"
+	@echo "███╗   ███╗██╗███╗   ██╗██╗██╗  ██╗███████╗██╗     ██╗     "
+	@echo "████╗ ████║██║████╗  ██║██║██║  ██║██╔════╝██║     ██║     "
+	@echo "██╔████╔██║██║██╔██╗ ██║██║███████║█████╗  ██║     ██║     "
+	@echo "██║╚██╔╝██║██║██║╚██╗██║██║██╔══██║██╔══╝  ██║     ██║     "
+	@echo "██║ ╚═╝ ██║██║██║ ╚████║██║██║  ██║███████╗███████╗███████╗"
+	@echo "╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
+	@echo "                   $(BLUE)by $(RED)ishchyro $(BLUE)& $(RED)aorth $(CYAN)"
+	@echo "$(RESET)"
 
 clean:
-		rm -rf $(OBJS)
+	@rm -rf $(OBJS)
+	@clear
+	@printf "$(RED)[$(CROSS)] Object files removed.$(RESET)\n"
 
 fclean: clean
-		rm -f $(NAME)
+	@rm -f $(NAME)
+	@printf "$(RED)[$(CROSS)] Executable removed.$(RESET)\n"
 
 re: fclean all
 
-help:
-		@echo "Available rules:"
-		@echo "all       - Build the library."
-		@echo "clean     - Remove object files."
-		@echo "fclean    - Remove object files and the library."
-		@echo "re        - Rebuild the library."
-		@echo "help      - Display this help."
-
-.PHONY:	all clean fclean re help
+.PHONY: all clean fclean re banner
