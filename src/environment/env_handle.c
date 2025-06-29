@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 16:43:33 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 19:53:59 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*env_strdup(char *env, bool flag)
 	else if (env[i] == '=')
 		return (no_more_spaces(env, ++i));
 	else
-		return (ft_substr(env, 0, i));		
+		return (ft_substr(env, 0, i));
 	if (!str)
 		return (NULL);
 	j = 0;
@@ -116,17 +116,10 @@ int	env_add(t_env **env_head, char *env)
 	return (1);
 }
 
-
-
 int	env_handle(char **env, t_env **env_head)
 {
 	int	i;
 
-	// if (!*env || !**env || !env)
-	// {
-	// 	*env_head = NULL;
-	// 	return(0);
-	// }
 	i = 0;
 	if (!env || !*env || !**env)
 	{

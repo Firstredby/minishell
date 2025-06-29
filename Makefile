@@ -39,7 +39,9 @@ SOURCES = src/main.c \
 		  src/utils/ft_memcpy.c \
 		  src/utils/ft_strncmp.c \
 		  src/utils/ft_strstr.c \
-		  src/utils/looking_path.c 
+		  src/utils/looking_path.c \
+		  src/utils/cleaner_utils.c \
+		  src/parser/parser_len_counter.c
 		  
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

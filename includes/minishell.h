@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/28 20:28:31 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 19:55:31 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
 #include "structs.h"
 #include <dirent.h>
 #include <fcntl.h>
@@ -44,6 +43,13 @@ char			*replace_string(char *str, char *var, int i, int k);
 char			*env_from_list(t_env *env, char *key);
 void			open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag);
 bool			is_redir(t_token_type type);
+char			*dquote_expansion(t_token *token, t_env *env);
+void			collect_limiter(t_token *token, t_cmd *cmd, int index);
+
+// parser_counters
+size_t			command_count(char *input);
+int				lim_size(t_token *token);
+int				cmd_size(t_token *token);
 
 // parser
 t_cmd			*parser(t_token **tokens, t_env *env);
@@ -53,10 +59,13 @@ void			trash_collector_goes_brrrr(t_token **list);
 void			cmd_cleaner(t_cmd *cmd);
 void			env_cleaner(t_env *env);
 void			child_safe_cleanup(t_cmd *cmd);
-void			free_all(t_cmd *cmd, t_env *env, t_token **token);
 void			pipe_cleaner(t_pipe *pipe);
-void			free2d(char **list);
 void			child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid);
+
+// cleaner utils
+void			free_all(t_cmd *cmd, t_env *env, t_token **token);
+void			free2d(char **list);
+void			closefd(int fd);
 
 // error messages
 void			syn_err(t_token *token);
@@ -75,10 +84,14 @@ int				ft_export(t_env *env);
 int				ft_unset(t_cmd *cmd, t_env **env);
 void			run_builtin(t_cmd *cmd, t_env *env);
 void			builtin_parent(t_cmd *cmd, t_env **env);
+
+// export
+void			no_env_export(t_env **env, t_cmd *cmd, int index);
 int				ft_export_add(t_cmd *cmd, t_env **env, int index);
 int				export_add_help(t_cmd *cmd, int index);
 int				export_check(t_cmd *cmd, t_env *env, int index);
 int				alloc_export(t_env *env, int count);
+char			*set_exported_env(t_env *env);
 
 // env
 int				env_add(t_env **env_head, char *env);
@@ -89,6 +102,7 @@ char			*env_strdup(char *env, bool flag);
 void			exe_cmd(t_cmd *cmd, t_env **env, t_data *data);
 void			execute_pipe(t_cmd *cmd, t_env *env, t_data *data);
 int				handle_redir(t_cmd *cmd);
+void			run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data);
 
 // execution preparation
 void			handle_heredoc(t_cmd *cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 16:53:39 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 19:54:17 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,12 @@ static int	alloc_pipe(t_cmd *cmd)
 static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data, pid_t *pid)
 {
 	int	j;
-	char * temp;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	temp = NULL;
+	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
 	if (i == 0 && !cmd->skip)
 		dup2(pipe->fds[0][1], STDOUT_FILENO);
 	else if (i == pipe->cmd_count - 1)
-		dup2(pipe->fds[i-1][0], STDIN_FILENO);
+		dup2(pipe->fds[i - 1][0], STDIN_FILENO);
 	else if (!cmd->skip)
 	{
 		dup2(pipe->fds[i - 1][0], STDIN_FILENO);
@@ -88,31 +85,7 @@ static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data
 		child_cleanup_and_exit(g_exit_status, data, pid);
 	}
 	else
-	{
-		if (!cmd->cmd)
-			child_cleanup_and_exit(0, data, pid);
-		if (!*cmd->cmd)
-			child_cleanup_and_exit(127, data, pid);
-		if (env->both)
-				ft_export(env);
-		if (looking_path(cmd, env->exported_envs))
-		{
-			if (ft_strncmp(cmd->cmd, "/bin/", 5) && !ft_strchr(cmd->cmd,
-					'/'))
-				temp = ft_strdup("/bin/");
-			ft_strjoin_free(&temp, cmd->cmd);
-		}			
-		else
-			temp = ft_strdup(cmd->cmd);
-		if (execve(temp, cmd->args, env->exported_envs) == -1)
-		{
-			free(temp);
-			temp = NULL;
-			undef_cmd(cmd->cmd);
-			child_cleanup_and_exit(g_exit_status, data, pid);	
-		}
-	}
-	child_cleanup_and_exit(0, data, pid);
+		run_notbuiltin(cmd, &env, data);
 }
 
 void	pipe_exit_status(int status)

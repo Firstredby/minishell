@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 12:46:09 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 19:45:07 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	is_builtin(t_cmd *cmd)
 
 void	run_builtin(t_cmd *cmd, t_env *env)
 {
-	int i;
-	
+	int	i;
+
 	if (!ft_strcmp(cmd->cmd, "echo"))
 		ft_echo(cmd);
 	if (!ft_strcmp(cmd->cmd, "pwd"))

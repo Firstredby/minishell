@@ -6,13 +6,11 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/28 13:38:46 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 18:05:04 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 void	trash_collector_goes_brrrr(t_token **list)
 {
@@ -41,28 +39,6 @@ void	trash_collector_goes_brrrr(t_token **list)
 		i++;
 	}
 	free(list);
-}
-
-void	free2d(char **list)
-{
-	int	i;
-
-	if (!list)
-		return ;
-	i = 0;
-	while (list[i])
-	{
-		free(list[i]);
-		list[i] = NULL;
-		i++;
-	}
-	free(list);
-}
-
-void	closefd(int fd)
-{
-	if (fd > 2)
-		close(fd);
 }
 
 void	cmd_cleaner(t_cmd *cmd)
@@ -137,56 +113,30 @@ void	pipe_cleaner(t_pipe *pipe)
 	free(pipe);
 }
 
-void	free_all(t_cmd *cmd, t_env *env, t_token **token)
-{
-	if (cmd)
-		cmd_cleaner(cmd);
-	if (env)
-		env_cleaner(env);
-	if (token)
-		trash_collector_goes_brrrr(token);
-}
-
 void	child_safe_cleanup(t_cmd *cmd)
 {
-	t_cmd	*current;
 	t_cmd	*next;
 	t_pipe	*pipe_to_free;
 
 	if (!cmd)
 		return ;
 	pipe_to_free = NULL;
-	current = cmd;
-	while (current)
+	while (cmd)
 	{
-		next = current->next;
-		if (current->cmd)
+		next = cmd->next;
+		(free(cmd->cmd), free(cmd->filename));
+		(free2d(cmd->args), free2d(cmd->limiter));
+		closefd(cmd->fd_in);
+		closefd(cmd->fd_out);
+		closefd(cmd->fd);
+		if (cmd->pipe && pipe_to_free != cmd->pipe)
 		{
-			free(current->cmd);
-			current->cmd = NULL;
+			pipe_to_free = cmd->pipe;
+			pipe_cleaner(cmd->pipe);
+			cmd->pipe = NULL;
 		}
-		free2d(current->args);
-		current->args = NULL;
-		free2d(current->limiter);
-		current->limiter = NULL;
-		if (current->filename)
-		{
-			free(current->filename);
-			current->filename = NULL;
-		}
-		closefd(current->fd_in);
-		closefd(current->fd_out);
-		closefd(current->fd);
-		if (current->pipe && pipe_to_free != current->pipe)
-		{
-			pipe_to_free = current->pipe;
-			pipe_cleaner(current->pipe);
-			current->pipe = NULL;
-		}
-		free(current);
-		current = next;
+		free(cmd);
+		cmd = next;
 	}
-	close(STDOUT_FILENO);
-	close(STDIN_FILENO);
-	close(STDERR_FILENO);
+	(close(STDIN_FILENO), close(STDOUT_FILENO), close(STDERR_FILENO));
 }

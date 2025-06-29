@@ -12,49 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-size_t	command_count(char *input)
-{
-	int		i;
-	size_t	result;
-
-	result = 0;
-	i = 0;
-	while (input[i])
-		if (input[i++] == '|')
-			result++;
-	if (!result)
-		return (1);
-	return (result + 1);
-}
-
-int	cmd_size(t_token *token)
-{
-	int	size;
-
-	size = 0;
-	while (token && token->type != T_PIPE)
-	{
-		if (token->type != T_SPACE && !is_redir(token->type))
-			size++;
-		token = token->next;
-	}
-	return (size);
-}
-
-int	lim_size(t_token *token)
-{
-	int	size;
-
-	size = 0;
-	while (token && token->type != T_PIPE)
-	{
-		if (token->type == T_HEREDOC)
-			size++;
-		token = token->next;
-	}
-	return (size);
-}
-
 void	command(t_token *token, t_cmd *cmd)
 {
 	int	i;
@@ -83,22 +40,6 @@ void	command(t_token *token, t_cmd *cmd)
 	}
 }
 
-void	collect_limiter(t_token *token, t_cmd *cmd, int index)
-{
-	if (token->next->type == T_DOLLAR)
-	{
-		cmd->limiter[index] = ft_strdup("$");
-		ft_strjoin_free(&cmd->limiter[index++], token->next->token);
-	}
-	else
-		cmd->limiter[index] = ft_strdup(token->next->token);
-	if (!cmd->limiter[index])
-		return ;
-	if (cmd->fd_in)
-		close(cmd->fd_in);
-	cmd->fd_in = 0;
-}
-
 void	redir(t_token *token, t_cmd *cmd)
 {
 	int		i;
@@ -121,11 +62,6 @@ void	redir(t_token *token, t_cmd *cmd)
 		}
 		token = token->next;
 	}
-	// if(cmd->limiter && !cmd->limiter[0])
-	// {
-	// 	free(cmd->limiter);
-	// 	cmd->limiter = NULL;
-	// }
 }
 
 void	expand_variables(t_token *token, t_env *env)
@@ -139,34 +75,6 @@ void	expand_variables(t_token *token, t_env *env)
 		}
 		token = token->next;
 	}
-}
-
-char	*dquote_expansion(t_token *token, t_env *env)
-{
-	int	i;
-	int	k;
-
-	i = 0;
-	k = 0;
-	while (token->token[i])
-		if (token->token[i++] == '$')
-		{
-			while (!ft_ismetachr(token->token[i + k]) && token->token[i
-				+ k] != '|' && token->token[i + k] != '/')
-				k++;
-			if (k == 0)
-				continue ;
-			else
-				token->token = replace_string(token->token, env_from_list(env,
-							ft_substr(token->token, i, k)), i, k);
-			if (!token->token)
-				return (NULL);
-			break ;
-		}
-	if (ft_strlen(token->token) != (size_t)i)
-		return (dquote_expansion(token, env));
-	else
-		return (token->token);
 }
 
 int	expand_quotes(t_token *token, t_env *env)
@@ -219,9 +127,6 @@ t_cmd	*parser(t_token **tokens, t_env *env)
 			cmds = cmds->next;
 		}
 	}
-	// printf("fd_in %d\n", cmds->fd_in);
-	// printf("fd_out %d\n", cmds->fd_out);
-	// printf("fd %d\n", cmds->fd);
 	trash_collector_goes_brrrr(tokens);
 	return (head);
 }

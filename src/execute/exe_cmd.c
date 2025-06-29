@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 17:36:50 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 19:00:24 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,41 @@ void	child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid)
 	exit(exit_code);
 }
 
+void	run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data)
+{
+	char	*temp;
+
+	if (!cmd->cmd)
+		child_cleanup_and_exit(0, data, NULL);
+	else if (!*cmd->cmd)
+		(undef_cmd(NULL),
+			child_cleanup_and_exit(0, data, NULL));
+	if ((*env)->both)
+		ft_export(*env);
+	if (looking_path(cmd, (*env)->exported_envs))
+	{
+		if (ft_strncmp(cmd->cmd, "/bin/", 5) && !ft_strchr(cmd->cmd,
+				'/'))
+			temp = ft_strdup("/bin/");
+		ft_strjoin_free(&temp, cmd->cmd);
+	}
+	else
+		temp = ft_strdup(cmd->cmd);
+	if (execve(temp, cmd->args, (*env)->exported_envs) == -1)
+	{
+		undef_cmd(cmd->cmd);
+		free(temp);
+		temp = NULL;
+		child_cleanup_and_exit(g_exit_status, data, NULL);
+	}
+}
+
 void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 {
 	pid_t	pid;
 	int		status;
-	char	*temp;
 
 	status = 0;
-	temp = NULL;
 	builtin_parent(cmd, env);
 	if (cmd->cmd && (!ft_strcmp(cmd->cmd, "exit") || !ft_strcmp(cmd->cmd, "cd")
 			|| (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
@@ -100,48 +127,17 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
 		if (handle_redir(cmd))
 			child_cleanup_and_exit(g_exit_status, data, NULL);
 		if (cmd->cmd && is_builtin(cmd))
-		{
-			run_builtin(cmd, *env);
-			child_cleanup_and_exit(g_exit_status, data, NULL);
-		}
+			(run_builtin(cmd, *env),
+				child_cleanup_and_exit(g_exit_status, data, NULL));
 		else
-		{
-			if (!cmd->cmd)
-				child_cleanup_and_exit(0, data, NULL);
-			else if (!*cmd->cmd)
-			{
-				undef_cmd(NULL);
-				child_cleanup_and_exit(0, data, NULL);
-			}
-			if ((*env)->both)
-				ft_export(*env);
-			if (looking_path(cmd, (*env)->exported_envs))
-			{
-				if (ft_strncmp(cmd->cmd, "/bin/", 5) && !ft_strchr(cmd->cmd,
-						'/'))
-					temp = ft_strdup("/bin/");
-				ft_strjoin_free(&temp, cmd->cmd);
-			}
-			else
-				temp = ft_strdup(cmd->cmd);
-			if (execve(temp, cmd->args, (*env)->exported_envs) == -1)
-			{
-				free(temp);
-				temp = NULL;
-				undef_cmd(cmd->cmd);
-				child_cleanup_and_exit(g_exit_status, data, NULL);
-			}
-		}
+			run_notbuiltin(cmd, env, data);
 	}
 	else if (pid > 0)
-	{
 		exe_help(status, cmd, pid);
-	}
 	else
 		perror("Fork failed");
 }

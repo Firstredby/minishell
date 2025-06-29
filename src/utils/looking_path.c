@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   looking_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:04:33 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 14:01:43 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 18:08:38 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	looking_path(t_cmd *cmd, char **env)
 
 	(void)cmd;
 	i = 0;
-	if(!env || !*env || !**env)
+	if (!env || !*env || !**env)
 		return (0);
 	while (env[i])
 	{

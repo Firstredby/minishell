@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/28 12:51:47 by ishchyro         ###   ########.fr       */
+/*   Created: 2025/06/29 19:50:44 by ishchyro          #+#    #+#             */
+/*   Updated: 2025/06/29 19:50:59 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,50 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag)
 	*fd = open(token->next->token, flags, 0644);
 	if (*fd == -1)
 		(file_not_exists(token->next->token), *flag = false);
+}
+
+void	collect_limiter(t_token *token, t_cmd *cmd, int index)
+{
+	if (token->next->type == T_DOLLAR)
+	{
+		cmd->limiter[index] = ft_strdup("$");
+		ft_strjoin_free(&cmd->limiter[index++], token->next->token);
+	}
+	else
+		cmd->limiter[index] = ft_strdup(token->next->token);
+	if (!cmd->limiter[index])
+		return ;
+	if (cmd->fd_in)
+		close(cmd->fd_in);
+	cmd->fd_in = 0;
+}
+
+char	*dquote_expansion(t_token *token, t_env *env)
+{
+	int	i;
+	int	k;
+
+	i = 0;
+	k = 0;
+	while (token->token[i])
+	{
+		if (token->token[i++] == '$')
+		{
+			while (!ft_ismetachr(token->token[i + k]) && token->token[i
+					+ k] != '|' && token->token[i + k] != '/')
+				k++;
+			if (k == 0)
+				continue ;
+			else
+				token->token = replace_string(token->token, env_from_list(env,
+							ft_substr(token->token, i, k)), i, k);
+			if (!token->token)
+				return (NULL);
+			break ;
+		}
+	}
+	if (ft_strlen(token->token) != (size_t)i)
+		return (dquote_expansion(token, env));
+	else
+		return (token->token);
 }
