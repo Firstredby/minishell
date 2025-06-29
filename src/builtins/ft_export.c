@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 23:51:26 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:59:07 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	export_replace(t_env *env_loop, t_cmd *cmd, char *temp, int index)
 	{
 		env_loop->value = ft_strdup(temp);
 		if (!env_loop->value)
-			return (g_exit_status = 12);		
+			return (g_exit_status = 12);
 	}
 	else
 		env_loop->value = NULL;

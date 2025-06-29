@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:41:24 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/27 15:52:41 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/30 00:49:30 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	addtoken(t_token **list, t_token *node)
+void	addtkn(t_token **list, t_token *node)
 {
 	t_token	*head;
 
@@ -29,7 +29,7 @@ void	addtoken(t_token **list, t_token *node)
 	}
 }
 
-t_token	*newtoken(char *token, t_token_type type)
+t_token	*newtkn(char *token, t_token_type type)
 {
 	t_token	*new_token;
 
@@ -84,6 +84,6 @@ void	set_space(char **input, t_token **list)
 			return ;
 		}
 		*input += 1;
-		addtoken(list, newtoken(space, T_SPACE));
+		addtkn(list, newtkn(space, T_SPACE));
 	}
 }
