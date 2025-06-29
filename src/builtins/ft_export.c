@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:02:34 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 15:40:35 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/29 16:24:41 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-static int	alloc_export(t_env *env, int count)
+int	alloc_export(t_env *env, int count)
 {
 	int		i;
 	t_env	*env_loop;
 
+	if(!env)
+		return (0);
 	env->exported_envs = ft_calloc(sizeof(char *), (count + 1));
 	if (!env->exported_envs)
 		return (perror("malloc:"), -1);
@@ -28,7 +30,7 @@ static int	alloc_export(t_env *env, int count)
 	{
 		if (!env_loop->both)
 			env->exported_envs[i] = ft_strdup(env_loop->key);
-		else
+		else 
 			env->exported_envs[i] = ft_strdup(env_loop->both);
 		if (!env->exported_envs[i])
 		{
@@ -73,7 +75,7 @@ int	ft_export_add(t_cmd *cmd, t_env **env, int index)
 	t_env	*env_loop;
 	char	*temp;
 
-	if (!export_check(cmd, *env, index))
+	if (export_check(cmd, *env, index))
 		return (g_exit_status = 1);
 	env_loop = *env;
 	temp = env_strdup(cmd->args[index], true);
@@ -104,31 +106,41 @@ int	ft_export_add(t_cmd *cmd, t_env **env, int index)
 	}
 	free(temp);
 	if (!cmd->next)
-		env_add(env, cmd->args[index]);
+	{
+		if (!(*env)->key)
+		{
+			free(*env);
+			env_add(env, cmd->args[index]);
+			alloc_export(*env, 1);
+		}
+		else
+			env_add(env, cmd->args[index]);
+	}
 	return (g_exit_status = 0);
 }
 
-int	ft_export(t_cmd *cmd, t_env *env)
+int	ft_export(t_env *env)
 {
-	int		i;
 	int		count;
 	t_env	*env_loop;
 
-	if (cmd->args[0] && !cmd->args[1])
+	if (!env)
+		return (g_exit_status = 1);
+	count = 0;
+	env_loop = env;
+	while (env_loop)
 	{
-		count = 0;
-		env_loop = env;
-		while (env_loop)
-		{
-			count++;
-			env_loop = env_loop->next;
-		}
-		if (alloc_export(env, count) == -1)
-			return (g_exit_status = 12);
-		sort_export(env, count);
-		i = 0;
-		while (env->exported_envs[i])
-			printf("declare -x %s\n", env->exported_envs[i++]);
+		count++;
+		env_loop = env_loop->next;
 	}
+	if (env->exported_envs)
+	{
+		free2d(env->exported_envs);
+		env->exported_envs = NULL;
+	}
+	if (alloc_export(env, count) == -1)
+		return (g_exit_status = 12);
+	sort_export(env, count);
+	//}
 	return (g_exit_status = 0);
 }

@@ -121,6 +121,11 @@ void	redir(t_token *token, t_cmd *cmd)
 		}
 		token = token->next;
 	}
+	// if(cmd->limiter && !cmd->limiter[0])
+	// {
+	// 	free(cmd->limiter);
+	// 	cmd->limiter = NULL;
+	// }
 }
 
 void	expand_variables(t_token *token, t_env *env)
@@ -138,22 +143,22 @@ void	expand_variables(t_token *token, t_env *env)
 
 char	*dquote_expansion(t_token *token, t_env *env)
 {
-	int		i;
-	int		k;
+	int	i;
+	int	k;
 
 	i = 0;
 	k = 0;
 	while (token->token[i])
 		if (token->token[i++] == '$')
 		{
-			while (!ft_ismetachr(token->token[i + k])
-				&& token->token[i + k] != '|' && token->token[i + k] != '/')
+			while (!ft_ismetachr(token->token[i + k]) && token->token[i
+				+ k] != '|' && token->token[i + k] != '/')
 				k++;
 			if (k == 0)
 				continue ;
 			else
-				token->token = replace_string(token->token,
-						env_from_list(env, ft_substr(token->token, i, k)), i, k);
+				token->token = replace_string(token->token, env_from_list(env,
+							ft_substr(token->token, i, k)), i, k);
 			if (!token->token)
 				return (NULL);
 			break ;
@@ -207,7 +212,6 @@ t_cmd	*parser(t_token **tokens, t_env *env)
 		command(tokens[i], cmds);
 		if (tokens[++i] && tokens[i]->type != T_EOF)
 		{
-			
 			cmds->skip = false;
 			cmds->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!cmds->next)

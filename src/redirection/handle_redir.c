@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/28 13:45:16 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 15:15:33 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	handle_heredoc(t_cmd *cmd)
 				write(cmd->fd, "\n", 1);
 				free(line);
 			}
-			free(line);
+			if (line)
+				free(line);
 			command_sigs();
 		}
 		close(cmd->fd);

@@ -4,21 +4,28 @@
 void	show_env(t_env *env)
 {
 	t_env	*curr;
+	int		i;
 
+	i = 0;
 	curr = env;
 	while (curr)
 	{
 		printf("env both: %s\n", curr->both);
 		printf("env key: %s\n", curr->key);
 		printf("env value: %s\n", curr->value);
+		while (curr->exported_envs[i])
+			printf("exported: %s\n", curr->exported_envs[i++]);
 		curr = curr->next;
 	}
 }
 
 void	show_args(t_cmd *cmd)
 {
-	int l = 0;
-	int	i = 0;
+	int	l;
+	int	i;
+
+	l = 0;
+	i = 0;
 	while (cmd)
 	{
 		printf("-------------------------------\n");

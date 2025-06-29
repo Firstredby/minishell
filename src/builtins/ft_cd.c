@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 11:30:29 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 15:33:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/29 12:25:53 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,11 @@ int	cd_check(t_cmd *cmd, t_env *env)
 {
 	t_env	*env_loop;
 
+	if (cmd->args[2])
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
+	}
 	if (!ft_strcmp(cmd->args[1], "-"))
 	{
 		env_loop = env;

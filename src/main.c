@@ -2,19 +2,22 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2025/03/08 10:12:56 by aorth             #+#    #+#             */
 /*   Updated: 2025/03/08 10:12:56 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <readline/history.h>
+#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <string.h>
 
 int	g_exit_status = 0;
@@ -23,7 +26,15 @@ int	cmd_init(t_data *data, char *input, char **envp)
 {
 	if (!data->env)
 		if (!env_handle(envp, &data->env))
-			return (free_all(NULL, data->env, NULL), 12);
+		{
+			if (data->env)
+				return (free_all(NULL, data->env, NULL), 12);
+			else
+			{
+				data->env = NULL;
+				return(12);
+			}
+		}
 	data->token = tokenizer(input, command_count(input));
 	if (!data->token && g_exit_status == 12)
 		return (free_all(NULL, data->env, NULL), 12);
@@ -46,7 +57,7 @@ int	start_exec(t_data *data)
 		return (g_exit_status = 12);
 	}
 	command_sigs();
-	if(!data->cmd->next)
+	if (!data->cmd->next)
 		exe_cmd(data->cmd, &data->env, data);
 	else
 		execute_pipe(data->cmd, data->env, data);
@@ -62,65 +73,68 @@ int	main_loop(t_data *data, char **envp)
 	input = NULL;
 	should_exit = 0;
 	while (1)
-    {
+	{
 		main_sigs();
-        input = readline("minishell$ ");
+		input = readline("minishell$ ");
 		if (input)
-            add_history(input);
-        if (!input)
-        {
-            printf("exit\n");
-            break ;
-        }
-        if (input[0] == '\0')
-        {
-            free(input);
-            continue ;
-        }		
+			add_history(input);
+		if (!input)
+		{
+			printf("exit\n");
+			break ;
+		}
+		if (input[0] == '\0')
+		{
+			free(input);
+			continue ;
+		}
 		check = cmd_init(data, input, envp);
-		free(input);
-        input = NULL;
+		if (input)
+		{
+			free(input);
+			input = NULL;
+		}
 		if (check == 1)
 			continue ;
 		if (check == 12)
-			return (free_all(data->cmd, data->env, data->token),
-					free(data), g_exit_status = 12);
-        if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd, "exit"))
-            should_exit = 1;
-        if (start_exec(data))
-			return (free_all(data->cmd, data->env, data->token),
-					free(data), g_exit_status);
-        cmd_cleaner(data->cmd);
+			return (free_all(data->cmd, data->env, data->token), free(data),
+				g_exit_status = 12);
+		if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd, "exit"))
+			should_exit = 1;
+		envp = NULL;
+		if (start_exec(data))
+			return (free_all(data->cmd, data->env, data->token), free(data),
+				g_exit_status);
+		cmd_cleaner(data->cmd);
 		data->cmd = NULL;
-        if (data->token)
-        {
-            trash_collector_goes_brrrr(data->token);
-            data->token = NULL;
-        }
+		if (data->token)
+		{
+			trash_collector_goes_brrrr(data->token);
+			data->token = NULL;
+		}
 		if (should_exit)
-		    break ;
+			break ;
 	}
 	return (0);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-    t_data	*data;
+	t_data *data;
 
-
-    ((void)argc, (void)argv);
+	((void)argc, (void)argv);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (12);
 	data->cmd = NULL;
 	data->env = NULL;
 	data->token = NULL;
-	main_loop(data, envp);   
-    free_all(NULL, data->env, NULL);
+	main_loop(data, envp);
+	free_all(NULL, data->env, NULL);
 	free(data);
 	close(STDERR_FILENO);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	rl_clear_history();
-    return (g_exit_status);
+	return (g_exit_status);
 }

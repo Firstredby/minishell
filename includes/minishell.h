@@ -3,52 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 22:30:57 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/28 20:28:31 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
 #include "executor.h"
+#include "structs.h"
 #include <dirent.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <fcntl.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
 #include <limits.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-extern int	g_exit_status;
-//tokenizer_utils
+extern int		g_exit_status;
+// tokenizer_utils
 int				ft_ismetachr(int c);
 t_token_type	token_type(char *type);
 t_token			*newtoken(char *token, t_token_type type);
 void			addtoken(t_token **list, t_token *node);
 void			set_space(char **input, t_token **list);
 
-//tokenizer
+// tokenizer
 int				parser_validator(t_token **token);
 t_token			**tokenizer(char *input, size_t size);
 
-//parser_utils
+// parser_utils
 char			*replace_string(char *str, char *var, int i, int k);
 char			*env_from_list(t_env *env, char *key);
 void			open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag);
 bool			is_redir(t_token_type type);
 
-//parser
+// parser
 t_cmd			*parser(t_token **tokens, t_env *env);
 
-//cleaner
+// cleaner
 void			trash_collector_goes_brrrr(t_token **list);
 void			cmd_cleaner(t_cmd *cmd);
 void			env_cleaner(t_env *env);
@@ -58,43 +58,44 @@ void			pipe_cleaner(t_pipe *pipe);
 void			free2d(char **list);
 void			child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid);
 
-//error messages
+// error messages
 void			syn_err(t_token *token);
 void			miss_quote(void);
 void			undef_cmd(char *str);
 void			file_not_exists(char *str);
 
-//builtins
+// builtins
 int				ft_echo(t_cmd *cmd);
 int				ft_pwd(t_cmd *cmd);
 int				ft_cd(t_cmd *cmd, t_env **env);
 int				ft_exit(t_cmd *cmd);
 int				is_builtin(t_cmd *cmd);
 int				ft_env(t_cmd *cmd, t_env *env);
-int				ft_export(t_cmd *cmd, t_env *env);
+int				ft_export(t_env *env);
 int				ft_unset(t_cmd *cmd, t_env **env);
 void			run_builtin(t_cmd *cmd, t_env *env);
 void			builtin_parent(t_cmd *cmd, t_env **env);
 int				ft_export_add(t_cmd *cmd, t_env **env, int index);
 int				export_add_help(t_cmd *cmd, int index);
 int				export_check(t_cmd *cmd, t_env *env, int index);
+int				alloc_export(t_env *env, int count);
 
-//env
+// env
 int				env_add(t_env **env_head, char *env);
 t_env			*env_create(char *env);
 char			*env_strdup(char *env, bool flag);
 
-//execution
+// execution
 void			exe_cmd(t_cmd *cmd, t_env **env, t_data *data);
 void			execute_pipe(t_cmd *cmd, t_env *env, t_data *data);
 int				handle_redir(t_cmd *cmd);
 
-//execution preparation
+// execution preparation
 void			handle_heredoc(t_cmd *cmd);
 char			*create_filename(char *path, char *id, char *type);
 int				exe_prep(t_cmd *cmd);
 
-//utils
+// utils
 void			*ft_calloc(size_t nmemb, size_t size);
 char			*ft_strdup(const char *s);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
@@ -112,15 +113,19 @@ int				env_strcmp(const char *s1, const char *s2);
 size_t			command_count(char *input);
 void			ft_strjoin_free(char **s1, char *s2);
 char			*ft_itoa(int n);
-int				ft_strchr(const	char *s, int c);
+int				ft_strchr(const char *s, int c);
 int				ft_isalpha(int c);
+void			ft_strjoin_free_cursed(char **s1, char *s2);
+char			*ft_strstr(const char *haystack, const char *needle);
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
+int				looking_path(t_cmd *cmd, char **env);
 
-//debug panel
+// debug panel
 void			show_args(t_cmd *cmd);
 void			show_token(t_token **token);
 void			show_env(t_env *env);
 
-//signal_handler
+// signal_handler
 void			main_sigs(void);
 void			command_sigs(void);
 void			handle_sigs(int sig);

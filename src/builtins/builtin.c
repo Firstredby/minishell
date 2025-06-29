@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 15:37:24 by codespace        ###   ########.fr       */
+/*   Updated: 2025/06/29 12:46:09 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	is_builtin(t_cmd *cmd)
 
 void	run_builtin(t_cmd *cmd, t_env *env)
 {
+	int i;
+	
 	if (!ft_strcmp(cmd->cmd, "echo"))
 		ft_echo(cmd);
 	if (!ft_strcmp(cmd->cmd, "pwd"))
@@ -41,7 +43,12 @@ void	run_builtin(t_cmd *cmd, t_env *env)
 	if (!ft_strcmp(cmd->cmd, "env"))
 		ft_env(cmd, env);
 	if (!ft_strcmp(cmd->cmd, "export") && !cmd->args[1])
-		ft_export(cmd, env);
+	{
+		ft_export(env);
+		i = 0;
+		while (env->exported_envs[i])
+			printf("declare -x %s\n", env->exported_envs[i++]);
+	}
 	return ;
 }
 

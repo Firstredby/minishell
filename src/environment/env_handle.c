@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:11:36 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/27 21:44:29 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:43:33 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <complex.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 
 char	*no_more_spaces(char *env, int pos)
@@ -115,11 +116,23 @@ int	env_add(t_env **env_head, char *env)
 	return (1);
 }
 
+
+
 int	env_handle(char **env, t_env **env_head)
 {
 	int	i;
 
+	// if (!*env || !**env || !env)
+	// {
+	// 	*env_head = NULL;
+	// 	return(0);
+	// }
 	i = 0;
+	if (!env || !*env || !**env)
+	{
+		*env_head = ft_calloc(sizeof(t_env), 1);
+		return (1);
+	}
 	while (env[i])
 	{
 		if (!env_add(env_head, env[i]))

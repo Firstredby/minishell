@@ -38,6 +38,8 @@ SOURCES = src/main.c \
 		  src/builtins/ft_export_help.c \
 		  src/utils/ft_memcpy.c \
 		  src/utils/ft_strncmp.c \
+		  src/utils/ft_strstr.c \
+		  src/utils/looking_path.c 
 		  
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 20:25:06 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/28 14:02:16 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 17:49:40 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ bool	double_pipe(t_token **list)
 	while (list[i]->type != T_EOF)
 	{
 		head = list[i];
-		if (head->token && !ft_strcmp(head->token, "|"))
+		if (head->type == T_PIPE)
 		{
 			syn_err(head);
 			return (1);
 		}
 		while (head->next)
 			head = head->next;
-		if (head->token && !ft_strcmp(head->token, "|")
+		if (head->type == T_PIPE
 			&& list[i + 1]->type == T_EOF)
 		{
 			syn_err(head);
@@ -67,6 +67,7 @@ void	open_heredoc(t_token **src, t_token *end)
 		begin = src[i++];
 		while (begin)
 		{
+			line = NULL;
 			while (begin->type == 5)
 			{
 				line = readline("> ");
@@ -74,7 +75,8 @@ void	open_heredoc(t_token **src, t_token *end)
 					break ;
 				free(line);
 			}
-			free(line);
+			if(line)
+				free(line);
 			begin = begin->next;
 		}
 	}
