@@ -21,8 +21,6 @@
 #include <string.h>
 #include <unistd.h>
 
-int	g_exit_status = 0;
-
 int	cmd_init(t_data *data, char *input, char **envp)
 {
 	if (!data->env)
@@ -45,19 +43,17 @@ int	cmd_init(t_data *data, char *input, char **envp)
 int	start_exec(t_data *data)
 {
 	if (exe_prep(data->cmd))
-		return(1);
+		return (1);
 	command_sigs();
 	if (!data->cmd->next)
 		exe_cmd(data->cmd, &data->env, data);
 	else
-		execute_pipe(data->cmd, data->env, data);
+		execute_pipe(data->cmd, data);
 	return (0);
 }
 
 // int	main_helper(char *input)
 // {
-// 	main_sigs();
-// 	input = readline("minishell$ ");
 // 	if (input)
 // 		add_history(input);
 // 	if (!input)
@@ -72,8 +68,17 @@ int	start_exec(t_data *data)
 // 	}
 // }
 
-static int	main_cleaner(t_data *data, int should_exit)
+static int	main_cleaner(t_data *data, int check)
 {
+	int should_exit;
+
+	if (check == 12)
+		return (free_all(data->cmd, NULL, NULL), g_exit_status = 12);
+	should_exit = 0;
+	if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd, "exit"))
+		should_exit = 1;
+	if (start_exec(data))
+		return (free_all(data->cmd, NULL, data->token), g_exit_status);
 	cmd_cleaner(data->cmd);
 	data->cmd = NULL;
 	if (data->token)
@@ -82,37 +87,37 @@ static int	main_cleaner(t_data *data, int should_exit)
 		data->token = NULL;
 	}
 	if (should_exit)
-		return(0);
+		return (0);
 	else
-		return(1);
+		return (1);
 }
+
 
 int	main_loop(t_data *data, char **envp)
 {
-	int		check;
-	int		should_exit;
-	char	*input;
-	int		test;
+	int check;
+	//	int		should_exit;
+	char *input;
 
 	input = NULL;
-	should_exit = 0;
-	test = 0;
+	// should_exit = 0;
 	while (1)
 	{
 		main_sigs();
 		input = readline("minishell$ ");
 		if (input)
 			add_history(input);
-		if (!input)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (input[0] == '\0')
-		{
-			free(input);
+		if (!reality_check(input))
+			return (printf("exit\n"), 0);
+		if (reality_check(input) == 1)
 			continue ;
-		}
+		// if (!input)
+		// 	return(printf("exit\n"),0);
+		// if (input[0] == '\0')
+		// {
+		// 	free(input);
+		// 	continue ;
+		// }
 		check = cmd_init(data, input, envp);
 		if (input)
 		{
@@ -121,23 +126,25 @@ int	main_loop(t_data *data, char **envp)
 		}
 		if (check == 1)
 			continue ;
-		if (check == 12)
-			return (free_all(data->cmd, NULL, NULL), g_exit_status = 12);
-		if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd, "exit"))
-			should_exit = 1;
-		if (start_exec(data))
-			return (free_all(data->cmd, NULL, data->token),
-				g_exit_status);
-		if (!main_cleaner(data, should_exit))
-			break;
+		// if (check == 12)
+		// 	return (free_all(data->cmd, NULL, NULL), g_exit_status = 12);
+		// if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd,
+		//		"exit"))
+		// 	should_exit = 1;
+		// if (start_exec(data))
+		// 	return (free_all(data->cmd, NULL, data->token),
+		// 		g_exit_status);
+		if (!main_cleaner(data, check))
+			break ;
 	}
 	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	*data;
+	t_data *data;
 
+	g_exit_status = 0;
 	((void)argc, (void)argv);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)

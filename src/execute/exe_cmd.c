@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 23:38:34 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/30 00:47:58 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,16 @@ void	child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid)
 	exit(exit_code);
 }
 
-void	run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data)
+void	run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data, pid_t *pid)
 {
 	char	*temp;
 
 	temp = NULL;
 	if (!cmd->cmd)
-		child_cleanup_and_exit(0, data, NULL);
+		child_cleanup_and_exit(0, data, pid);
 	else if (!*cmd->cmd)
 		(undef_cmd(NULL),
-			child_cleanup_and_exit(0, data, NULL));
+			child_cleanup_and_exit(0, data, pid));
 	if ((*env)->both)
 		ft_export(*env);
 	if (looking_path(cmd, (*env)->exported_envs))
@@ -114,7 +114,7 @@ void	run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data)
 	{
 		(undef_cmd(cmd->cmd), free(temp));
 		temp = NULL;
-		child_cleanup_and_exit(g_exit_status, data, NULL);
+		child_cleanup_and_exit(g_exit_status, data, pid);
 	}
 }
 
@@ -144,12 +144,10 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 			child_cleanup_and_exit(g_exit_status, data, NULL);
 		}
 		else
-			run_notbuiltin(cmd, env, data);
+			run_notbuiltin(cmd, env, data, NULL);
 	}
 	else if (pid > 0)
-	{
 		exe_help(status, cmd, pid);
-	}
 	else
 		perror("Fork failed");
 }

@@ -41,7 +41,7 @@ SOURCES = src/main.c \
 		  src/utils/ft_strstr.c \
 		  src/utils/looking_path.c \
 		  src/utils/cleaner_utils.c \
-		  src/parser/parser_len_counter.c
+		  src/parser/parser_len_counter.c 
 		  
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -g3

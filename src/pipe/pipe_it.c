@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_it.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:43:20 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 19:54:17 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:05:52 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,25 @@ static int	alloc_pipe(t_cmd *cmd)
 	return (0);
 }
 
-static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data, pid_t *pid)
+static void	assign_fds(int i, t_cmd *cmd, t_data *data, pid_t *pid)
 {
 	int	j;
 
 	(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
 	if (i == 0 && !cmd->skip)
-		dup2(pipe->fds[0][1], STDOUT_FILENO);
-	else if (i == pipe->cmd_count - 1)
-		dup2(pipe->fds[i - 1][0], STDIN_FILENO);
+		dup2(data->cmd->pipe->fds[0][1], STDOUT_FILENO);
+	else if (i == data->cmd->pipe->cmd_count - 1)
+		dup2(data->cmd->pipe->fds[i - 1][0], STDIN_FILENO);
 	else if (!cmd->skip)
 	{
-		dup2(pipe->fds[i - 1][0], STDIN_FILENO);
-		dup2(pipe->fds[i][1], STDOUT_FILENO);
+		dup2(data->cmd->pipe->fds[i - 1][0], STDIN_FILENO);
+		dup2(data->cmd->pipe->fds[i][1], STDOUT_FILENO);
 	}
 	j = 0;
-	while (j < pipe->pipe_count)
+	while (j < data->cmd->pipe->pipe_count)
 	{
-		close(pipe->fds[j][0]);
-		close(pipe->fds[j][1]);
+		close(data->cmd->pipe->fds[j][0]);
+		close(data->cmd->pipe->fds[j][1]);
 		j++;
 	}
 	if (cmd->skip)
@@ -81,11 +81,11 @@ static void	assign_fds(int i, t_cmd *cmd, t_pipe *pipe, t_env *env, t_data *data
 		child_cleanup_and_exit(g_exit_status, data, pid);
 	if (is_builtin(cmd))
 	{
-		run_builtin(cmd, env);
+		run_builtin(cmd, data->env);
 		child_cleanup_and_exit(g_exit_status, data, pid);
 	}
 	else
-		run_notbuiltin(cmd, &env, data);
+		run_notbuiltin(cmd, &data->env, data, pid);
 }
 
 void	pipe_exit_status(int status)
@@ -172,7 +172,7 @@ void	skip_broken_commands(t_cmd *cmd)
 	}
 }
 
-void	execute_pipe(t_cmd *cmd, t_env *env, t_data *data)
+void	execute_pipe(t_cmd *cmd, t_data *data)
 {
 	t_cmd	*current;
 	pid_t	*pid;
@@ -195,7 +195,7 @@ void	execute_pipe(t_cmd *cmd, t_env *env, t_data *data)
 	{
 		pid[i] = fork();
 		if (pid[i] == 0)
-			assign_fds(i, current, pipe, env, data, pid);
+			assign_fds(i, current, data, pid);
 		current = current->next;
 		i++;
 	}

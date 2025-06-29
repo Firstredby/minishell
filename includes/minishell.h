@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 22:27:31 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:08:47 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ char			*env_strdup(char *env, bool flag);
 
 // execution
 void			exe_cmd(t_cmd *cmd, t_env **env, t_data *data);
-void			execute_pipe(t_cmd *cmd, t_env *env, t_data *data);
+void			execute_pipe(t_cmd *cmd, t_data *data);
 int				handle_redir(t_cmd *cmd);
-void			run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data);
+void			run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data, pid_t *pod);
 
 // execution preparation
 int			handle_heredoc(t_cmd *cmd);
@@ -133,6 +133,7 @@ void			ft_strjoin_free_cursed(char **s1, char *s2);
 char			*ft_strstr(const char *haystack, const char *needle);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				looking_path(t_cmd *cmd, char **env);
+int	            reality_check(char *input);
 
 // debug panel
 void			show_args(t_cmd *cmd);
