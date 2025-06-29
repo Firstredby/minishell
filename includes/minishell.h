@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/30 01:08:47 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/30 01:25:34 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ extern int		g_exit_status;
 // tokenizer_utils
 int				ft_ismetachr(int c);
 t_token_type	token_type(char *type);
-t_token			*newtoken(char *token, t_token_type type);
-void			addtoken(t_token **list, t_token *node);
+t_token			*newtkn(char *token, t_token_type type);
+void			addtkn(t_token **list, t_token *node);
 void			set_space(char **input, t_token **list);
 
 // tokenizer
@@ -77,13 +77,16 @@ void			file_not_exists(char *str);
 int				ft_echo(t_cmd *cmd);
 int				ft_pwd(t_cmd *cmd);
 int				ft_cd(t_cmd *cmd, t_env **env);
+int				cd_check(t_cmd *cmd, t_env *env);
+int				change_dir(t_env *env_loop, char *value);
+int				take_pwd(t_env *env, char **temp);
 int				ft_exit(t_cmd *cmd);
 int				is_builtin(t_cmd *cmd);
 int				ft_env(t_cmd *cmd, t_env *env);
 int				ft_export(t_env *env);
 int				ft_unset(t_cmd *cmd, t_env **env);
 void			run_builtin(t_cmd *cmd, t_env *env);
-void			builtin_parent(t_cmd *cmd, t_env **env);
+int				builtin_parent(t_cmd *cmd, t_env **env);
 
 // export
 void			no_env_export(t_env **env, t_cmd *cmd, int index);

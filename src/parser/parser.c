@@ -127,6 +127,5 @@ t_cmd	*parser(t_token **tokens, t_env *env)
 			cmds = cmds->next;
 		}
 	}
-	trash_collector_goes_brrrr(tokens);
-	return (head);
+	return (trash_collector_goes_brrrr(tokens), head);
 }

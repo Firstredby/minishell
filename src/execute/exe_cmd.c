@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/30 00:47:58 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/30 01:25:49 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,20 @@ int	exe_prep(t_cmd *cmd)
 	char	*order;
 
 	i_loop = 1;
-	order = NULL;
 	while (cmd)
 	{
 		cmd->node_nbr = i_loop;
 		order = ft_itoa(cmd->node_nbr);
 		if (!order)
-			return (g_exit_status=12);
+			return (g_exit_status = 12);
 		if (cmd->limiter && *cmd->limiter)
 		{
 			cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
 			free(order);
 			if (!cmd->filename)
 				return (ft_putstr_fd("malloc error\n", 2), 1);
-			if(handle_heredoc(cmd))
-				return(1);
+			if (handle_heredoc(cmd))
+				return (1);
 		}
 		else
 			free(order);
@@ -122,14 +121,9 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 {
 	pid_t	pid;
 	int		status;
-	char	*temp;
 
 	status = 0;
-	temp = NULL;
-	builtin_parent(cmd, env);
-	if (cmd->cmd && (!ft_strcmp(cmd->cmd, "exit") || !ft_strcmp(cmd->cmd, "cd")
-			|| (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
-			|| !ft_strcmp(cmd->cmd, "unset")))
+	if (builtin_parent(cmd, env))
 		return ;
 	pid = fork();
 	if (pid == 0)

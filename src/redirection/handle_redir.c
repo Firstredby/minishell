@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 12:33:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 22:34:55 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/30 00:56:14 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,32 @@ int	sigs_help(t_cmd *cmd, char *line, int i)
 	return (0);
 }
 
-int	handle_heredoc(t_cmd *cmd)
+int	heredoc_loop(t_cmd *cmd, int index)
 {
 	char	*line;
-	int		i;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (sigs_help(cmd, line, index) == 1)
+		{
+			close(cmd->fd);
+			return (free(line), 1);
+		}
+		else if (sigs_help(cmd, line, index) == 2)
+			break ;
+		write(cmd->fd, line, ft_strlen(line));
+		write(cmd->fd, "\n", 1);
+		free(line);
+	}
+	if (line)
+		free(line);
+	return (0);
+}
+
+int	handle_heredoc(t_cmd *cmd)
+{
+	int	i;
 
 	i = 0;
 	while (cmd->limiter && cmd->limiter[i] && *cmd->limiter[i])
@@ -58,22 +80,8 @@ int	handle_heredoc(t_cmd *cmd)
 		if (cmd->fd != -1)
 		{
 			heredoc_sigs();
-			while (1)
-			{
-				line = readline("> ");
-				if (sigs_help(cmd, line, i) == 1)
-				{
-					close(cmd->fd);
-					return (free(line), 1);
-				}
-				else if (sigs_help(cmd, line, i) == 2)
-					break ;
-				write(cmd->fd, line, ft_strlen(line));
-				write(cmd->fd, "\n", 1);
-				free(line);
-			}
-			if (line)
-				free(line);
+			if (heredoc_loop(cmd, i))
+				return (1);
 			command_sigs();
 		}
 		close(cmd->fd);

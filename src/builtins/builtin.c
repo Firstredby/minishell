@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 10:31:27 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 23:44:34 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:57:01 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,24 @@ void	run_builtin(t_cmd *cmd, t_env *env)
 	return ;
 }
 
-void	builtin_parent(t_cmd *cmd, t_env **env)
+int	builtin_parent(t_cmd *cmd, t_env **env)
 {
 	int	i;
 
 	if (!cmd->cmd)
-		return ;
+		return (0);
 	if (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
 	{
 		i = 1;
 		while (cmd->args[i])
 			ft_export_add(cmd, env, i++);
+		return (1);
 	}
 	if (!ft_strcmp(cmd->cmd, "unset"))
-		ft_unset(cmd, env);
+		return (ft_unset(cmd, env), 1);
 	if (!ft_strcmp(cmd->cmd, "exit"))
 		g_exit_status = ft_exit(cmd);
 	if (!ft_strcmp(cmd->cmd, "cd"))
-		ft_cd(cmd, env);
+		return (ft_cd(cmd, env), 1);
+	return (0);
 }

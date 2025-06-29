@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/29 22:33:55 by ishchyro         ###   ########.fr       */
+/*   Created: 2025/06/30 00:45:30 by ishchyro          #+#    #+#             */
+/*   Updated: 2025/06/30 00:46:10 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,5 @@ char	*dquote_expansion(t_token *token, t_env *env)
 	}
 	if (ft_strlen(token->token) != (size_t)i)
 		return (dquote_expansion(token, env));
-	else
-		return (token->token);
+	return (token->token);
 }
