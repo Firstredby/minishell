@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 20:25:06 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/29 17:49:40 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/29 17:58:32 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ void	open_heredoc(t_token **src, t_token *end)
 			while (begin->type == 5)
 			{
 				line = readline("> ");
-				if (!ft_strcmp(line, begin->next->token) || !line)
+				if (!line || !ft_strcmp(line, begin->next->token))
 					break ;
 				free(line);
 			}
-			if(line)
+			if (line)
 				free(line);
 			begin = begin->next;
 		}
