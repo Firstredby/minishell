@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:14:52 by codespace         #+#    #+#             */
-/*   Updated: 2025/06/29 18:05:04 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:35:10 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,4 @@ void	child_safe_cleanup(t_cmd *cmd)
 		free(cmd);
 		cmd = next;
 	}
-	(close(STDIN_FILENO), close(STDOUT_FILENO), close(STDERR_FILENO));
 }

@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 08:42:59 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 19:00:24 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:33:11 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ int	exe_prep(t_cmd *cmd)
 		cmd->node_nbr = i_loop;
 		order = ft_itoa(cmd->node_nbr);
 		if (!order)
-			return (1);
+			return (g_exit_status=12);
 		if (cmd->limiter && *cmd->limiter)
 		{
 			cmd->filename = create_filename("/tmp/heredoc", order, ".tmp");
 			free(order);
 			if (!cmd->filename)
 				return (ft_putstr_fd("malloc error\n", 2), 1);
-			handle_heredoc(cmd);
+			if(handle_heredoc(cmd))
+				return(1);
 		}
 		else
 			free(order);
@@ -63,17 +64,21 @@ void	exe_help(int status, t_cmd *cmd, pid_t pid)
 			printf("Quit (core dumped)\n");
 		}
 	}
+	(void)cmd;
 	if (cmd->fd_in > 2)
 		close(cmd->fd_in);
 	if (cmd->fd_out > 2)
 		close(cmd->fd_out);
 	if (cmd->fd > 2)
-		close(cmd->fd_out);
+		close(cmd->fd);
 }
 
 void	child_cleanup_and_exit(int exit_code, t_data *data, pid_t *pid)
 {
 	child_safe_cleanup(data->cmd);
+	close(STDOUT_FILENO);
+	close(STDIN_FILENO);
+	close(STDERR_FILENO);
 	env_cleaner(data->env);
 	if (pid)
 		free(pid);
@@ -117,8 +122,10 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 {
 	pid_t	pid;
 	int		status;
+	char	*temp;
 
 	status = 0;
+	temp = NULL;
 	builtin_parent(cmd, env);
 	if (cmd->cmd && (!ft_strcmp(cmd->cmd, "exit") || !ft_strcmp(cmd->cmd, "cd")
 			|| (!ft_strcmp(cmd->cmd, "export") && !cmd->next && cmd->args[1])
@@ -127,17 +134,22 @@ void	exe_cmd(t_cmd *cmd, t_env **env, t_data *data)
 	pid = fork();
 	if (pid == 0)
 	{
-		(signal(SIGINT, SIG_DFL), signal(SIGQUIT, SIG_DFL));
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (handle_redir(cmd))
 			child_cleanup_and_exit(g_exit_status, data, NULL);
 		if (cmd->cmd && is_builtin(cmd))
-			(run_builtin(cmd, *env),
-				child_cleanup_and_exit(g_exit_status, data, NULL));
+		{
+			run_builtin(cmd, *env);
+			child_cleanup_and_exit(g_exit_status, data, NULL);
+		}
 		else
 			run_notbuiltin(cmd, env, data);
 	}
 	else if (pid > 0)
+	{
 		exe_help(status, cmd, pid);
+	}
 	else
 		perror("Fork failed");
 }

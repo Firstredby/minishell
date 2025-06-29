@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/29 19:50:44 by ishchyro          #+#    #+#             */
-/*   Updated: 2025/06/29 19:50:59 by ishchyro         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/06/29 22:33:55 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	open_fd(t_token *token, t_cmd *cmd, int redir, bool *flag)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	else if (redir == T_RED_APPEND)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
-	if (*fd)
+	if (*fd > 2)
 		close(*fd);
 	*fd = 0;
 	*fd = open(token->next->token, flags, 0644);

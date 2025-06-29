@@ -6,7 +6,7 @@
 /*   By: ishchyro <ishchyro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/29 19:55:31 by ishchyro         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:27:31 by ishchyro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int				handle_redir(t_cmd *cmd);
 void			run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data);
 
 // execution preparation
-void			handle_heredoc(t_cmd *cmd);
+int			handle_heredoc(t_cmd *cmd);
 char			*create_filename(char *path, char *id, char *type);
 int				exe_prep(t_cmd *cmd);
 
