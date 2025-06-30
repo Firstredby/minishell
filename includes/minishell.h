@@ -6,7 +6,7 @@
 /*   By: aorth <aorth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 10:25:57 by aorth             #+#    #+#             */
-/*   Updated: 2025/06/30 01:25:34 by aorth            ###   ########.fr       */
+/*   Updated: 2025/06/30 02:09:10 by aorth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,15 @@ char			*env_strdup(char *env, bool flag);
 void			exe_cmd(t_cmd *cmd, t_env **env, t_data *data);
 void			execute_pipe(t_cmd *cmd, t_data *data);
 int				handle_redir(t_cmd *cmd);
-void			run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data, pid_t *pod);
+void			run_notbuiltin(t_cmd *cmd, t_env **env, t_data *data,
+					pid_t *pod);
+void			skip_broken_commands(t_cmd *cmd);
+void			init_tpipe(t_cmd *cmd);
+void			pipe_exit_status(int status);
+int				alloc_pipe_help(t_cmd *cmd);
 
 // execution preparation
-int			handle_heredoc(t_cmd *cmd);
+int				handle_heredoc(t_cmd *cmd);
 char			*create_filename(char *path, char *id, char *type);
 int				exe_prep(t_cmd *cmd);
 
@@ -136,7 +141,7 @@ void			ft_strjoin_free_cursed(char **s1, char *s2);
 char			*ft_strstr(const char *haystack, const char *needle);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				looking_path(t_cmd *cmd, char **env);
-int	            reality_check(char *input);
+int				reality_check(char *input);
 
 // debug panel
 void			show_args(t_cmd *cmd);

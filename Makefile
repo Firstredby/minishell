@@ -42,7 +42,9 @@ SOURCES = src/main.c \
 		  src/utils/looking_path.c \
 		  src/utils/cleaner_utils.c \
 		  src/parser/parser_len_counter.c \
-		  src/builtins/cd_utils.c
+		  src/builtins/cd_utils.c \
+		  src/utils/reality_check.c \
+		  src/pipe/pipe_it_help.c
 
 CC = cc
 CFLAGS = -Werror -Wextra -Wall -O2 -g

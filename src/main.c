@@ -21,6 +21,8 @@
 #include <string.h>
 #include <unistd.h>
 
+int	g_exit_status = 0;
+
 int	cmd_init(t_data *data, char *input, char **envp)
 {
 	if (!data->env)
@@ -52,25 +54,9 @@ int	start_exec(t_data *data)
 	return (0);
 }
 
-// int	main_helper(char *input)
-// {
-// 	if (input)
-// 		add_history(input);
-// 	if (!input)
-// 	{
-// 		printf("exit\n");
-// 		return(0);
-// 	}
-// 	if (input[0] == '\0')
-// 	{
-// 		free(input);
-// 		return(1);
-// 	}
-// }
-
 static int	main_cleaner(t_data *data, int check)
 {
-	int should_exit;
+	int	should_exit;
 
 	if (check == 12)
 		return (free_all(data->cmd, NULL, NULL), g_exit_status = 12);
@@ -92,15 +78,12 @@ static int	main_cleaner(t_data *data, int check)
 		return (1);
 }
 
-
 int	main_loop(t_data *data, char **envp)
 {
-	int check;
-	//	int		should_exit;
-	char *input;
+	int		check;
+	char	*input;
 
 	input = NULL;
-	// should_exit = 0;
 	while (1)
 	{
 		main_sigs();
@@ -111,13 +94,6 @@ int	main_loop(t_data *data, char **envp)
 			return (printf("exit\n"), 0);
 		if (reality_check(input) == 1)
 			continue ;
-		// if (!input)
-		// 	return(printf("exit\n"),0);
-		// if (input[0] == '\0')
-		// {
-		// 	free(input);
-		// 	continue ;
-		// }
 		check = cmd_init(data, input, envp);
 		if (input)
 		{
@@ -126,25 +102,15 @@ int	main_loop(t_data *data, char **envp)
 		}
 		if (check == 1)
 			continue ;
-		// if (check == 12)
-		// 	return (free_all(data->cmd, NULL, NULL), g_exit_status = 12);
-		// if (data->cmd && data->cmd->cmd && !ft_strcmp(data->cmd->cmd,
-		//		"exit"))
-		// 	should_exit = 1;
-		// if (start_exec(data))
-		// 	return (free_all(data->cmd, NULL, data->token),
-		// 		g_exit_status);
 		if (!main_cleaner(data, check))
-			break ;
+			return (0);
 	}
-	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data *data;
+	t_data	*data;
 
-	g_exit_status = 0;
 	((void)argc, (void)argv);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
